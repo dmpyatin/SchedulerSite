@@ -1,0 +1,45 @@
+﻿@*<div class="ContextMenu" id="ScheduleInfoContextMenuDialog" style="z-index:9999; padding:0px; margin:0px; display:none; background-color:white; border: solid 1px; border-color:lightgray;">
+    <div style="height:20px; cursor:pointer;" 
+        data-bind="event: {click: $root.ScheduleInfoContextMenuElementClick_Plan, 
+                           mouseover: $root.ScheduleInfoContextMenuCssState.bind($data, 0,'onContextMenuMouseDownSelect'), 
+                           mouseout: $root.ScheduleInfoContextMenuCssState.bind($data, 0,'onContextMenuMouseDownUnselect')}, 
+                    attr: { 'class': $root.ScheduleInfoContextMenuCss[0]() }">Запланировать</div>
+    <div style="height:20px; cursor:pointer;" 
+        data-bind="event: {click: $root.ScheduleInfoContextMenuElementClick_AddHours, 
+                           mouseover: $root.ScheduleInfoContextMenuCssState.bind($data, 1,'onContextMenuMouseDownSelect'), 
+                           mouseout: $root.ScheduleInfoContextMenuCssState.bind($data, 1,'onContextMenuMouseDownUnselect')}, 
+                    attr: { 'class': $root.ScheduleInfoContextMenuCss[1]() }">Добавить часы</div>
+</div>
+
+<!-- Context Menu For Schedule Form -->
+<div class="ContextMenu" id="ScheduleContextMenuDialog" style="z-index:9999; padding:0px; margin:0px; display:none; background-color:white; border: solid 1px; border-color:lightgray">
+    <div style="height:20px; cursor:pointer;"
+        data-bind="event: {click: $root.ScheduleContextMenuElementClick_DeleteSchedule,
+                           mouseover: $root.ScheduleContextMenuCssState.bind($data, 0,'onContextMenuMouseDownSelect'),
+                           mouseout: $root.ScheduleContextMenuCssState.bind($data, 0,'onContextMenuMouseDownUnselect')}, 
+                    attr: { 'class': $root.ScheduleContextMenuCss[0]() }">Снять занятие</div>
+    <div style="height:20px; cursor:pointer;"
+        data-bind="event: {click: $root.ScheduleContextMenuElementClick_ChangeSchedule, 
+                           mouseover: $root.ScheduleContextMenuCssState.bind($data, 1,'onContextMenuMouseDownSelect'), 
+                           mouseout: $root.ScheduleContextMenuCssState.bind($data, 1,'onContextMenuMouseDownUnselect')}, 
+                    attr: { 'class': $root.ScheduleContextMenuCss[1]() }">Сделать замену</div>
+    <div style="height:20px; cursor:pointer;" 
+        data-bind="event: {click: $root.ScheduleContextMenuElementClick_ChangeAuditorium, 
+                           mouseover: $root.ScheduleContextMenuCssState.bind($data, 2,'onContextMenuMouseDownSelect'), 
+                           mouseout: $root.ScheduleContextMenuCssState.bind($data, 2,'onContextMenuMouseDownUnselect')}, 
+                    attr: { 'class': $root.ScheduleContextMenuCss[2]() }">Поменять аудиторию</div>
+</div>
+
+<!-- Context Menu For ScheduleBacket Form -->
+<div class="ContextMenu" id="ScheduleBacketContextMenuDialog" style="z-index:9999;  padding:0px; margin:0px; display:none; background-color:white; border: solid 1px; border-color:lightgray">
+    <div style="height:20px; cursor:pointer;"
+        data-bind="event: {click: $root.ScheduleBacketContextMenuElementClick_PlanSchedule, 
+                           mouseover: $root.ScheduleBacketContextMenuCssState.bind($data, 0,'onContextMenuMouseDownSelect'), 
+                           mouseout: $root.ScheduleBacketContextMenuCssState.bind($data, 0,'onContextMenuMouseDownUnselect')}, 
+                    attr: { 'class': $root.ScheduleBacketContextMenuCss[0]() }">Запланировать</div>
+    <div style="height:20px; cursor:pointer;"
+        data-bind="event: {click: $root.ScheduleBacketContextMenuElementClick_FreeAuditoriums, 
+                           mouseover: $root.ScheduleBacketContextMenuCssState.bind($data, 1,'onContextMenuMouseDownSelect'), 
+                           mouseout: $root.ScheduleBacketContextMenuCssState.bind($data, 1,'onContextMenuMouseDownUnselect')}, 
+                    attr: { 'class': $root.ScheduleBacketContextMenuCss[1]() }">Доступные аудитории</div>
+</div>*@

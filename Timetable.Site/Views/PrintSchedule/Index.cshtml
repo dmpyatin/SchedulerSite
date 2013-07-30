@@ -1,0 +1,156 @@
+﻿@model Timetable.Site.Models.PrintScheduleModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<style type="text/css">
+td
+{
+ border:solid 1px;
+ border-color:black;
+ padding-top:0px;
+ padding-bottom:0px;
+  #margin:0px;
+}
+    th
+    {
+        border: solid 1px;
+        border-color: black;
+        #margin:0px;
+    }
+</style>
+
+<div class="table1">
+<table style="border-collapse: collapse; width: 100%; margin:0px;"> 
+    <thead>
+        <tr>
+            <th style="font-size:@(Model.FontSize); text-align:center" colspan="7"> 
+                <strong>@Model.Header</strong>
+            </th>
+        </tr>
+         <tr>
+            <th style="font-size:@(Model.FontSize); width: 10px;" rowspan="1">
+                 <strong>Время</strong>
+            </th>
+
+            @foreach (var d in Model.Days)
+            {
+                <th style="font-size:@(Model.FontSize);">@d</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @{
+          int i = 0;
+          
+        }
+        
+        @foreach (var t in Model.Times)
+        {
+            int j = 0;
+            @:<tr>
+           
+            @:<td style="font-size:@(Model.FontSize); max-width: 50px;  max-height: 50px;"><strong>@(t.Start + "-" + t.End)</strong></td>
+
+            foreach(var d in Model.Days){
+                
+            @:<td style="font-size:@(Model.FontSize); max-height: 130px; max-width: 180px;">  
+                 if (Model.ScheduleTable[i, j, 1] != null)
+                 {
+                    @:<div style="max-height:0px; width:100px;">
+                    @:</div>
+                    @:<div style="max-height:62px;">
+                        @:<div style="float:left; right:0px; top:0px; margin-left: 5px;">    
+                            @:<strong>@(Model.ScheduleTable[i, j, 1].WeekTypeName)&nbsp;&nbsp;</strong>
+                        @:</div>
+                        if(Model.Mode != "forAuditorium"){
+                            @:<div style="float:right; right:0px; top:0px; margin-right: 5px;">    
+                                @:<strong>@Model.ScheduleTable[i, j, 1].AuditoriumNumber</strong>
+                            @:</div>
+                        }
+                        @:<span>@Model.ScheduleTable[i, j, 1].TutorialName</span>
+                        @:<span>@( "(" + Model.ScheduleTable[i, j, 1].TutorialTypeName + ")")</span>
+                        if(Model.Mode != "forLecturer"){
+                              @:<span>@Model.ScheduleTable[i, j, 1].LecturerName</span>
+                        }
+                        @:<span>@Model.ScheduleTable[i, j, 1].GroupNames</span>
+                     @:</div>
+                 }else{
+                     if (Model.ScheduleTable[i, j, 2] == null && Model.ScheduleTable[i, j, 3] != null)
+                     {
+                        @:<div style="max-height:62px; width:100px;">
+                        @:</div>
+                        @:<div style="max-height:62px; border-top: solid 1px; border-color:black;">
+                            @:<div style="float:left; right:0px; top:0px; margin-left: 5px;">    
+                                @:<strong>@(Model.ScheduleTable[i, j, 3].WeekTypeName)&nbsp; &nbsp;</strong>
+                            @:</div>
+                            if(Model.Mode != "forAuditorium"){
+                                @:<div style="float:right; right:0px; top:0px; margin-right: 5px;">    
+                                    @:<strong>@Model.ScheduleTable[i, j, 3].AuditoriumNumber</strong>
+                                @:</div>
+                            }
+                            @:<span>@Model.ScheduleTable[i, j, 3].TutorialName</span>
+                            @:<span>@( "(" + Model.ScheduleTable[i, j, 3].TutorialTypeName + ")")</span>
+                            if(Model.Mode != "forLecturer"){
+                                @:<span>@Model.ScheduleTable[i, j, 3].LecturerName</span>
+                            }
+                            @:<span>@Model.ScheduleTable[i, j, 3].GroupNames</span>
+                        @:</div>
+                     }else{
+                        if (Model.ScheduleTable[i, j, 2] != null)
+                        {
+                           
+                            @:<div style="max-height:62px; right:0px; top:0px; border-bottom: solid 1px; border-color:black;" >
+                            @:<div style="float:left; right:0px; top:0px; margin-left: 5px;">    
+                                @:<strong>@(Model.ScheduleTable[i, j, 2].WeekTypeName)&nbsp; &nbsp;</strong>
+                            @:</div>
+                            if(Model.Mode != "forAuditorium"){
+                                @:<div style="float:right; right:0px; top:0px; margin-right: 5px;">    
+                                    @:<strong>@Model.ScheduleTable[i, j, 2].AuditoriumNumber</strong>
+                                @:</div>
+                            }
+                            @:<span>@Model.ScheduleTable[i, j, 2].TutorialName</span>
+                            @:<span>@( "(" + Model.ScheduleTable[i, j, 2].TutorialTypeName + ")")</span>
+                            if(Model.Mode != "forLecturer"){
+                                @:<span>@Model.ScheduleTable[i, j, 2].LecturerName</span>
+                            }
+                            @:<span>@Model.ScheduleTable[i, j, 2].GroupNames</span>
+                            @:</div>
+
+                            
+                        }
+                        if (Model.ScheduleTable[i, j, 3] != null)
+                        {
+                            @:<div style="max-height:62px;">
+                            @:<div style="float:left; right:0px; top:0px; margin-left: 5px;">    
+                                @:<strong>@(Model.ScheduleTable[i, j, 3].WeekTypeName)&nbsp; &nbsp;</strong>
+                            @:</div>
+                            if(Model.Mode != "forAuditorium"){
+                                @:<div style="float:right; right:0px; top:0px; margin-right: 5px;">    
+                                    @:<strong>@Model.ScheduleTable[i, j, 3].AuditoriumNumber</strong>
+                                @:</div>
+                            }
+                            @:<span>@Model.ScheduleTable[i, j, 3].TutorialName</span>
+                            @:<span>@( "(" + Model.ScheduleTable[i, j, 3].TutorialTypeName + ")")</span>
+                            if(Model.Mode != "forLecturer"){
+                                @:<span>@Model.ScheduleTable[i, j, 3].LecturerName</span>
+                            }
+                            @:<span>@Model.ScheduleTable[i, j, 3].GroupNames</span>
+                            @:</div>
+                        }else{
+                            @:<div style="max-height:62px; width:100%; right:0px; top:0px;">
+                            @:</div>
+                        }
+                     }
+                 }
+                 
+            @:</td>  
+                j++;
+            }
+            @:</tr>
+            i++;
+        }       
+    </tbody>
+</table>
+</div>

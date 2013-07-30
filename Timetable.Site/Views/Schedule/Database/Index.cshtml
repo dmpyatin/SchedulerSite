@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "База данных";
+}
+
+<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width" />		
+        <title>@ViewBag.Title</title>    
+        <link rel="stylesheet" type="text/css" href="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Content/themes/base/css")" />
+        <link rel="stylesheet" type="text/css" href="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Content/bootstrap")" />
+        <link rel="stylesheet" type="text/css" href="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Content/jqwidgets")" />
+        <link rel="stylesheet" type="text/css" href="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Content/css")" />
+	
+		
+        <script src="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Scripts/jquery")"></script>
+        <script src="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Scripts/knockout")"></script>
+        <script src="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Scripts/modernizr")"></script>
+        <script src="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Scripts/bootstrap")"></script>
+        <script src="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Scripts/jqwidgets")"></script>
+        <script src="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Scripts/dojo")"></script>
+</head>
+
+<link  rel='stylesheet' type='text/css' href="@Url.Content("~/Content/jqwidgets/jqx.base.css")" />
+<link  rel='stylesheet' type='text/css' href="@Url.Content("~/Content/jqwidgets/jqx.classic.css")" />
+<script type='text/javascript' src="@Url.Content("~/Scripts/Site/Database/auditorium.database.js")"></script>
+<script type='text/javascript' src="@Url.Content("~/Scripts/Site/data.model.js")"></script>
+<script type='text/javascript' src="@Url.Content("~/Scripts/knockout-2.1.0.js")"></script>
+
+<h2>Таблицы</h2>
+
+@Content.Navbar("DatabaserLink", this)
+@Content.Toolbar(classes: "full-page", showCrudTool: false, showCalendarTool: false)
+
+<body>
+<div class="content full-page" style="background-color:#f5f5f5;margin-top: -47px">
+    <div style="margin:30px;">
+    <a href="@Url.Action("DatabaseAuditoriums")">
+        <strong>Аудитории</strong>
+    </a> <br />
+
+    <a href="@Url.Action("DatabaseAuditoriums")">
+        <strong>Преподаватели</strong>
+    </a> <br />
+    </div>
+       
+</div>
+</body>

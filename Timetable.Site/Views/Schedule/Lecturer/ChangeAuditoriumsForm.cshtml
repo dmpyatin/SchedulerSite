@@ -1,0 +1,9 @@
+﻿<!-- Change Auditoriums Form -->
+<div id="changeauditoriumdialog" title="Свободные аудитории" style="z-index:9999; overflow-x:hidden;">
+  <span>Новая аудитория</span>
+  <select style="width:100%" data-placeholder="Выберите аудиторию" class="span5" id="auditorium2" data-bind="options: $root.auditoriums, optionsText: 'Number', value: $root.currentChangeAuditorium">
+            <option></option>
+  </select>
+  <input type="button" class="btn" value="Заменить" data-bind="click: $root.ChangeAuditoriumFormOkButton " />
+  <input type="button" class="btn " value="Отмена" data-bind="click: $root.ChangeAuditoriumFormCancelButton " />
+</div>

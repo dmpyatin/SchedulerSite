@@ -1,0 +1,41 @@
+﻿<div id="scheduleinfotab">
+       <!--Filters -->
+       <div>
+       @Html.Partial("Auditorium/ScheduleInfoFilters")
+       </div> 
+
+       <!--Schedule info menu -->
+       <div id="scheduleinfo" style="background-color:white; float:left; max-height:430px; overflow-x:hidden; overflow-y:auto; width:216px;" data-bind="foreach: $root.ScheduleInfoArray">
+         <!-- ko if: $root.ScheduleInfoArray()[$index()] !== undefined -->
+        <div id="sidrag" style="font-family:Arial;font-size:12px; cursor:pointer; border:solid 1px; border-color:grey;  height: 60px; width:200px; z-index:10000;"  
+            data-bind="
+                event:{click: $root.ScheduleInfoSingleLeftClick.bind($data,$index()),
+                       contextmenu: $root.ScheduleInfoSingleRightClick.bind($data,$index()), 
+                       dblclick:  $root.ScheduleInfoDoubleClick,
+                       mouseover: $root.ScheduleInfoCssState.bind($data, $index(),'onScheduleInfoSelect'),
+                       mouseout:  $root.ScheduleInfoCssState.bind($data, $index(),$root.ScheduleInfoArray()[$index()].Display.UnselectCssClass())
+                      }, 
+                draggable: { 
+                       start: $root.ScheduleInfoStartDrag.bind($data, $index()), 
+                       stop:   $root.ScheduleInfoEndDrag.bind($data, $index()),
+                       opacity:1.0, 
+                       helper:'clone',
+                       appendTo: 'body'},
+            
+                attr: { 
+                       'class': $root.ScheduleInfoArray()[$index()].Display.CssClass()}
+      
+                ">
+               
+            
+               <p style="text-align:left;  text-indent: 20px; ">
+               <strong data-bind="text: $root.ScheduleInfoArray()[$index()].Display.Lecturer()"></strong> <br />
+               <strong data-bind="text: $root.ScheduleInfoArray()[$index()].Display.Tutorial()"></strong>
+               <strong data-bind="text: $root.ScheduleInfoArray()[$index()].Display.curHours() + '[' + $root.ScheduleInfoArray()[$index()].Display.maxHours() + ']' + $root.ScheduleInfoArray()[$index()].Display.TutorialType()"></strong>
+               <strong data-bind="text: $root.ScheduleInfoArray()[$index()].Display.Groups()"></strong> 
+               </p>
+        </div>
+        <!-- /ko -->
+
+        </div>
+ </div>

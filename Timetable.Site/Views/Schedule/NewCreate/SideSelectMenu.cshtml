@@ -1,0 +1,28 @@
+﻿<div id="tabs" style="overflow-y:hidden; overflow-x:hidden;">
+    <ul class="nav nav-tabs" style="margin-bottom:0px;">
+        <li><a href="#flowTab" data-toggle="tab">Поток</a></li>
+        <li><a href="#auditoriumsTab" data-toggle="tab">Аудитории</a></li>
+      </ul>
+
+     <div class="tab-content">
+        <div class="tab-pane active" id="flowTab">
+           
+        </div>
+        <div class="tab-pane" id="auditoriumsTab">
+            <select style="width:100%;"  data-placeholder="Выберите тип аудитории" class="span5" id="auditoriumtype1" data-bind="options: $root.auditoriumTypes, optionsText: 'Name', value: $root.currentAuditoriumType">
+                <option></option>
+            </select>
+            <select style="width:100%" size="20" multiple  data-placeholder="Выберите аудиторию" class="span5" id="auditorium" data-bind="options: $root.auditoriums, optionsText: 'Number', value: $root.currentAuditorium">
+                <option></option>
+            </select>
+        </div>
+    </div>
+ </div>
+
+<div id="flowGroups">
+    @Html.Partial("NewCreate/FlowSelect")
+</div>
+
+<div id="flowSI">
+    @Html.Partial("NewCreate/ScheduleInfoList")
+</div>

@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+  For more information on how to configure your ASP.NET application, please visit
+  http://go.microsoft.com/fwlink/?LinkId=152368
+  -->
+<configuration>
+  <configSections>
+    <!-- For more information on Entity Framework configuration, visit http://go.microsoft.com/fwlink/?LinkID=237468 -->
+    <section name="entityFramework" type="System.Data.Entity.Internal.ConfigFile.EntityFrameworkSection, EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" requirePermission="false" />
+    <sectionGroup name="bundleTransformer">
+      <section name="core" type="BundleTransformer.Core.Configuration.CoreSettings" />
+    </sectionGroup>
+  </configSections>
+  <appSettings>
+    <add key="webpages:Version" value="2.0.0.0" />
+    <add key="ClientValidationEnabled" value="true" />
+    <add key="UnobtrusiveJavaScriptEnabled" value="true" />
+    <add key="PreserveLoginUrl" value="true" />
+    <add key="FacultyServiceAddress" value="http://localhost:18822/Services/Faculty.svc" />
+    <add key="CourseServiceAddress" value="http://localhost:18822/Services/Course.svc" />
+    <add key="GroupServiceAddress" value="http://localhost:18822/Services/Group.svc" />
+    <add key="TutorialServiceAddress" value="http://localhost:18822/Services/Tutorial.svc" />
+    <add key="TutorialTypeServiceAddress" value="http://localhost:18822/Services/TutorialType.svc" />
+    <add key="SpecialityServiceAddress" value="http://localhost:18822/Services/Speciality.svc" />
+    <add key="DepartmentServiceAddress" value="http://localhost:18822/Services/Department.svc" />
+    <add key="BuildingServiceAddress" value="http://localhost:18822/Services/Building.svc" />
+    <add key="TimeServiceAddress" value="http://localhost:18822/Services/Time.svc" />
+    <add key="LecturerServiceAddress" value="http://localhost:18822/Services/Lecturer.svc" />
+    <add key="AuditoriumServiceAddress" value="http://localhost:18822/Services/Auditorium.svc" />
+    <add key="ScheduleServiceAddress" value="http://localhost:18822/Services/Schedule.svc" />
+    <add key="ScheduleInfoServiceAddress" value="http://localhost:18822/Services/ScheduleInfo.svc" />
+    <add key="WeekTypeServiceAddress" value="http://localhost:18822/Services/WeekType.svc" />
+  </appSettings>
+  <!--
+    For a description of web.config changes for .NET 4.5 see http://go.microsoft.com/fwlink/?LinkId=235367.
+
+    The following attributes can be set on the <httpRuntime> tag.
+      <system.Web>
+        <httpRuntime targetFramework="4.5" />
+      </system.Web>
+  -->
+  <system.web>
+    <compilation debug="true" targetFramework="4.5">
+      <assemblies>
+        <add assembly="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35" />
+        <add assembly="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35" />
+        <add assembly="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35" />
+        <add assembly="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35" />
+      </assemblies>
+    </compilation>
+    <authentication mode="Forms">
+      <forms loginUrl="~/SignIn" timeout="2880" />
+    </authentication>
+    <pages controlRenderingCompatibilityVersion="4.0">
+      <namespaces>
+        <add namespace="System.Web.Helpers" />
+        <add namespace="System.Web.Mvc" />
+        <add namespace="System.Web.Mvc.Ajax" />
+        <add namespace="System.Web.Mvc.Html" />
+        <add namespace="System.Web.Routing" />
+        <add namespace="System.Web.WebPages" />
+      </namespaces>
+    </pages>
+    <httpRuntime enableVersionHeader="false" />
+  </system.web>
+  <system.webServer>
+    <validation validateIntegratedModeConfiguration="false" />
+    <modules runAllManagedModulesForAllRequests="true">
+      <add name="CustomServerHeader" type="Timetable.Site.CustomServerHeaderModule" />
+    </modules>
+    <httpProtocol>
+      <customHeaders>
+        <remove name="X-Powered-By" />
+      </customHeaders>
+    </httpProtocol>
+    <handlers>
+      <remove name="ExtensionlessUrlHandler-ISAPI-4.0_32bit" />
+      <remove name="ExtensionlessUrlHandler-ISAPI-4.0_64bit" />
+      <remove name="ExtensionlessUrlHandler-Integrated-4.0" />
+      <add name="ExtensionlessUrlHandler-ISAPI-4.0_32bit" path="*." verb="GET,HEAD,POST,DEBUG,PUT,DELETE,PATCH,OPTIONS" modules="IsapiModule" scriptProcessor="%windir%\Microsoft.NET\Framework\v4.0.30319\aspnet_isapi.dll" preCondition="classicMode,runtimeVersionv4.0,bitness32" responseBufferLimit="0" />
+      <add name="ExtensionlessUrlHandler-ISAPI-4.0_64bit" path="*." verb="GET,HEAD,POST,DEBUG,PUT,DELETE,PATCH,OPTIONS" modules="IsapiModule" scriptProcessor="%windir%\Microsoft.NET\Framework64\v4.0.30319\aspnet_isapi.dll" preCondition="classicMode,runtimeVersionv4.0,bitness64" responseBufferLimit="0" />
+      <add name="ExtensionlessUrlHandler-Integrated-4.0" path="*." verb="GET,HEAD,POST,DEBUG,PUT,DELETE,PATCH,OPTIONS" type="System.Web.Handlers.TransferRequestHandler" preCondition="integratedMode,runtimeVersionv4.0" />
+    </handlers>
+  </system.webServer>
+  <runtime>
+    <disableCachingBindingFailures enabled="1" />
+    <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Helpers" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="1.0.0.0-2.0.0.0" newVersion="2.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Mvc" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="0.0.0.0-4.0.0.0" newVersion="4.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.WebPages" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="1.0.0.0-2.0.0.0" newVersion="2.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="WebGrease" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-1.3.0.0" newVersion="1.3.0.0" />
+      </dependentAssembly>
+    </assemblyBinding>
+  </runtime>
+  <!--<entityFramework>
+    <defaultConnectionFactory type="System.Data.Entity.Infrastructure.SqlConnectionFactory, EntityFramework">
+      <parameters>
+        <parameter value="Data Source=TRYAPITSIN-PC; Initial Catalog=Timetable2; Integrated Security=true;" />
+      </parameters>
+    </defaultConnectionFactory>
+  </entityFramework>-->
+  <entityFramework>
+    <defaultConnectionFactory type="System.Data.Entity.Infrastructure.SqlConnectionFactory, EntityFramework" />
+  </entityFramework>
+  <system.serviceModel>
+    <bindings>
+      <basicHttpBinding>
+        <binding name="BasicHttpBinding_IBuildingService" />
+        <binding name="BasicHttpBinding_ICourseService" />
+        <binding name="BasicHttpBinding_IDepartmentService" />
+        <binding name="BasicHttpBinding_IFacultyService" />
+        <binding name="BasicHttpBinding_IGroupService" />
+        <binding name="BasicHttpBinding_ILecturerService" />
+        <binding name="BasicHttpBinding_IScheduleService" />
+        <binding name="BasicHttpBinding_ISpecialityService" />
+        <binding name="BasicHttpBinding_ITimeService" />
+        <binding name="BasicHttpBinding_ITutorialService" />
+        <binding name="BasicHttpBinding_ITutorialTypeService" />
+        <binding name="BasicHttpBinding_IAuditoriumService" />
+        <binding name="BasicHttpBinding_IScheduleInfoService" />
+        <binding name="BasicHttpBinding_IWeekTypeService" />
+      </basicHttpBinding>
+    </bindings>
+    <client>
+      <endpoint address="http://localhost:18822/Services/Building.svc"
+        binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IBuildingService"
+        contract="Host.Building.IBuildingService" name="BasicHttpBinding_IBuildingService" />
+      <endpoint address="http://localhost:18822/Services/Course.svc"
+        binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_ICourseService"
+        contract="Host.Course.ICourseService" name="BasicHttpBinding_ICourseService" />
+      <endpoint address="http://localhost:18822/Services/Department.svc"
+        binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IDepartmentService"
+        contract="Host.Department.IDepartmentService" name="BasicHttpBinding_IDepartmentService" />
+      <endpoint address="http://localhost:18822/Services/Faculty.svc"
+        binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IFacultyService"
+        contract="Host.Faculty.IFacultyService" name="BasicHttpBinding_IFacultyService" />
+      <endpoint address="http://localhost:18822/Services/Group.svc"
+        binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IGroupService"
+        contract="Host.Group.IGroupService" name="BasicHttpBinding_IGroupService" />
+      <endpoint address="http://localhost:18822/Services/Lecturer.svc"
+        binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_ILecturerService"
+        contract="Host.Lecturer.ILecturerService" name="BasicHttpBinding_ILecturerService" />
+      <endpoint address="http://localhost:18822/Services/Schedule.svc"
+        binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IScheduleService"
+        contract="Host.Schedule.IScheduleService" name="BasicHttpBinding_IScheduleService" />
+      <endpoint address="http://localhost:18822/Services/Speciality.svc"
+        binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_ISpecialityService"
+        contract="Host.Speciality.ISpecialityService" name="BasicHttpBinding_ISpecialityService" />
+      <endpoint address="http://localhost:18822/Services/Time.svc"
+        binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_ITimeService"
+        contract="Host.Time.ITimeService" name="BasicHttpBinding_ITimeService" />
+      <endpoint address="http://localhost:18822/Services/Tutorial.svc"
+        binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_ITutorialService"
+        contract="Host.Tutorial.ITutorialService" name="BasicHttpBinding_ITutorialService" />
+      <endpoint address="http://localhost:18822/Services/TutorialType.svc"
+        binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_ITutorialTypeService"
+        contract="Host.TutorialType.ITutorialTypeService" name="BasicHttpBinding_ITutorialTypeService" />
+      <endpoint address="http://localhost:18822/Services/Auditorium.svc"
+        binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IAuditoriumService"
+        contract="Host.Auditorium.IAuditoriumService" name="BasicHttpBinding_IAuditoriumService" />
+      <endpoint address="http://localhost:18822/Services/ScheduleInfo.svc"
+        binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IScheduleInfoService"
+        contract="Host.ScheduleInfo.IScheduleInfoService" name="BasicHttpBinding_IScheduleInfoService" />
+      <endpoint address="http://localhost:18822/Services/WeekType.svc"
+        binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IWeekTypeService"
+        contract="Host.WeekType.IWeekTypeService" name="BasicHttpBinding_IWeekTypeService" />
+    </client>
+  </system.serviceModel>
+  <bundleTransformer xmlns="http://tempuri.org/BundleTransformer.Configuration.xsd">
+    <core>
+      <css>
+        <minifiers>
+          <add name="NullMinifier" type="BundleTransformer.Core.Minifiers.NullMinifier, BundleTransformer.Core" />
+        </minifiers>
+        <translators>
+          <add name="NullTranslator" type="BundleTransformer.Core.Translators.NullTranslator, BundleTransformer.Core" enabled="false" />
+        </translators>
+      </css>
+      <js>
+        <minifiers>
+          <add name="NullMinifier" type="BundleTransformer.Core.Minifiers.NullMinifier, BundleTransformer.Core" />
+          <add name="CrockfordJsMinifier" type="BundleTransformer.JsMin.Minifiers.CrockfordJsMinifier, BundleTransformer.JsMin" />
+        </minifiers>
+        <translators>
+          <add name="NullTranslator" type="BundleTransformer.Core.Translators.NullTranslator, BundleTransformer.Core" enabled="false" />
+        </translators>
+      </js>
+    </core>
+  </bundleTransformer>
+</configuration>

@@ -1,0 +1,1439 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4D7D6CF6-67E6-4192-800C-0CD43A0A63F1}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Timetable.Site</RootNamespace>
+    <AssemblyName>Timetable.Site</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>false</UseIISExpress>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <TargetFrameworkProfile />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.3.1.7705, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="BundleTransformer.Core, Version=1.6.22.0, Culture=neutral, PublicKeyToken=973c344c93aac60d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\BundleTransformer.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="BundleTransformer.JsMin, Version=1.6.13.0, Culture=neutral, PublicKeyToken=973c344c93aac60d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\BundleTransformer.JsMin.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Monads, Version=1.1.5.0, Culture=neutral, PublicKeyToken=c45ad03d718dd7fa, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Monads.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Extensions.Wcf, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Ninject.Extensions.Wcf.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Ninject.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Common, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Ninject.Web.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Ninject.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Services" />
+    <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\Libs\System.Net.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\Libs\System.Net.Http.WebRequest.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activation" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Libs\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.20710.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Libs\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Libs\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Libs\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Libs\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Libs\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebActivator, Version=1.5.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\WebActivator.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\WebGrease.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_GlobalResources\Message.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Message.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\NinjectWeb.cs" />
+    <Compile Include="App_Start\NinjectWebCommon.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Attributes\ValidateActivationAttribute.cs" />
+    <Compile Include="Controllers\Api\AuditoriumTypeController.cs" />
+    <Compile Include="Controllers\Api\BranchController.cs" />
+    <Compile Include="Controllers\Api\StudyYearController.cs" />
+    <Compile Include="Controllers\Api\ValidatorController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\Extends\TempAuditoriums.cs" />
+    <Compile Include="Controllers\Extends\TempData.cs" />
+    <Compile Include="Controllers\Extends\TempGroups.cs" />
+    <Compile Include="Controllers\Extends\TempScheduleInfoes.cs" />
+    <Compile Include="Controllers\Extends\TempSchedules.cs" />
+    <Compile Include="Controllers\Extends\TempSpecialities.cs" />
+    <Compile Include="Controllers\PrintScheduleController.cs" />
+    <Compile Include="Controllers\SignInController.cs" />
+    <Compile Include="Controllers\Api\AuditoriumController.cs" />
+    <Compile Include="Controllers\Api\BaseApiController.cs" />
+    <Compile Include="Controllers\Api\BuildingController.cs" />
+    <Compile Include="Controllers\Api\RankController.cs" />
+    <Compile Include="Controllers\Api\ScheduleHelperController.cs" />
+    <Compile Include="Controllers\Api\WeekTypeController.cs" />
+    <Compile Include="Controllers\Api\DepatmentController.cs" />
+    <Compile Include="Controllers\Api\GroupController.cs" />
+    <Compile Include="Controllers\Api\CourseController.cs" />
+    <Compile Include="Controllers\Api\FacultyController.cs" />
+    <Compile Include="Controllers\Api\LecturerController.cs" />
+    <Compile Include="Controllers\Api\ScheduleController.cs" />
+    <Compile Include="Controllers\Api\ScheduleInfoController.cs" />
+    <Compile Include="Controllers\Api\SpecialityController.cs" />
+    <Compile Include="Controllers\Api\TimeController.cs" />
+    <Compile Include="Controllers\Api\TutorialController.cs" />
+    <Compile Include="Controllers\Api\TutorialTypeController.cs" />
+    <Compile Include="Controllers\Extends\ExtendClasses.cs" />
+    <Compile Include="Controllers\ScheduleController.cs" />
+    <Compile Include="Models\Auditoriums\UpdateModel.cs" />
+    <Compile Include="Models\AuditoriumTypes\AddModel.cs" />
+    <Compile Include="Models\AuditoriumTypes\DeleteModel.cs" />
+    <Compile Include="Models\AuditoriumTypes\SendModel.cs" />
+    <Compile Include="Models\Auditoriums\AddModel.cs" />
+    <Compile Include="Models\Auditoriums\DeleteModel.cs" />
+    <Compile Include="Models\Auditoriums\ForBuildingModel.cs" />
+    <Compile Include="Models\Auditoriums\ForFreeModel.cs" />
+    <Compile Include="Models\Auditoriums\SendModel.cs" />
+    <Compile Include="Models\Branches\SendModel.cs" />
+    <Compile Include="Models\Buidlings\SendModel.cs" />
+    <Compile Include="Models\Courses\AddModel.cs" />
+    <Compile Include="Models\Courses\DeleteModel.cs" />
+    <Compile Include="Models\Courses\SendModel.cs" />
+    <Compile Include="Models\Departments\SendModel.cs" />
+    <Compile Include="Models\Faculties\ForAllModel.cs" />
+    <Compile Include="Models\Faculties\SendModel.cs" />
+    <Compile Include="Models\Groups\AddModel.cs" />
+    <Compile Include="Models\Groups\DeleteModel.cs" />
+    <Compile Include="Models\Groups\ForAllModel.cs" />
+    <Compile Include="Models\Groups\ForCodeModel.cs" />
+    <Compile Include="Models\Groups\ForCourseModel.cs" />
+    <Compile Include="Models\Groups\SendModel.cs" />
+    <Compile Include="Models\Hints\ForAllModel.cs" />
+    <Compile Include="Models\Hints\SendModel.cs" />
+    <Compile Include="Models\Lecturers\AddModel.cs" />
+    <Compile Include="Models\Lecturers\DeleteModel.cs" />
+    <Compile Include="Models\Lecturers\SendModel.cs" />
+    <Compile Include="Models\PrintScheduleModel.cs" />
+    <Compile Include="Models\ScheduleInfoes\AddModel.cs" />
+    <Compile Include="Models\ScheduleInfoes\DeleteModel.cs" />
+    <Compile Include="Models\ScheduleInfoes\ForGroupModel.cs" />
+    <Compile Include="Models\ScheduleInfoes\ForLecturerModel.cs" />
+    <Compile Include="Models\ScheduleInfoes\SendModel.cs" />
+    <Compile Include="Models\ScheduleInfoes\UpdateModel.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="CustomServerHeaderModule.cs" />
+    <Compile Include="Models\Schedules\AddModel.cs" />
+    <Compile Include="Models\Schedules\DeleteModel.cs" />
+    <Compile Include="Models\Schedules\ForAllModel.cs" />
+    <Compile Include="Models\Schedules\ForAuditoriumModel.cs" />
+    <Compile Include="Models\Schedules\ForGroupModel.cs" />
+    <Compile Include="Models\Schedules\ForLecturerModel.cs" />
+    <Compile Include="Models\Schedules\SendModel.cs" />
+    <Compile Include="Models\Schedules\ValidateModel.cs" />
+    <Compile Include="Models\SignInModel.cs" />
+    <Compile Include="Models\SignUpModel.cs" />
+    <Compile Include="Models\Schedules\UpdateModel.cs" />
+    <Compile Include="Models\Specialities\AddModel.cs" />
+    <Compile Include="Models\Specialities\DeleteModel.cs" />
+    <Compile Include="Models\Specialities\ForAllModel.cs" />
+    <Compile Include="Models\Specialities\SendModel.cs" />
+    <Compile Include="Models\StudyYears\AddModel.cs" />
+    <Compile Include="Models\StudyYears\DeleteModel.cs" />
+    <Compile Include="Models\StudyYears\SendModel.cs" />
+    <Compile Include="Models\Times\AddModel.cs" />
+    <Compile Include="Models\Times\DeleteModel.cs" />
+    <Compile Include="Models\Times\ForAllModel.cs" />
+    <Compile Include="Models\Times\SendModel.cs" />
+    <Compile Include="Models\Tutorials\AddModel.cs" />
+    <Compile Include="Models\Tutorials\DeleteModel.cs" />
+    <Compile Include="Models\Tutorials\ForAllModel.cs" />
+    <Compile Include="Models\Tutorials\SendModel.cs" />
+    <Compile Include="Models\TutorialTypes\AddModel.cs" />
+    <Compile Include="Models\TutorialTypes\DeleteModel.cs" />
+    <Compile Include="Models\TutorialTypes\SendModel.cs" />
+    <Compile Include="Models\Validators\SendModel.cs" />
+    <Compile Include="Models\Validators\StateModel.cs" />
+    <Compile Include="Models\WeekTypes\SendModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\DataService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\UserService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="XmlDocumentationProvider.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Message.resx">
+      <SubType>Designer</SubType>
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Message.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Content\bootstrap-responsive.css" />
+    <Content Include="Content\bootstrap-responsive.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\classic-min.css" />
+    <Content Include="Content\classic.css" />
+    <Content Include="Content\ext-all.css" />
+    <Content Include="Content\globalization\jquery.glob.cs-CZ.js" />
+    <Content Include="Content\globalization\jquery.glob.de-DE.js" />
+    <Content Include="Content\globalization\jquery.glob.en-CA.js" />
+    <Content Include="Content\globalization\jquery.glob.en-US.js" />
+    <Content Include="Content\globalization\jquery.glob.fr-FR.js" />
+    <Content Include="Content\globalization\jquery.glob.he-IL.js" />
+    <Content Include="Content\globalization\jquery.glob.hr.js" />
+    <Content Include="Content\globalization\jquery.glob.it-IT.js" />
+    <Content Include="Content\globalization\jquery.glob.ja-JP.js" />
+    <Content Include="Content\globalization\jquery.glob.ru-RU.js" />
+    <Content Include="Content\globalization\jquery.glob.sa-IN.js" />
+    <Content Include="Content\globalization\jquery.global.js" />
+    <Content Include="Content\images\back_arrow.png" />
+    <Content Include="Content\images\chosen-sprite.png" />
+    <Content Include="Content\images\glyphicons-halflings-white.png" />
+    <Content Include="Content\images\glyphicons-halflings.png" />
+    <Content Include="Content\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
+    <Content Include="Content\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
+    <Content Include="Content\images\ui-bg_flat_10_000000_40x100.png" />
+    <Content Include="Content\images\ui-bg_glass_100_f6f6f6_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_100_fdf5ce_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\images\ui-bg_gloss-wave_35_f6a828_500x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
+    <Content Include="Content\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\images\ui-icons_228ef1_256x240.png" />
+    <Content Include="Content\images\ui-icons_ef8c08_256x240.png" />
+    <Content Include="Content\images\ui-icons_ffd27a_256x240.png" />
+    <Content Include="Content\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\jquery-ui-1.10.0.custom.css" />
+    <Content Include="Content\jquery-ui-1.10.0.custom.min.css" />
+    <Content Include="Content\jqwidgets\images\arrow_bottom.png" />
+    <Content Include="Content\jqwidgets\images\arrow_left.png" />
+    <Content Include="Content\jqwidgets\images\arrow_right.png" />
+    <Content Include="Content\jqwidgets\images\arrow_top.png" />
+    <Content Include="Content\jqwidgets\images\backgroundTop.png" />
+    <Content Include="Content\jqwidgets\images\backImage.png" />
+    <Content Include="Content\jqwidgets\images\bar-hue.png" />
+    <Content Include="Content\jqwidgets\images\bar-saturation.png" />
+    <Content Include="Content\jqwidgets\images\bg_black.png" />
+    <Content Include="Content\jqwidgets\images\bg_black2.png" />
+    <Content Include="Content\jqwidgets\images\bg_blackhover.png" />
+    <Content Include="Content\jqwidgets\images\bg_blackhover_horizontal.png" />
+    <Content Include="Content\jqwidgets\images\bg_blackpressed.png" />
+    <Content Include="Content\jqwidgets\images\bg_blackpressed_horizontal.png" />
+    <Content Include="Content\jqwidgets\images\bg_black_horizontal.png" />
+    <Content Include="Content\jqwidgets\images\bg_blueenergy.png" />
+    <Content Include="Content\jqwidgets\images\bg_darkblue.png" />
+    <Content Include="Content\jqwidgets\images\bg_darkbluehover.png" />
+    <Content Include="Content\jqwidgets\images\bg_darkbluepressed.png" />
+    <Content Include="Content\jqwidgets\images\blackbackground.png" />
+    <Content Include="Content\jqwidgets\images\black_gradient.png" />
+    <Content Include="Content\jqwidgets\images\check_black.png" />
+    <Content Include="Content\jqwidgets\images\check_disabled.png" />
+    <Content Include="Content\jqwidgets\images\check_indeterminate_black.png" />
+    <Content Include="Content\jqwidgets\images\check_indeterminate_disabled.png" />
+    <Content Include="Content\jqwidgets\images\check_indeterminate_white.png" />
+    <Content Include="Content\jqwidgets\images\check_white.png" />
+    <Content Include="Content\jqwidgets\images\close.png" />
+    <Content Include="Content\jqwidgets\images\close_white.png" />
+    <Content Include="Content\jqwidgets\images\crosshair-white.png" />
+    <Content Include="Content\jqwidgets\images\crosshair.png" />
+    <Content Include="Content\jqwidgets\images\darkness\ui-bg_flat_30_cccccc_40x100.png" />
+    <Content Include="Content\jqwidgets\images\darkness\ui-bg_flat_50_5c5c5c_40x100.png" />
+    <Content Include="Content\jqwidgets\images\darkness\ui-bg_glass_20_555555_1x400.png" />
+    <Content Include="Content\jqwidgets\images\darkness\ui-bg_glass_40_0078a3_1x400.png" />
+    <Content Include="Content\jqwidgets\images\darkness\ui-bg_glass_40_ffc73d_1x400.png" />
+    <Content Include="Content\jqwidgets\images\darkness\ui-bg_gloss-wave_25_333333_500x100.png" />
+    <Content Include="Content\jqwidgets\images\darkness\ui-bg_highlight-soft_80_eeeeee_1x100.png" />
+    <Content Include="Content\jqwidgets\images\darkness\ui-bg_inset-soft_25_000000_1x100.png" />
+    <Content Include="Content\jqwidgets\images\darkness\ui-bg_inset-soft_30_f58400_1x100.png" />
+    <Content Include="Content\jqwidgets\images\darkness\ui-icons_222222_256x240.png" />
+    <Content Include="Content\jqwidgets\images\darkness\ui-icons_4b8e0b_256x240.png" />
+    <Content Include="Content\jqwidgets\images\darkness\ui-icons_a83300_256x240.png" />
+    <Content Include="Content\jqwidgets\images\darkness\ui-icons_cccccc_256x240.png" />
+    <Content Include="Content\jqwidgets\images\darkness\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\jqwidgets\images\darkred_gradient.png" />
+    <Content Include="Content\jqwidgets\images\icon-down - Copy.png" />
+    <Content Include="Content\jqwidgets\images\icon-down-white.png" />
+    <Content Include="Content\jqwidgets\images\icon-down.png" />
+    <Content Include="Content\jqwidgets\images\icon-left-white.png" />
+    <Content Include="Content\jqwidgets\images\icon-left.png" />
+    <Content Include="Content\jqwidgets\images\icon-right-white.png" />
+    <Content Include="Content\jqwidgets\images\icon-right.png" />
+    <Content Include="Content\jqwidgets\images\icon-up-white.png" />
+    <Content Include="Content\jqwidgets\images\icon-up.png" />
+    <Content Include="Content\jqwidgets\images\le-frog\ui-bg_diagonals-small_0_aaaaaa_40x40.png" />
+    <Content Include="Content\jqwidgets\images\le-frog\ui-bg_diagonals-thick_15_444444_40x40.png" />
+    <Content Include="Content\jqwidgets\images\le-frog\ui-bg_diagonals-thick_95_ffdc2e_40x40.png" />
+    <Content Include="Content\jqwidgets\images\le-frog\ui-bg_glass_55_fbf5d0_1x400.png" />
+    <Content Include="Content\jqwidgets\images\le-frog\ui-bg_highlight-hard_30_285c00_1x100.png" />
+    <Content Include="Content\jqwidgets\images\le-frog\ui-bg_highlight-soft_33_3a8104_1x100.png" />
+    <Content Include="Content\jqwidgets\images\le-frog\ui-bg_highlight-soft_50_4eb305_1x100.png" />
+    <Content Include="Content\jqwidgets\images\le-frog\ui-bg_highlight-soft_60_4ca20b_1x100.png" />
+    <Content Include="Content\jqwidgets\images\le-frog\ui-bg_inset-soft_10_285c00_1x100.png" />
+    <Content Include="Content\jqwidgets\images\le-frog\ui-icons_4eb305_256x240.png" />
+    <Content Include="Content\jqwidgets\images\le-frog\ui-icons_72b42d_256x240.png" />
+    <Content Include="Content\jqwidgets\images\le-frog\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\jqwidgets\images\le-frog\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\jqwidgets\images\lightness\ui-bg_diagonals-thick_18_b81900_40x40.png" />
+    <Content Include="Content\jqwidgets\images\lightness\ui-bg_diagonals-thick_20_666666_40x40.png" />
+    <Content Include="Content\jqwidgets\images\lightness\ui-bg_flat_10_000000_40x100.png" />
+    <Content Include="Content\jqwidgets\images\lightness\ui-bg_glass_100_f6f6f6_1x400.png" />
+    <Content Include="Content\jqwidgets\images\lightness\ui-bg_glass_100_fdf5ce_1x400.png" />
+    <Content Include="Content\jqwidgets\images\lightness\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\jqwidgets\images\lightness\ui-bg_gloss-wave_35_f6a828_500x100.png" />
+    <Content Include="Content\jqwidgets\images\lightness\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
+    <Content Include="Content\jqwidgets\images\lightness\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
+    <Content Include="Content\jqwidgets\images\lightness\ui-icons_222222_256x240.png" />
+    <Content Include="Content\jqwidgets\images\lightness\ui-icons_228ef1_256x240.png" />
+    <Content Include="Content\jqwidgets\images\lightness\ui-icons_ef8c08_256x240.png" />
+    <Content Include="Content\jqwidgets\images\lightness\ui-icons_ffd27a_256x240.png" />
+    <Content Include="Content\jqwidgets\images\lightness\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\jqwidgets\images\map-hue.png" />
+    <Content Include="Content\jqwidgets\images\map-saturation-overlay.png" />
+    <Content Include="Content\jqwidgets\images\map-saturation.png" />
+    <Content Include="Content\jqwidgets\images\multi-arrow.gif" />
+    <Content Include="Content\jqwidgets\images\nav-arrow-down.png" />
+    <Content Include="Content\jqwidgets\images\nav-arrow-left.png" />
+    <Content Include="Content\jqwidgets\images\nav-arrow-right.png" />
+    <Content Include="Content\jqwidgets\images\nav-arrow-up.png" />
+    <Content Include="Content\jqwidgets\images\overcast\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\jqwidgets\images\overcast\ui-bg_flat_0_eeeeee_40x100.png" />
+    <Content Include="Content\jqwidgets\images\overcast\ui-bg_flat_55_c0402a_40x100.png" />
+    <Content Include="Content\jqwidgets\images\overcast\ui-bg_flat_55_eeeeee_40x100.png" />
+    <Content Include="Content\jqwidgets\images\overcast\ui-bg_glass_100_f8f8f8_1x400.png" />
+    <Content Include="Content\jqwidgets\images\overcast\ui-bg_glass_35_dddddd_1x400.png" />
+    <Content Include="Content\jqwidgets\images\overcast\ui-bg_glass_60_eeeeee_1x400.png" />
+    <Content Include="Content\jqwidgets\images\overcast\ui-bg_inset-hard_75_999999_1x100.png" />
+    <Content Include="Content\jqwidgets\images\overcast\ui-bg_inset-soft_50_c9c9c9_1x100.png" />
+    <Content Include="Content\jqwidgets\images\overcast\ui-icons_3383bb_256x240.png" />
+    <Content Include="Content\jqwidgets\images\overcast\ui-icons_454545_256x240.png" />
+    <Content Include="Content\jqwidgets\images\overcast\ui-icons_70b2e1_256x240.png" />
+    <Content Include="Content\jqwidgets\images\overcast\ui-icons_999999_256x240.png" />
+    <Content Include="Content\jqwidgets\images\overcast\ui-icons_fbc856_256x240.png" />
+    <Content Include="Content\jqwidgets\images\pointer.png" />
+    <Content Include="Content\jqwidgets\images\rangebar_classic.png" />
+    <Content Include="Content\jqwidgets\images\rangebar_darkblue.png" />
+    <Content Include="Content\jqwidgets\images\rangebar_shinyblack.png" />
+    <Content Include="Content\jqwidgets\images\rangebar_summer.png" />
+    <Content Include="Content\jqwidgets\images\redmond\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\jqwidgets\images\redmond\ui-bg_flat_55_fbec88_40x100.png" />
+    <Content Include="Content\jqwidgets\images\redmond\ui-bg_glass_75_d0e5f5_1x400.png" />
+    <Content Include="Content\jqwidgets\images\redmond\ui-bg_glass_85_dfeffc_1x400.png" />
+    <Content Include="Content\jqwidgets\images\redmond\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\jqwidgets\images\redmond\ui-bg_gloss-wave_55_5c9ccc_500x100.png" />
+    <Content Include="Content\jqwidgets\images\redmond\ui-bg_inset-hard_100_f5f8f9_1x100.png" />
+    <Content Include="Content\jqwidgets\images\redmond\ui-bg_inset-hard_100_fcfdfd_1x100.png" />
+    <Content Include="Content\jqwidgets\images\redmond\ui-icons_217bc0_256x240.png" />
+    <Content Include="Content\jqwidgets\images\redmond\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\jqwidgets\images\redmond\ui-icons_469bdd_256x240.png" />
+    <Content Include="Content\jqwidgets\images\redmond\ui-icons_6da8d5_256x240.png" />
+    <Content Include="Content\jqwidgets\images\redmond\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\jqwidgets\images\redmond\ui-icons_d8e7f3_256x240.png" />
+    <Content Include="Content\jqwidgets\images\redmond\ui-icons_f9bd01_256x240.png" />
+    <Content Include="Content\jqwidgets\images\red_gradient.png" />
+    <Content Include="Content\jqwidgets\images\roundbg_check_black.png" />
+    <Content Include="Content\jqwidgets\images\roundbg_check_disabled.png" />
+    <Content Include="Content\jqwidgets\images\roundbg_check_indeterminate.png" />
+    <Content Include="Content\jqwidgets\images\roundbg_check_white.png" />
+    <Content Include="Content\jqwidgets\images\roundbg_classic_hover.png" />
+    <Content Include="Content\jqwidgets\images\roundbg_classic_normal.png" />
+    <Content Include="Content\jqwidgets\images\roundbg_disabled.png" />
+    <Content Include="Content\jqwidgets\images\smoothness\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\jqwidgets\images\smoothness\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\jqwidgets\images\smoothness\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\jqwidgets\images\smoothness\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\jqwidgets\images\smoothness\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\jqwidgets\images\smoothness\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\jqwidgets\images\smoothness\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\jqwidgets\images\smoothness\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\jqwidgets\images\smoothness\ui-icons_222222_256x240.png" />
+    <Content Include="Content\jqwidgets\images\smoothness\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\jqwidgets\images\smoothness\ui-icons_454545_256x240.png" />
+    <Content Include="Content\jqwidgets\images\smoothness\ui-icons_888888_256x240.png" />
+    <Content Include="Content\jqwidgets\images\smoothness\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\jqwidgets\images\star.png" />
+    <Content Include="Content\jqwidgets\images\start\ui-bg_flat_55_999999_40x100.png" />
+    <Content Include="Content\jqwidgets\images\start\ui-bg_flat_75_aaaaaa_40x100.png" />
+    <Content Include="Content\jqwidgets\images\start\ui-bg_glass_45_0078ae_1x400.png" />
+    <Content Include="Content\jqwidgets\images\start\ui-bg_glass_55_f8da4e_1x400.png" />
+    <Content Include="Content\jqwidgets\images\start\ui-bg_glass_75_79c9ec_1x400.png" />
+    <Content Include="Content\jqwidgets\images\start\ui-bg_gloss-wave_45_e14f1c_500x100.png" />
+    <Content Include="Content\jqwidgets\images\start\ui-bg_gloss-wave_50_6eac2c_500x100.png" />
+    <Content Include="Content\jqwidgets\images\start\ui-bg_gloss-wave_75_2191c0_500x100.png" />
+    <Content Include="Content\jqwidgets\images\start\ui-bg_inset-hard_100_fcfdfd_1x100.png" />
+    <Content Include="Content\jqwidgets\images\start\ui-icons_0078ae_256x240.png" />
+    <Content Include="Content\jqwidgets\images\start\ui-icons_056b93_256x240.png" />
+    <Content Include="Content\jqwidgets\images\start\ui-icons_d8e7f3_256x240.png" />
+    <Content Include="Content\jqwidgets\images\start\ui-icons_e0fdff_256x240.png" />
+    <Content Include="Content\jqwidgets\images\start\ui-icons_f5e175_256x240.png" />
+    <Content Include="Content\jqwidgets\images\start\ui-icons_f7a50d_256x240.png" />
+    <Content Include="Content\jqwidgets\images\start\ui-icons_fcd113_256x240.png" />
+    <Content Include="Content\jqwidgets\images\star_disabled.png" />
+    <Content Include="Content\jqwidgets\images\star_hover.png" />
+    <Content Include="Content\jqwidgets\images\sunny\ui-bg_diagonals-medium_20_d34d17_40x40.png" />
+    <Content Include="Content\jqwidgets\images\sunny\ui-bg_flat_30_cccccc_40x100.png" />
+    <Content Include="Content\jqwidgets\images\sunny\ui-bg_flat_50_5c5c5c_40x100.png" />
+    <Content Include="Content\jqwidgets\images\sunny\ui-bg_gloss-wave_45_817865_500x100.png" />
+    <Content Include="Content\jqwidgets\images\sunny\ui-bg_gloss-wave_60_fece2f_500x100.png" />
+    <Content Include="Content\jqwidgets\images\sunny\ui-bg_gloss-wave_70_ffdd57_500x100.png" />
+    <Content Include="Content\jqwidgets\images\sunny\ui-bg_gloss-wave_90_fff9e5_500x100.png" />
+    <Content Include="Content\jqwidgets\images\sunny\ui-bg_highlight-soft_100_feeebd_1x100.png" />
+    <Content Include="Content\jqwidgets\images\sunny\ui-bg_inset-soft_30_ffffff_1x100.png" />
+    <Content Include="Content\jqwidgets\images\sunny\ui-icons_3d3d3d_256x240.png" />
+    <Content Include="Content\jqwidgets\images\sunny\ui-icons_bd7b00_256x240.png" />
+    <Content Include="Content\jqwidgets\images\sunny\ui-icons_d19405_256x240.png" />
+    <Content Include="Content\jqwidgets\images\sunny\ui-icons_eb990f_256x240.png" />
+    <Content Include="Content\jqwidgets\images\sunny\ui-icons_ed9f26_256x240.png" />
+    <Content Include="Content\jqwidgets\images\sunny\ui-icons_fadc7a_256x240.png" />
+    <Content Include="Content\jqwidgets\images\sunny\ui-icons_ffe180_256x240.png" />
+    <Content Include="Content\jqwidgets\images\tick.png" />
+    <Content Include="Content\jqwidgets\images\track_classic.png" />
+    <Content Include="Content\jqwidgets\images\track_darkblue.png" />
+    <Content Include="Content\jqwidgets\images\track_shinyblack.png" />
+    <Content Include="Content\jqwidgets\images\track_summer.png" />
+    <Content Include="Content\jqwidgets\jqx.base.css" />
+    <Content Include="Content\jqwidgets\jqx.black.css" />
+    <Content Include="Content\jqwidgets\jqx.classic.css" />
+    <Content Include="Content\jqwidgets\jqx.darkblue.css" />
+    <Content Include="Content\jqwidgets\jqx.energyblue.css" />
+    <Content Include="Content\jqwidgets\jqx.fresh.css" />
+    <Content Include="Content\jqwidgets\jqx.shinyblack.css" />
+    <Content Include="Content\jqwidgets\jqx.summer.css" />
+    <Content Include="Content\jqwidgets\jqx.ui-darkness.css" />
+    <Content Include="Content\jqwidgets\jqx.ui-le-frog.css" />
+    <Content Include="Content\jqwidgets\jqx.ui-lightness.css" />
+    <Content Include="Content\jqwidgets\jqx.ui-overcast.css" />
+    <Content Include="Content\jqwidgets\jqx.ui-redmond.css" />
+    <Content Include="Content\jqwidgets\jqx.ui-smoothness.css" />
+    <Content Include="Content\jqwidgets\jqx.ui-start.css" />
+    <Content Include="Content\jqwidgets\jqx.ui-sunny.css" />
+    <Content Include="Content\resources\css\ext-all-access-debug.css" />
+    <Content Include="Content\resources\css\ext-all-access-rtl-debug.css" />
+    <Content Include="Content\resources\css\ext-all-access-rtl.css" />
+    <Content Include="Content\resources\css\ext-all-access.css" />
+    <Content Include="Content\resources\css\ext-all-debug.css" />
+    <Content Include="Content\resources\css\ext-all-gray-debug.css" />
+    <Content Include="Content\resources\css\ext-all-gray-rtl-debug.css" />
+    <Content Include="Content\resources\css\ext-all-gray-rtl.css" />
+    <Content Include="Content\resources\css\ext-all-gray.css" />
+    <Content Include="Content\resources\css\ext-all-neptune-debug.css" />
+    <Content Include="Content\resources\css\ext-all-neptune-rtl-debug.css" />
+    <Content Include="Content\resources\css\ext-all-neptune-rtl.css" />
+    <Content Include="Content\resources\css\ext-all-neptune.css" />
+    <Content Include="Content\resources\css\ext-all-rtl-debug.css" />
+    <Content Include="Content\resources\css\ext-all-rtl.css" />
+    <Content Include="Content\resources\css\ext-all.css" />
+    <Content Include="Content\resources\css\ext-sandbox-debug.css" />
+    <Content Include="Content\resources\css\ext-sandbox.css" />
+    <Content Include="Content\resources\drag.png" />
+    <Content Include="Content\resources\dragcancel.png" />
+    <Content Include="Content\resources\ext-theme-classic\ext-theme-classic-all-debug.css" />
+    <Content Include="Content\resources\ext-theme-classic\ext-theme-classic-all-rtl-debug.css" />
+    <Content Include="Content\resources\ext-theme-classic\ext-theme-classic-all-rtl.css" />
+    <Content Include="Content\resources\ext-theme-classic\ext-theme-classic-all.css" />
+    <Content Include="Content\resources\ext-theme-classic\images\boundlist\trigger-arrow.png" />
+    <Content Include="Content\resources\ext-theme-classic\images\box\corners-blue.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\box\corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\box\l-blue.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\box\l.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\box\r-blue.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\box\r.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\box\tb-blue.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\box\tb.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn-group\btn-group-default-framed-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn-group\btn-group-default-framed-notitle-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn-group\btn-group-default-framed-notitle-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn-group\btn-group-default-framed-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-large-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-large-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-large-disabled-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-large-disabled-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-large-disabled-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-large-disabled-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-large-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-large-focus-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-large-focus-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-large-focus-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-large-focus-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-large-over-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-large-over-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-large-over-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-large-over-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-large-pressed-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-large-pressed-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-large-pressed-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-large-pressed-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-large-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-medium-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-medium-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-medium-disabled-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-medium-disabled-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-medium-disabled-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-medium-disabled-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-medium-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-medium-focus-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-medium-focus-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-medium-focus-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-medium-focus-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-medium-over-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-medium-over-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-medium-over-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-medium-over-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-medium-pressed-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-medium-pressed-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-medium-pressed-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-medium-pressed-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-medium-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-small-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-small-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-small-disabled-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-small-disabled-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-small-disabled-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-small-disabled-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-small-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-small-focus-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-small-focus-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-small-focus-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-small-focus-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-small-over-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-small-over-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-small-over-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-small-over-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-small-pressed-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-small-pressed-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-small-pressed-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-small-pressed-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-small-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-large-disabled-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-large-disabled-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-large-focus-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-large-focus-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-large-focus-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-large-focus-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-large-over-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-large-over-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-large-over-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-large-over-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-large-pressed-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-large-pressed-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-large-pressed-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-large-pressed-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-medium-disabled-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-medium-disabled-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-medium-focus-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-medium-focus-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-medium-focus-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-medium-focus-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-medium-over-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-medium-over-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-medium-over-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-medium-over-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-medium-pressed-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-medium-pressed-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-medium-pressed-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-medium-pressed-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-small-disabled-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-small-disabled-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-small-focus-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-small-focus-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-small-focus-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-small-focus-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-small-over-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-small-over-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-small-over-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-small-over-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-small-pressed-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-small-pressed-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-small-pressed-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\btn\btn-default-toolbar-small-pressed-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\button\arrow.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\button\btn.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\button\group-cs.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\button\group-lr.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\button\group-tb.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\button\s-arrow-b-noline.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\button\s-arrow-b.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\button\s-arrow-bo.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\button\s-arrow-light-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\button\s-arrow-light.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\button\s-arrow-noline-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\button\s-arrow-noline.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\button\s-arrow-o-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\button\s-arrow-o.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\button\s-arrow-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\button\s-arrow.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\datepicker\datepicker-footer-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\datepicker\datepicker-header-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\dd\drop-add.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\dd\drop-no.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\dd\drop-yes.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\editor\tb-sprite.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\form\checkbox.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\form\clear-trigger-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\form\clear-trigger.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\form\date-trigger-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\form\date-trigger.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\form\error-tip-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\form\exclamation.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\form\radio.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\form\search-trigger-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\form\search-trigger.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\form\spinner-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\form\spinner-small-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\form\spinner-small.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\form\spinner.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\form\text-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\form\trigger-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\form\trigger-square-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\form\trigger-square.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\form\trigger-tpl-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\form\trigger-tpl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\form\trigger.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid-row-editor-buttons\null-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid-row-editor-buttons\null-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\arrow-left-white.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\arrow-right-white.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\cell-special-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\cell-special-bg.png" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\cell-special-selected-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\cell-special-selected-bg.png" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\col-move-bottom.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\col-move-top.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\column-header-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\column-header-over-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\columns.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\dd-insert-arrow-left.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\dd-insert-arrow-left.png" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\dd-insert-arrow-right.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\dd-insert-arrow-right.png" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\dirty-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\dirty.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\done.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\drop-no.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\drop-yes.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\footer-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\grid-blue-hd.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\grid-blue-split.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\grid-hrow.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\grid-loading.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\grid-split.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\grid-vista-hd.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\grid3-hd-btn-left.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\grid3-hd-btn.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\grid3-hrow-over.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\grid3-hrow.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\grid3-rowheader.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\group-by.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\group-collapse.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\group-expand-sprite.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\group-expand.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\hd-pop.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\hmenu-asc.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\hmenu-desc.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\hmenu-lock.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\hmenu-lock.png" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\hmenu-unlock.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\hmenu-unlock.png" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\invalid_line.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\loading.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\mso-hd.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\nowait.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\page-first-disabled.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\page-first.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\page-last-disabled.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\page-last.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\page-next-disabled.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\page-next.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\page-prev-disabled.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\page-prev.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\pick-button.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\property-cell-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\property-cell-selected-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\refresh-disabled.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\refresh.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\row-check-sprite.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\row-expand-sprite.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\row-over.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\row-sel.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\sort-hd.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\sort_asc.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\sort_desc.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\grid\wait.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\layout\mini-bottom.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\layout\mini-left.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\layout\mini-right.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\layout\mini-top.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\menu\checked.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\menu\group-checked.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\menu\item-over.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\menu\menu-item-active-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\menu\menu-parent-left.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\menu\menu-parent.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\menu\menu.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\menu\scroll-bottom.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\menu\scroll-top.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\menu\unchecked.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-bottom-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-bottom-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-bottom-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-bottom-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-bottom-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-collapsed-bottom-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-collapsed-bottom-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-collapsed-bottom-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-collapsed-bottom-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-collapsed-left-bg-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-collapsed-left-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-collapsed-left-corners-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-collapsed-left-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-collapsed-left-fbg-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-collapsed-left-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-collapsed-left-sides-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-collapsed-left-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-collapsed-right-bg-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-collapsed-right-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-collapsed-right-corners-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-collapsed-right-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-collapsed-right-fbg-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-collapsed-right-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-collapsed-right-sides-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-collapsed-right-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-collapsed-top-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-collapsed-top-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-collapsed-top-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-collapsed-top-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-left-bg-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-left-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-left-corners-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-left-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-left-fbg-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-left-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-left-sides-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-left-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-right-bg-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-right-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-right-corners-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-right-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-right-fbg-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-right-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-right-sides-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-right-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-top-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-top-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-top-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-framed-top-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-left-bg-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-left-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-right-bg-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-right-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel-header\panel-header-default-top-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel\panel-default-framed-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\panel\panel-default-framed-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\progress\progress-default-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\shared\blue-loading.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\shared\calendar.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\shared\glass-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\shared\hd-sprite.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\shared\icon-error.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\shared\icon-info.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\shared\icon-question.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\shared\icon-warning.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\shared\large-loading.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\shared\left-btn.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\shared\loading-balls.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\shared\right-btn.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\shared\shadow-c.png" />
+    <Content Include="Content\resources\ext-theme-classic\images\shared\shadow-lr.png" />
+    <Content Include="Content\resources\ext-theme-classic\images\shared\shadow.png" />
+    <Content Include="Content\resources\ext-theme-classic\images\shared\warning.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\sizer\e-handle-dark.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\sizer\e-handle.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\sizer\ne-handle-dark.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\sizer\ne-handle.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\sizer\nw-handle-dark.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\sizer\nw-handle.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\sizer\s-handle-dark.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\sizer\s-handle.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\sizer\se-handle-dark.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\sizer\se-handle.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\sizer\square.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\sizer\sw-handle-dark.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\sizer\sw-handle.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\slider\slider-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\slider\slider-bg.png" />
+    <Content Include="Content\resources\ext-theme-classic\images\slider\slider-thumb.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\slider\slider-thumb.png" />
+    <Content Include="Content\resources\ext-theme-classic\images\slider\slider-v-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\slider\slider-v-bg.png" />
+    <Content Include="Content\resources\ext-theme-classic\images\slider\slider-v-thumb.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\slider\slider-v-thumb.png" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab-bar\default-scroll-bottom-left.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab-bar\default-scroll-bottom-right.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab-bar\default-scroll-left-bottom.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab-bar\default-scroll-left-top.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab-bar\default-scroll-right-bottom.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab-bar\default-scroll-right-top.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab-bar\default-scroll-top-left.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab-bar\default-scroll-top-right.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab-bar\tab-bar-default-top-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-bottom-active-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-bottom-active-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-bottom-active-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-bottom-active-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-bottom-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-bottom-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-bottom-disabled-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-bottom-disabled-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-bottom-disabled-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-bottom-disabled-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-bottom-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-bottom-over-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-bottom-over-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-bottom-over-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-bottom-over-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-bottom-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-close.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-top-active-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-top-active-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-top-active-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-top-active-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-top-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-top-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-top-disabled-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-top-disabled-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-top-disabled-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-top-disabled-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-top-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-top-over-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-top-over-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-top-over-fbg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-top-over-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tab\tab-default-top-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tip\tip-default-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tip\tip-default-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tip\tip-form-invalid-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tip\tip-form-invalid-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\toolbar\more-left.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\toolbar\more.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\toolbar\scroll-left.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\toolbar\scroll-right.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\toolbar\toolbar-default-bg.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tools\tool-sprite-tpl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tools\tool-sprites.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tools\tools-sprites-trans.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\arrows-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\arrows.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\drop-above.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\drop-add.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\drop-append.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\drop-below.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\drop-between.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\drop-no.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\drop-over.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\drop-under.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\drop-yes.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\elbow-end-minus-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\elbow-end-minus.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\elbow-end-plus-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\elbow-end-plus.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\elbow-end-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\elbow-end.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\elbow-line-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\elbow-line.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\elbow-minus-nl-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\elbow-minus-nl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\elbow-minus-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\elbow-minus.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\elbow-plus-nl-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\elbow-plus-nl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\elbow-plus-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\elbow-plus.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\elbow-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\elbow.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\folder-open-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\folder-open.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\folder-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\folder.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\leaf-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\leaf.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\loading.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\tree\s.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\util\splitter\mini-bottom.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\util\splitter\mini-left.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\util\splitter\mini-right.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\util\splitter\mini-top.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\window-header\window-header-default-bottom-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\window-header\window-header-default-bottom-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\window-header\window-header-default-collapsed-bottom-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\window-header\window-header-default-collapsed-bottom-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\window-header\window-header-default-collapsed-left-corners-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\window-header\window-header-default-collapsed-left-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\window-header\window-header-default-collapsed-left-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\window-header\window-header-default-collapsed-right-corners-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\window-header\window-header-default-collapsed-right-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\window-header\window-header-default-collapsed-right-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\window-header\window-header-default-collapsed-top-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\window-header\window-header-default-collapsed-top-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\window-header\window-header-default-left-corners-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\window-header\window-header-default-left-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\window-header\window-header-default-left-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\window-header\window-header-default-right-corners-rtl.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\window-header\window-header-default-right-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\window-header\window-header-default-right-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\window-header\window-header-default-top-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\window-header\window-header-default-top-sides.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\window\window-default-corners.gif" />
+    <Content Include="Content\resources\ext-theme-classic\images\window\window-default-sides.gif" />
+    <Content Include="Content\resources\filter_dark.png" />
+    <Content Include="Content\resources\filter_large_.png" />
+    <Content Include="Content\resources\loader.gif" />
+    <Content Include="Content\resources\loader_2.gif" />
+    <Content Include="Content\resources\menubutton.png" />
+    <Content Include="Content\resources\red_arrow_down.png" />
+    <Content Include="Content\resources\red_arrow_up.png" />
+    <Content Include="Content\resources\sortasc.png" />
+    <Content Include="Content\resources\sortascbutton.png" />
+    <Content Include="Content\resources\sortdesc.png" />
+    <Content Include="Content\resources\sortdescbutton.png" />
+    <Content Include="Content\resources\sortremove.png" />
+    <Content Include="Content\themes\base\bootstrap-responsive.css" />
+    <Content Include="Content\themes\base\bootstrap-responsive.min.css" />
+    <Content Include="Content\themes\base\bootstrap.css" />
+    <Content Include="Content\themes\base\bootstrap.min.css" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\jquery-ui-1.10.1.custom.css" />
+    <Content Include="Content\themes\base\jquery-ui.css" />
+    <Content Include="Content\themes\base\jquery.jgrowl.css" />
+    <Content Include="Content\themes\base\jquery.scrollpane.css" />
+    <Content Include="Content\themes\base\jquery.ui.accordion.css" />
+    <Content Include="Content\themes\base\jquery.ui.all.css" />
+    <Content Include="Content\themes\base\jquery.ui.autocomplete.css" />
+    <Content Include="Content\themes\base\jquery.ui.base.css" />
+    <Content Include="Content\themes\base\jquery.ui.button.css" />
+    <Content Include="Content\themes\base\jquery.ui.core.css" />
+    <Content Include="Content\themes\base\jquery.ui.datepicker.css" />
+    <Content Include="Content\themes\base\jquery.ui.dialog.css" />
+    <Content Include="Content\themes\base\jquery.ui.progressbar.css" />
+    <Content Include="Content\themes\base\jquery.ui.resizable.css" />
+    <Content Include="Content\themes\base\jquery.ui.selectable.css" />
+    <Content Include="Content\themes\base\jquery.ui.slider.css" />
+    <Content Include="Content\themes\base\jquery.ui.tabs.css" />
+    <Content Include="Content\themes\base\jquery.ui.theme.css" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\minified\jquery-ui.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.accordion.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.autocomplete.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.button.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.core.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.dialog.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.progressbar.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.resizable.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.selectable.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="Content\ui.dropdownchecklist.standalone.css" />
+    <Content Include="Content\ui.dropdownchecklist.themeroller.css" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <None Include="BundleTransformer.Configuration.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Lib\Antlr3.Runtime.dll" />
+    <Content Include="Lib\BundleTransformer.Core.dll" />
+    <Content Include="Lib\BundleTransformer.JsMin.dll" />
+    <Content Include="Lib\EntityFramework.dll" />
+    <Content Include="Lib\EntityFramework.xml" />
+    <Content Include="Lib\Microsoft.Web.Infrastructure.dll" />
+    <Content Include="Lib\Monads.dll" />
+    <Content Include="Lib\Newtonsoft.Json.dll" />
+    <Content Include="Lib\Ninject.dll" />
+    <Content Include="Lib\Ninject.Extensions.Wcf.dll" />
+    <Content Include="Lib\Ninject.Web.Common.dll" />
+    <Content Include="Lib\Ninject.Web.dll" />
+    <Content Include="Lib\Ninject.Web.Mvc.dll" />
+    <Content Include="Lib\System.Web.Optimization.dll" />
+    <Content Include="Lib\WebActivator.dll" />
+    <Content Include="Lib\WebGrease.dll" />
+    <Content Include="Scripts\ext-all.js" />
+    <Content Include="Scripts\jQDateRangeSlider-min.js" />
+    <Content Include="Scripts\jquery-1.8.0.js" />
+    <Content Include="Scripts\jquery-1.8.0.min.js" />
+    <Content Include="Scripts\jquery-1.9.0.js" />
+    <Content Include="Scripts\jquery-1.9.1.js" />
+    <Content Include="Scripts\jquery-ui-1.10.0.custom.js" />
+    <Content Include="Scripts\jquery-ui-1.10.0.custom.min.js" />
+    <Content Include="Scripts\jquery-ui-1.10.1.custom.js" />
+    <Content Include="Scripts\jquery-ui-1.10.1.custom.min.js" />
+    <Content Include="Scripts\jquery.mousewheel.min.js" />
+    <Content Include="Scripts\modernizr-2.5.3.js" />
+    <Content Include="Scripts\Site\auditorium.viewmodel.js" />
+    <Content Include="Scripts\Site\database.viewmodel.js" />
+    <Content Include="Scripts\Site\data.model.js" />
+    <Content Include="Scripts\Site\dojo.js" />
+    <Content Include="Scripts\Site\group.viewmodel.js" />
+    <Content Include="Scripts\Site\lecturer.viewmodel.js" />
+    <Content Include="Scripts\Site\newbase.viewmodel.js" />
+    <Content Include="Scripts\Site\schedule.lecturer.viewmodel.js" />
+    <Content Include="Scripts\Site\SignIn\signin.viewmodel.js" />
+    <Content Include="Scripts\Site\unscheduled.viewmodel.js" />
+    <Content Include="Scripts\ui.dropdownchecklist-1.4-min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\dateformat.js" />
+    <Content Include="Scripts\jquery-ui-1.8.20.js" />
+    <Content Include="Scripts\jquery-ui-1.8.20.min.js" />
+    <Content Include="Scripts\jquery.autonumeric.js" />
+    <Content Include="Scripts\jquery.cookie.js" />
+    <Content Include="Scripts\jquery.fixedheadertable.js" />
+    <Content Include="Scripts\jquery.fixedheadertable.min.js" />
+    <Content Include="Scripts\jquery.jgrowl.js" />
+    <Content Include="Scripts\jquery.jgrowl.min.js" />
+    <Content Include="Scripts\jquery.jscrollpane.js" />
+    <Content Include="Scripts\jquery.jscrollpane.min.js" />
+    <None Include="Scripts\jquery.linq-vsdoc.js" />
+    <Content Include="Scripts\jquery.linq.js" />
+    <Content Include="Scripts\jquery.linq.min.js" />
+    <Content Include="Scripts\jquery.mousewheel.js" />
+    <Content Include="Scripts\jquery.string-format.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jqxcore.js" />
+    <Content Include="Scripts\jqxsplitter.js" />
+    <Content Include="Scripts\knockout-2.1.0.debug.js" />
+    <Content Include="Scripts\knockout-2.1.0.js" />
+    <Content Include="Scripts\Site\base.viewmodel.js" />
+    <Content Include="Scripts\Site\schedule.auditorium.viewmodel.js" />
+    <Content Include="Scripts\Site\schedule.group.viewmodel.js" />
+    <Content Include="Scripts\Site\schedule.updatedata.viewmodel.js" />
+    <Content Include="Scripts\Site\schedule.wizard.viewmodel.js" />
+    <Content Include="Scripts\Site\Database\auditorium.database.js" />
+    <None Include="Service References\DataService\DataService.wsdl" />
+    <None Include="Service References\DataService\DataService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DataService\DataService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DataService\DataService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DataService\DataService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DataService\DataService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Service References\DataService\Timetable.Site.DataService.Auditorium.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\DataService\Timetable.Site.DataService.Branch.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\DataService\Timetable.Site.DataService.Building.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\DataService\Timetable.Site.DataService.Course.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\DataService\Timetable.Site.DataService.Department.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\DataService\Timetable.Site.DataService.Faculty.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\DataService\Timetable.Site.DataService.Group.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\DataService\Timetable.Site.DataService.Lecturer.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\DataService\Timetable.Site.DataService.Schedule.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\DataService\Timetable.Site.DataService.ScheduleInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\DataService\Timetable.Site.DataService.Speciality.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\DataService\Timetable.Site.DataService.Time.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\DataService\Timetable.Site.DataService.Tutorial.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\DataService\Timetable.Site.DataService.TutorialType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\DataService\Timetable.Site.DataService.WeekType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\UserService\Timetable.Site.UserService.User1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\DataService\Timetable.Site.DataService.AuditoriumType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\DataService\Timetable.Site.DataService.StudyYear.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Service References\DataService\DataService5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Service References\DataService\Timetable.Site.DataService.OperationResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\UserService\Timetable.Site.UserService.OperationResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Service References\UserService\UserService.disco" />
+    <None Include="Service References\UserService\configuration91.svcinfo" />
+    <None Include="Service References\UserService\configuration.svcinfo" />
+    <None Include="Service References\UserService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\DataService\DataService.disco" />
+    <None Include="Service References\DataService\configuration91.svcinfo" />
+    <None Include="Service References\DataService\configuration.svcinfo" />
+    <None Include="Service References\DataService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\Schedule\Group\Index.cshtml" />
+    <Content Include="Views\Shared\ActionDisabled.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Schedule\Database\Index.cshtml" />
+    <Content Include="Views\SignIn\Index.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\Index.cshtml" />
+    <None Include="Service References\UserService\UserService.wsdl" />
+    <None Include="Service References\UserService\UserService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\UserService\UserService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\UserService\UserService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\UserService\UserService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\UserService\UserService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Views\Schedule\NewCreate\ScheduleInfoList.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\FlowSelect.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\LecturerSelect.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\Forms.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\HeaderButtonMenu.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\SideSelectMenu.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\Timetable.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\DowndropForms.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\TimetableForPrint.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\ScheduleInfoFilters.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\ScheduleFilters.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\ContextMenus.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\AddScheduleForm.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\FreeAuditoriumsForm.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\ChangeAuditoriumsForm.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\AddHoursForm.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\ChangeScheduleForm.cshtml" />
+    <Content Include="Views\Schedule\Lecturer\AddHoursForm.cshtml" />
+    <Content Include="Views\Schedule\Lecturer\AddScheduleForm.cshtml" />
+    <Content Include="Views\Schedule\Lecturer\ChangeAuditoriumsForm.cshtml" />
+    <Content Include="Views\Schedule\Lecturer\ChangeScheduleForm.cshtml" />
+    <Content Include="Views\Schedule\Lecturer\ContextMenus.cshtml" />
+    <Content Include="Views\Schedule\Lecturer\DowndropForms.cshtml" />
+    <Content Include="Views\Schedule\Lecturer\FlowSelect.cshtml" />
+    <Content Include="Views\Schedule\Lecturer\Forms.cshtml" />
+    <Content Include="Views\Schedule\Lecturer\FreeAuditoriumsForm.cshtml" />
+    <Content Include="Views\Schedule\Lecturer\HeaderButtonMenu.cshtml" />
+    <Content Include="Views\Schedule\Lecturer\Index.cshtml" />
+    <Content Include="Views\Schedule\Lecturer\LecturerSelect.cshtml" />
+    <Content Include="Views\Schedule\Lecturer\ScheduleFilters.cshtml" />
+    <Content Include="Views\Schedule\Lecturer\ScheduleInfoFilters.cshtml" />
+    <Content Include="Views\Schedule\Lecturer\ScheduleInfoList.cshtml" />
+    <Content Include="Views\Schedule\Lecturer\SideSelectMenu.cshtml" />
+    <Content Include="Views\Schedule\Lecturer\Timetable.cshtml" />
+    <Content Include="Views\Schedule\Lecturer\TimetableForPrint.cshtml" />
+    <Content Include="Views\Schedule\Group\AddHoursForm.cshtml" />
+    <Content Include="Views\Schedule\Group\AddScheduleForm.cshtml" />
+    <Content Include="Views\Schedule\Group\ChangeAuditoriumsForm.cshtml" />
+    <Content Include="Views\Schedule\Group\ChangeScheduleForm.cshtml" />
+    <Content Include="Views\Schedule\Group\ContextMenus.cshtml" />
+    <Content Include="Views\Schedule\Group\DowndropForms.cshtml" />
+    <Content Include="Views\Schedule\Group\FlowSelect.cshtml" />
+    <Content Include="Views\Schedule\Group\Forms.cshtml" />
+    <Content Include="Views\Schedule\Group\FreeAuditoriumsForm.cshtml" />
+    <Content Include="Views\Schedule\Group\HeaderButtonMenu.cshtml" />
+    <Content Include="Views\Schedule\Group\LecturerSelect.cshtml" />
+    <Content Include="Views\Schedule\Group\ScheduleFilters.cshtml" />
+    <Content Include="Views\Schedule\Group\ScheduleInfoFilters.cshtml" />
+    <Content Include="Views\Schedule\Group\ScheduleInfoList.cshtml" />
+    <Content Include="Views\Schedule\Group\SideSelectMenu.cshtml" />
+    <Content Include="Views\Schedule\Group\Timetable.cshtml" />
+    <Content Include="Views\Schedule\Group\TimetableForPrint.cshtml" />
+    <Content Include="Views\Schedule\Auditorium\AddHoursForm.cshtml" />
+    <Content Include="Views\Schedule\Auditorium\AddScheduleForm.cshtml" />
+    <Content Include="Views\Schedule\Auditorium\ChangeAuditoriumsForm.cshtml" />
+    <Content Include="Views\Schedule\Auditorium\ChangeScheduleForm.cshtml" />
+    <Content Include="Views\Schedule\Auditorium\ContextMenus.cshtml" />
+    <Content Include="Views\Schedule\Auditorium\DowndropForms.cshtml" />
+    <Content Include="Views\Schedule\Auditorium\FlowSelect.cshtml" />
+    <Content Include="Views\Schedule\Auditorium\Forms.cshtml" />
+    <Content Include="Views\Schedule\Auditorium\FreeAuditoriumsForm.cshtml" />
+    <Content Include="Views\Schedule\Auditorium\HeaderButtonMenu.cshtml" />
+    <Content Include="Views\Schedule\Auditorium\LecturerSelect.cshtml" />
+    <Content Include="Views\Schedule\Auditorium\ScheduleFilters.cshtml" />
+    <Content Include="Views\Schedule\Auditorium\ScheduleInfoFilters.cshtml" />
+    <Content Include="Views\Schedule\Auditorium\ScheduleInfoList.cshtml" />
+    <Content Include="Views\Schedule\Auditorium\SideSelectMenu.cshtml" />
+    <Content Include="Views\Schedule\Auditorium\Timetable.cshtml" />
+    <Content Include="Views\Schedule\Auditorium\TimetableForPrint.cshtml" />
+    <Content Include="Views\Schedule\Auditorium\Index.cshtml" />
+    <Content Include="Views\Schedule\Database\DBAuditoriumIndex.cshtml" />
+    <Content Include="Views\PrintSchedule\Index.cshtml" />
+    <Content Include="Views\PrintSchedule\IndexForGroups.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\PrintSettingForm.cshtml" />
+    <None Include="Service References\UserService\UserService5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Code\Content.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\DataService\" />
+    <WCFMetadataStorage Include="Service References\UserService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\Ranks\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>5124</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/Timetable.Site</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

@@ -1,0 +1,45 @@
+﻿@model Timetable.Site.Models.SignInModel
+
+@{
+    ViewBag.Title = "Вход в систему";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type='text/javascript' src="@Url.Content("~/Scripts/Site/data.model.js")"></script>
+<script type='text/javascript' src="@Url.Content("~/Scripts/knockout-2.1.0.js")"></script>
+<script type='text/javascript' src="@Url.Content("~/Scripts/Site/SignIn/signin.viewmodel.js")"></script>
+
+
+<style>
+    .modal-backdrop {background: white;}
+</style>
+
+<div class="modal fade" id="modalDialog" style="width:300px;">
+  <div class="modal-header">
+    <h5>Воити в систему</h5>
+  </div>
+  <div class="modal-body">
+            <span>Имя</span> <br />
+            <input style="width:250px;" type="text"  placeholder="Введите имя" id="name" data-bind="value: $root.signName, valueUpdate: 'afterkeydown'"/>
+            <br />
+            <span>Пароль</span> <br />
+            <input style="width:250px;" type="password"  placeholder="Введите пароль" id="password" data-bind="value: $root.signPassword, valueUpdate: 'afterkeydown'"/>
+             <br />
+            <div class="alert alert-error hide" style="width:200px;" id="signInError">
+                <span>Неправильное имя пользователя или пароль</span>
+            </div>
+
+            <span>Запомнить меня</span>
+            <input type="checkbox">
+  </div>
+  <div class="modal-footer">
+      <input type="button" class="btn btn-primary" style="width:100px;" value="Войти" data-bind="click: $root.SignIn.bind($data, '@Request.QueryString["ReturnUrl"]')" />
+  </div>
+</div>
+
+
+    
+     
+
+     
+
