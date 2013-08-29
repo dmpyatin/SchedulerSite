@@ -1,0 +1,25 @@
+﻿<!-- Print Setting Form -->
+<div class="modal hide fade" id ="printsettingdialog" style="width:400px; overflow-x:hidden;">
+  <div class="modal-header" style="overflow-x:hidden;">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h5>Настройки отчета</h5>
+  </div>
+  <div class="modal-body" style="overflow-x:hidden;">
+     <span>Размер шрифта</span>
+     <input style="width: 100px;" data-bind="spinner: $root.fontSize, spinnerOptions: { min: 1, max:100 } " /> pt <br />
+     <!--<input id="spinner" name="value" data-bind="value:$root.fontSize"/>-->
+    
+      <div class="btn-group btn-group-vertical" style="padding:10px; margin:5px;">
+       <a class="btn" data-bind="click: $root.PrintScheduleButton" >Отчет по таблице</a>
+       <a  class="btn" data-bind="click: $root.PrintScheduleForGroupsButton" >Отчет по группам</a>  
+       <a class="btn" data-bind="click: $root.PrintScheduleForCoursesButton" >Отчет по курсам</a> 
+       <a class="btn" data-bind="click: $root.PrintScheduleForSpecialitiesButton" >Отчет по специальностям</a> 
+       <a class="btn" data-bind="click: $root.PrintScheduleForAuditoriumButton" > Отчет по аудитории</a> 
+       <a class="btn" data-bind="click: $root.PrintScheduleForLecturerButton" > Отчет по преподавателю</a> 
+     </div>
+  </div>
+  <div class="modal-footer" style="overflow-x:hidden;">
+       
+       <input type="button" class="btn " value="Закрыть" data-bind="click: $root.PrintSettingCancelButton" />
+  </div>
+</div>

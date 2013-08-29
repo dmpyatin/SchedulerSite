@@ -1,0 +1,193 @@
+﻿@{
+    ViewBag.Title = "Расписание групп";
+}
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts {
+    @Content.Script(this, 
+        "~/Scripts/jqxsplitter.js")
+}
+
+
+<link  rel='stylesheet' type='text/css' href="@Url.Content("~/Content/themes/base/jquery-ui-1.10.1.custom.css")" />
+<link  rel='stylesheet' type='text/css' href="@Url.Content("~/Content/themes/base/bootstrap.css")" />
+<link  rel='stylesheet' type='text/css' href="@Url.Content("~/Content/themes/base/jquery.jgrowl.css")" />
+
+<!--<script type='text/javascript' src="@Url.Content("~/Scripts/bootstrap.js")"></script>-->
+<script type='text/javascript' src="@Url.Content("~/Scripts/jquery-1.9.1.js")"></script>
+<script type='text/javascript' src="@Url.Content("~/Scripts/knockout-2.1.0.js")"></script>
+
+
+<script type='text/javascript' src="@Url.Content("~/Scripts/jquery-ui-1.10.1.custom.js")"></script>
+
+<script type='text/javascript' src="@Url.Content("~/Scripts/Site/schedule.group.viewmodel.js")"></script>
+<script type='text/javascript' src="@Url.Content("~/Scripts/Site/data.model.js")"></script>
+<script type='text/javascript' src="@Url.Content("~/Scripts/jquery.jgrowl.js")"></script>
+
+
+
+
+
+  <style>
+
+  .Timetable{background-color:#F2F2F2; left:230px; top:70px; position: absolute; opacity:1;}
+  .ChisScheduleTicket{top: 0px;}
+  .ZnamScheduleTicket{position:relative; top: 80px;}
+
+  .plannedScheduleInfo{background-color:white; opacity:0.7;}
+  .limitedScheduleInfo{background-color:white; opacity:0.3;}
+  .simpleScheduleInfo{background-color: white; opacity:1.0;}
+
+  .onContextMenuMouseDownSelect{background-color:#8AB9FF;}
+  .onContextMenuMouseDownUnselect{background-color:white;}
+
+  .onScheduleInfoSelect{background-color: #9F94FF;}
+  .onScheduleInfoUnselect{background-color:white;}
+  .onScheduleInfoClick{background-color: #E9C7FF;}
+  .onScheduleInfoUnclick{background-color: white;}
+  .onScheduleInfoDrag{background-color: #9F94FF;}
+  .onScheduleInfoUndrag{background-color: white;}
+
+  .onScheduleBacketDropSelect{background-color: #FFF5CC;}
+  .onScheduleBacketDropUnselect{background-color: white;}
+  .onScheduleBacketSelect{background-color: #F0F0F0;}
+  .onScheduleBacketUnselect{background-color: white;}
+  .onScheduleBacketClick{background-color: #FFFFA8;}
+  .onScheduleBacketUnclick{background-color: white;}
+
+  .onScheduleTicketDropSelect{background-color: #9F94FF;}
+  .onScheduleTicketDropUnselect{background-color: white;}
+  .onScheduleTicketSelect{background-color: #EEEEBA;}
+
+  
+  .onScheduleTicketUnselectForLecturer{background-color: #FFCCD6;}
+  .onScheduleTicketUnselectForAuditorium{background-color: #D9FFB3;}
+  .onScheduleTicketUnselectForGroup{background-color: #D1CCFF;}
+
+
+  .onScheduleTicketClick{background-color: #FFFFB3;}
+  .onScheduleTicketUnclick{background-color: white;}
+
+
+  .onScheduleBacketPaddingOnlyZnam{height:62px; width:100px;}
+  .onScheduleBacketPaddingUsual{height:0px; width:100px;}
+  .onScheduleBacketPaddingOnlyEveryDay{height:31px; width:100px;}
+
+  .noTitleStuff .ui-dialog-titlebar {display:none;}
+
+  #background: url("");
+
+  .ui-widget-header{ background-color: lightgrey;}
+  #feedback { font-size: 1.4em; }
+  #timetabletitle {text-align:center; background-color: #ffffff; list-style-type: none; margin: 0px; height: 40px; padding: 0; width: 1205px; border: solid 1px; border-color:grey; }
+
+  #timetable .ui-selecting { background: #FECA40; }
+  #timetable .ui-selected { background: #F39814; color: black; }
+  #timetable { left:80px; list-style-type: none; margin: 0; padding: 0; width: 1250px; }
+  #timetable li { margin: 0px; padding: 1px; float: left;  font-size: 1em; text-align: center; }
+
+  #scheduleinfo .ui-selecting { background: #FECA40; }
+  #scheduleinfo .ui-selected { background: #F39814; color: black; }
+  #scheduleinfo { list-style-type: none; margin: 0; padding: 0; width: 100px; }
+  #scheduleinfo li { background-color:white; border:solid 1px; border-color:lightgrey; margin: 1px; padding: 1px; float: left; width: 180px; height: 40px; font-size: 1em; text-align: center; }
+
+  </style>
+<script>
+
+</script>
+
+   <script>
+  $(function() {
+      //Диалог для добавления занятия
+      $("#adddialog").dialog({
+          autoOpen: false,
+          height: 330,
+          width: 250,
+          modal: true,
+      });
+
+      $("#auditoriumdialog").dialog({
+          autoOpen: false,
+          height: 280,
+          width: 280,
+          modal: true,
+      });
+
+      $("#changeauditoriumdialog").dialog({
+          autoOpen: false,
+          height: 200,
+          width: 280,
+          modal: true,
+         
+      });
+
+      $("#addhoursdialog").dialog({
+          autoOpen: false,
+          height: 200,
+          width: 280,
+          modal: true,
+      });
+    
+
+    $("#changescheduledialog").dialog({
+        autoOpen: false,
+        height: 280,
+        width: 400,
+        modal: true,
+    });
+    $("#change").click(function () {
+        $("#changescheduledialog").dialog("open");
+    });
+  });
+
+  $(function () {
+      $("#tabs").tabs();
+      $("#scheduleinfotab").tabs();
+      
+  });
+
+  $(function () {
+      $("#accordion").accordion();
+  });
+
+  $(function () {
+      $("#accordion1").accordion({ heightStyle: "content" });
+
+  });
+  </script>
+
+<body style="overflow-x:hidden; background-color:#E0E0E0;">
+
+
+  @Content.Navbar("GroupView", this)
+
+  <!-- Main -->
+  <div class="container-fluid"  >
+  <div class="row-fluid">
+
+    @Html.Partial("Group/HeaderButtonMenu")
+    
+    @Html.Partial("Group/SideSelectMenu")
+  
+    @Html.Partial("Group/Timetable")
+
+ </div>
+ </div>
+
+ @Html.Partial("Group/Forms")
+
+</body>
+
+
+
+
+ 
+ 
+ 
+  
+ 
+  
+ 

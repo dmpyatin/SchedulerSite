@@ -1,0 +1,100 @@
+﻿@using System.Web.Mvc
+@using System.Web.Mvc.Html
+
+@helper Script(WebViewPage page, params string[] paths)
+{
+    foreach (var path in paths)
+    {
+        <script src="@page.Url.Content(path)" type="text/javascript"></script>
+    }
+}
+
+@helper Css(WebViewPage page, params string[] paths)
+{
+    foreach (var path in paths)
+    {
+        <link href="@page.Url.Content(path)" rel="stylesheet" type="text/css" media="all" />
+    }
+}
+
+@helper Navbar(string activeId, WebViewPage page)
+{ 
+    <div class="navbar navbar-fixed-top" style="height:30px;">
+      <div class="navbar-inner">
+      
+       <a class="brand" href="http://petrsu.ru"><i class="icon-home"></i> ПетрГУ</a>
+
+      <ul class="nav">
+              <li id="scheduleCreateLink" @if (activeId == "scheduleCreateLink")
+                                               { @page.Html.Raw("class=\"active\"") }>
+                    <a href="@page.Url.Action("Index")" >Создать расписание</a>
+              </li>
+              <li id="GroupView" @if (activeId == "GroupView")
+                                               { @page.Html.Raw("class=\"active\"") }>
+                    <a href="@page.Url.Action("Group/Index")" >Расписание групп</a>
+              </li>
+              <li id="AuditoriumView" @if (activeId == "AuditoriumView")
+                                               { @page.Html.Raw("class=\"active\"") }>
+                    <a href="@page.Url.Action("Auditorium/Index")" >Расписание аудиторий</a>
+              </li>
+
+              <li id="LecturerView" @if (activeId == "LecturerView")
+                                               { @page.Html.Raw("class=\"active\"") }>
+                    <a href="@page.Url.Action("Lecturer/Index")" >Расписание преподавателей</a>
+              </li>
+      </ul>
+
+      <div class="right">
+                <ul class="nav nav-pills pull-right">
+                    <li class="dropdown" id="menu1">
+                        <a class="dropdown-toggle" role="menu" data-toggle="dropdown" href="#menu1">@User.Identity.Name<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">@Resources.Message.Settings</a></li>
+                            <li><a href="@page.Url.Action("DatabaseView")">Работа с данными</a></li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="@page.Url.Action("SignOut")">@Resources.Message.Exit</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+      </div>
+      </div>
+  </div>
+}
+
+
+@helper Toolbar(string classes ="", bool showCalendarTool = true, bool showCrudTool = true, Action action = null)
+{
+<div class="actions @classes" style="height: 50px;">
+    <div class="row" style="margin-left: 0px;">
+        <div class="span10" style="margin-left: 0px;">
+            <div class="btn-toolbar">
+                @if (showCalendarTool) { 
+                <div class="btn-group">
+                    <a class="btn btn-info" href="#" rel="tooltip" data-original-title="Перейти на неделю назад" data-bind="click: backWeek"><</a> 
+                    <a class="btn btn-info" href="#" rel="tooltip" data-original-title="Перейти к текущей неделе" data-bind="click: todayWeek">Сегодня</a> 
+                    <a class="btn btn-info" href="#" rel="tooltip" data-original-title="Перейти на неделю вперед" data-bind="click: forwardWeek">></a>
+                </div>    
+                }
+                @if (showCrudTool) { 
+                <div class="btn-group">
+                    <a class="btn btn-success" href="#" rel="tooltip" data-original-title="Запланировать новое занятие" data-bind="click: addLessonView">Добавить</a> 
+                    <a class="btn btn-warning" href="#" rel="tooltip" data-original-title="Внести корректировки в занятие" data-bind="click: editLessonView, css: { 'disabled': selectedScheduleCard() === undefined }">Редактировать</a> 
+                    <a class="btn btn-danger" href="#" rel="tooltip" data-original-title="Отменить занятие" data-bind="click: deleteLessonView, css: { 'disabled': selectedScheduleCard() === undefined }">Удалить</a>
+                </div>
+                }
+                @if (action != null) { action(); }
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+@helper SearchTextBox(string placeholder, string inputValueTarget, string searchButtonClick)
+    {
+    <div class="input-append">
+        <input class="span3" size="16" id="searchTextBox" type="text" data-original-title="@placeholder" rel="tooltip" data-bind="value: @inputValueTarget"><button class="btn btn-info" type="button" data-bind="click: @searchButtonClick">Найти</button>
+    </div>
+}
+

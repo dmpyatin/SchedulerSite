@@ -1,0 +1,32 @@
+﻿<!-- Add Schedule Form -->
+<div id="adddialog" title="Добавить занятие" style="z-index:9999; overflow-x:hidden;">
+
+  <div style="height:30px; margin-bottom:20px;">
+  <strong id="summary" style="font-size:0.8em; color:red;" data-bind="html: $root.addDialogValidationSummary" ></strong> <br />
+  <strong id="help" style="font-size:0.8em; color:green; cursor:pointer;" data-bind="if: $root.helperLink() == true, event: {click: $root.helperLinkClick}">Подобрать вариант</strong> <br />
+
+  </div>
+
+  <span>День недели</span>
+  <select style="width:100%"  data-placeholder="Выберите день недели" class="span5" id="dayofweek" data-bind="options: $root.daysOfweek, value: $root.currentDayOfweek">
+            <option></option>
+  </select>
+
+  <span>Тип недели</span>
+  <select style="width:100%"  data-placeholder="Выберите тип недели" class="span5" id="weektype" data-bind="options: $root.weekTypes, optionsText: 'Name', value: $root.currentWeekType">
+            <option></option>
+  </select>
+
+  <span>Время</span>
+  <input style="width:100%"  placeholder="Выберите время..." class="span5" id="times" data-bind="click: $root.toDownDrop, value: $root.displayDayTimes" />
+  
+  <span>Аудитория</span>
+  <select style="width:100%"  data-placeholder="Выберите аудиторию" class="span5" id="auditorium" data-bind="options: $root.auditoriums, optionsText: 'Number', value: $root.currentAuditorium">
+            <option></option>
+  </select>
+  <input id="addScheduleOkButton" type="button" class="btn" value="Добавить" data-bind="click: $root.SchedulePlanFormOkButton" />
+  <input id="addScheduleCancelButton"; type="button" class="btn " value="Отмена" data-bind="click: $root.SchedulePlanFormCancelButton" />
+</div>
+<select style="display:none; width:100%" multiple size="8" data-placeholder="Выберите время" class="span5" id="timesDownDrop" data-bind="options: $root.dayTimes, optionsText: 'StartEnd', selectedOptions: $root.currentDayTimes">
+            <option></option>
+</select>

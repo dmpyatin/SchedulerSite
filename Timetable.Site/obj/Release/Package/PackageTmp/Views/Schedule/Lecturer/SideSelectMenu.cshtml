@@ -1,0 +1,40 @@
+﻿@*<div style="z-index:5; top:80px; width:250px; left:5px; position: fixed; opacity:1; float:left;">
+   <div style="margin-right:1000px; margin:0px; padding:0px; background-color:white; float:left;">
+      
+     <div id="tabs" style="overflow-y:hidden; overflow-x:hidden;">
+     <ul style="background-color:white; width:98%;">
+        <li><a href="#tabs-1" style="float:left;  font-size:12px; cursor:pointer; width:75px; height:20px; margin:0px;">Поток</a></li>
+        <li><a href="#tabs-2" style="float:left;  font-size:12px; cursor:pointer; width:75px; height:20px; margin:0px;">Преп.</a></li>
+    </ul>
+       
+       <div id ="tabs-1" style="margin:0px; padding:0px; overflow-y:hidden; overflow-x:hidden;">
+       <!-- Data select tools -->
+            <div id="accordion">
+             <h3>Выбор потока</h3>
+             <div style="height:100%; width:99%; padding-left:0px; padding-right:0px; overflow-y:hidden; overflow-x:hidden;">
+               @Html.Partial("Auditorium/FlowSelect")
+             </div>
+
+            <h3>Сведения к расп.</h3>
+            <div style="height:100%; width:99%; padding-left:0px; padding-right:0px; overflow-y:hidden; overflow-x:hidden;">
+               @Html.Partial("Auditorium/ScheduleInfoList")
+            </div>
+
+            </div>
+       </div> 
+       <div id ="tabs-2" style="margin:0px; padding:0px;">
+       <!-- Data select tools -->
+            <div id="accordion1" >
+            <h3>Выбор препод.</h3>
+            <div style="height:500px; width:99%; padding-left:0px; padding-right:0px;" >
+              @Html.Partial("Auditorium/LecturerSelect")
+            </div>
+            <h3>Сведения к расп.</h3>
+            <div style="height:500px; width:99%; padding-left:0px; padding-right:0px; height:500px;">
+              @Html.Partial("Auditorium/ScheduleInfoList")
+            </div>
+            </div>
+        </div> 
+     </div>
+   </div>
+   </div>*@

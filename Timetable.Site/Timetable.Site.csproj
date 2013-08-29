@@ -1162,6 +1162,7 @@
     <Content Include="Scripts\jquery.jgrowl.min.js" />
     <Content Include="Scripts\jquery.jscrollpane.js" />
     <Content Include="Scripts\jquery.jscrollpane.min.js" />
+    <None Include="Properties\PublishProfiles\SchedulerSite.pubxml" />
     <None Include="Scripts\jquery.linq-vsdoc.js" />
     <Content Include="Scripts\jquery.linq.js" />
     <Content Include="Scripts\jquery.linq.min.js" />
@@ -1391,9 +1392,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Code\Content.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\DataService\" />

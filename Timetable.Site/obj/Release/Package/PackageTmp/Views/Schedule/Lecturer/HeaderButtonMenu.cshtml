@@ -1,0 +1,44 @@
+﻿ <!-- Header button menu -->
+   
+     <div  style="left:0px; width:100%; height: 35px;z-index:1001; position:fixed; background-color:white;margin-top:0px; margin-bottom:20px; float:left;">
+         
+         <div style="padding-left:5px; width:23px; padding-right:5px; padding-top:5px; height: 35px; border:solid 1px; border-color:lightgray; float:left; background-color:white;">
+         <!--<select style="top:10px; width:130px;"  data-placeholder="Выберите расписание" class="span5" id="timetable" data-bind="options: $root.timetables, optionsText: 'Name', value: $root.currentTimetable">
+                <option></option>
+         </select>
+         
+
+         <input type="button" id="enableweb" class="btn" value="Разр. Web" data-bind="click: $root.TimetableEnableWebButton" />
+         <input type="button" id="disableweb" class="btn" value="Запр. Web" data-bind="click: $root.TimetableDisableWebButton" />
+          -->
+         </div>
+         
+         <div style="padding-left:5px; padding-right:5px; padding-top:5px; height: 35px; border:solid 1px; border-color:lightgray; float:left; background-color:white;">
+         <select style="top:10px; width:110px;"  data-placeholder="Выберите учебный год" class="span5" id="studyyear" data-bind="options: $root.studyyears, optionsText: 'Name', value: $root.currentStudyYear">
+                <option></option>
+         </select>
+
+         <select style="top:10px; width:50px;"  data-placeholder="Выберите семестр" class="span5" id="semester" data-bind="options: $root.semesters, optionsText: 'Name', value: $root.currentSemester">
+                <option></option>
+         </select>
+         </div>
+
+         <div style="padding-left:5px; padding-right:5px; padding-top:5px; height: 35px; border:solid 1px; border-color:lightgray; float:left; background-color:white;">
+         <select style="top:10px; width:110px;"  data-placeholder="Выберите здание" class="span5" id="buildings1" data-bind="options: $root.buildings, optionsText: 'Name', value: $root.currentBuilding">
+                <option></option>
+         </select>
+        
+         <select style="width:80px;"  data-placeholder="Выберите аудиторию" class="span5" id="auditoriumheader1" data-bind="options: $root.auditoriums, optionsText: 'Number', value: $root.currentAuditorium">
+            <option></option>
+         </select>
+         <select style="width:53px;"  data-placeholder="Выберите тип недели" class="span5" id="weektype31" data-bind="options: $root.weekTypes, optionsText: 'Name', value: $root.currentWeekType">
+            <option></option>
+         </select>
+         </div>
+
+         <form class="navbar-form pull-left">
+         <input type="text" data-bind="value: $root.searchLecturerText, valueUpdate: 'afterkeydown'">
+         <input id="searchButton" type="button" value="Поиск преподавателя" class="btn disabled" data-bind="click: $root.searchLecturerSubmitButton" />
+         </form>
+     </div>
+

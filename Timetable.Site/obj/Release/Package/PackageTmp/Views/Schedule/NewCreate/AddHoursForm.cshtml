@@ -1,0 +1,22 @@
+﻿<div class="modal hide fade" id ="addhoursdialog" style="width:400px; overflow-x:hidden;">
+  <div class="modal-header" style="overflow-x:hidden;">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h5>Поменять аудиторию</h5>
+  </div>
+
+  <div class="modal-body" style="overflow-x:hidden;">
+
+        <!--<div style="height:20px;">
+        <p data-bind="foreach: $root.addHoursValidationSummary">
+        <strong id="summary" style="font-size:1em; color:red;" data-bind="html: $root.addHoursValidationSummary()[$index()].Name" ></strong> <br />
+        </p>
+        </div>-->
+        <span>Введите новое количество часов</span>
+        <input data-bind="value: $root.newScheduleInfoMaxHours, valueUpdate: 'afterkeydown'" style="width:100%"  /> <br />
+  </div>
+  <div class="modal-footer" style="overflow-x:hidden;">
+        <input type="button" class="btn btn-primary disabled" value="Установить" data-bind="click: $root.AddHoursFormOkButton " />
+        <input type="button" class="btn " value="Отмена" data-bind="click: $root.AddHoursFormCancelButton " />
+  </div>
+ 
+</div>

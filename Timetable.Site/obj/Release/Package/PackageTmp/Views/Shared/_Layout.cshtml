@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width" />		
+        <title>@ViewBag.Title</title>    
+        
+        <!--<link rel="stylesheet" type="text/css" href="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Content/themes/base/css")" />
+        <link rel="stylesheet" type="text/css" href="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Content/bootstrap")" />
+        <link rel="stylesheet" type="text/css" href="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Content/css")" />-->
+
+
+        <link  rel='stylesheet' type='text/css' href="@Url.Content("~/Content/themes/base/jquery-ui-1.10.1.custom.css")" />
+        <link  rel='stylesheet' type='text/css' href="@Url.Content("~/Content/bootstrap.css")" />
+        <link  rel="stylesheet" type="text/css"  href="@Url.Content("~/Content/resources/css/ext-all.css")"/>
+		@RenderSection("css", false)
+		
+        <!--<script src="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Scripts/jquery")"></script>
+        <script src="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Scripts/knockout")"></script>
+        <script src="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Scripts/modernizr")"></script>
+        <script src="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Scripts/bootstrap")"></script>
+        <script src="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Scripts/jqwidgets")"></script>
+        <script src="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Scripts/dojo")"></script>-->
+
+        <script type='text/javascript' src="@Url.Content("~/Scripts/jquery-1.9.1.js")"></script>
+        <script type='text/javascript' src="@Url.Content("~/Scripts/knockout-2.1.0.js")"></script>
+        <script type='text/javascript' src="@Url.Content("~/Scripts/jquery-ui-1.10.1.custom.js")"></script>
+        <script type='text/javascript' src="@Url.Content("~/Scripts/Site/newbase.viewmodel.js")"></script>
+        <script type='text/javascript' src="@Url.Content("~/Scripts/Site/data.model.js")"></script>
+        <script type='text/javascript' src="@Url.Content("~/Scripts/bootstrap.js")"></script>
+        <script src="@Url.Content("~/Scripts/ext-all.js")" type="text/javascript"></script>  
+
+		@RenderSection("scripts", false)
+	</head>
+	<body>
+        @RenderSection("top", false)
+		@RenderBody()
+        @RenderSection("bottom", false)
+	</body>
+</html>

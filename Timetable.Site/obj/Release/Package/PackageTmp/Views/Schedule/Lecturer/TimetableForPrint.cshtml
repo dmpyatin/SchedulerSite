@@ -1,0 +1,67 @@
+﻿
+<!-- Timetable for print -->
+    <!-- ko if: $root.dayTimes().length !== 0 -->
+    <div id="rty" class="span10 TimetableForPrint" style="margin-top:10px;">
+      <div id="timetabletitle"><strong data-bind="text: $root.timeTableTitle"></strong></div>
+      <ul id="timetable" data-bind="foreach: cells">
+          <!-- ko if: $index() <= $root.daysOfweek().length -->
+                <!-- ko if: $index()%($root.daysOfweek().length+1) == 0 -->
+                    <li class="ui-widget-content">
+                        <div style="width:80px;height:30px;">
+                            <strong>Время</strong>
+                        </div>
+                    </li>
+                <!-- /ko -->
+                <!-- ko if: $index()%($root.daysOfweek().length+1) !== 0 -->
+                <li class="ui-widget-content">
+                    <div style="width: 180px; height:30px;">
+                        <strong data-bind="text: $root.daysOfweek()[$index()-1]"></strong>
+                    </div>
+                </li>
+                <!-- /ko -->
+          <!-- /ko -->
+
+           <!-- ko if: $index() > $root.daysOfweek().length -->
+           <!-- ko if: $index()%($root.daysOfweek().length+1) == 0 -->
+                <li class="ui-widget-content">
+                    <div style="width:80px;height:30px;">
+                        <!-- ko if: $root.dayTimes()[$index()/($root.daysOfweek().length+1)-1] !== undefined -->
+                           <!-- ko if: $root.dayTimes()[$index()/($root.daysOfweek().length+1)-1].StartEnd !== undefined -->
+                            <strong data-bind="text: $root.dayTimes()[$index()/($root.daysOfweek().length+1)-1].StartEnd"></strong>
+                           <!-- /ko -->
+                        <!-- /ko -->
+                    </div>
+                </li>
+           <!-- /ko -->
+           <!-- ko if: $index()%($root.daysOfweek().length+1) !== 0 -->
+          
+           <li class="ui-widget-content" style="width:180px;">
+               <div class="ScheduleBacket" 
+                   data-bind=" foreach: $root.ScheduleArray()[$index()-($root.daysOfweek().length+1)-($index()/($root.daysOfweek().length+1)>>0)].Tickets " style="overflow-x:hidden; z-index:inherit;overflow-y:auto; max-height:180px; width: 180px; height:180px;">
+                   
+                   <div data-bind="attr: {'class': $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].PaddingCss() }"></div>
+
+                   <!--<div id="sidrag" class="ScheduleTicket" style="height:86px; border:solid 1px; border-color:orange; width:178px;" 
+                       data-bind="event: {contextmenu: $root.ScheduleSingleRightClick.bind($data, $parentContext.$index(), $index()), mouseover: $root.ScheduleTicketCssState.bind($data, $parentContext.$index(), $index(),'onScheduleTicketSelect'), mouseout: $root.ScheduleTicketCssState.bind($data, $parentContext.$index(), $index(),$root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].UnselectCssClass()), droppable: {over: $root.ScheduleTicketOverDrop.bind($data, $parentContext.$index(), $index())}, click: $root.ScheduleSingleLeftClick.bind($data, $parentContext.$index(), $index()) , dblclick: $root.ScheduleDoubleClick}, draggable: { start: $root.ScheduleStartDrag, opacity:1.0, helper:'clone'}, attr: {'class': $root.ScheduleTicketCss()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)][$index()]() },">
+                   -->
+                   <div id="sidrag" class="ScheduleTicket" style="height:86px; border:solid 1px; border-color:black; width:178px;">
+
+                   <div style="float:right; right:0px; top:0px;">    
+                       <strong data-bind="text: '#' + $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.Auditorium()"></strong>
+                   </div>
+
+                   <p style="text-align:left;  text-indent: 20px; ">
+                   <span data-bind="text: $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.Lecturer()"></span>
+                   <span data-bind="text: $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.Tutorial()"></span>
+                   <span data-bind="text: '(' + $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.TutorialType() + ')'"></span>
+                   <span data-bind="text: $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.Groups()"></span>
+                   </p>
+                   </div>
+                  
+               </div>
+           </li>
+            <!-- /ko -->
+          <!-- /ko -->
+      </ul>
+  </div>
+ <!-- /ko -->

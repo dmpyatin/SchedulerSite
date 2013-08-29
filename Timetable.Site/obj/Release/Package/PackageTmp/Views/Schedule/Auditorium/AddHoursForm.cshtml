@@ -1,0 +1,14 @@
+﻿<!-- Add Hours Form -->
+<div id="addhoursdialog" title="Добавить часы" style="z-index:9999; overflow-x:hidden;">
+
+  <div style="height:20px;">
+  <strong id="summary" style="font-size:1em; color:red;" data-bind="text: $root.addHoursValidationSummary" ></strong> </br>
+  </div>
+
+  <span>Введите новое количество часов</span>
+
+  <input data-bind="value: $root.newScheduleInfoMaxHours, valueUpdate: 'afterkeydown'" style="width:100%"  /> <br />
+
+  <input type="button" class="btn" value="Установить" data-bind="click: $root.AddHoursFormOkButton " />
+  <input type="button" class="btn " value="Отмена" data-bind="click: $root.AddHoursFormCancelButton " />
+</div>
