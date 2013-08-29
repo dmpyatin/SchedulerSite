@@ -18,7 +18,7 @@ function dataModel() {
 
             $.ajax({
                 type: 'GET',
-                url: pathPrefix + '/api/v1.0/' + arg.address,
+                url: pathPrefix + 'api/v1.0/' + arg.address,
                 data: arg.params,
                 success: function (data) {
                     if (arg.onbefore !== undefined)
