@@ -12,8 +12,9 @@ function dataModel() {
 
             self.isLoading(true);
 
-            if (pathPrefix !== "/")
-                pathPrefix += "/";
+            if(pathPrefix.length > 0)
+                if (pathPrefix[pathPrefix.length-1] !== "/")
+                    pathPrefix += "/";
 
             $.ajax({
                 type: 'GET',
