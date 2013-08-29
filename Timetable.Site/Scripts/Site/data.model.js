@@ -12,9 +12,12 @@ function dataModel() {
 
             self.isLoading(true);
 
+            if (pathPrefix !== "/")
+                pathPrefix += "/";
+
             $.ajax({
                 type: 'GET',
-                url: '/api/v1.0/' + arg.address,
+                url: pathPrefix + '/api/v1.0/' + arg.address,
                 data: arg.params,
                 success: function (data) {
                     if (arg.onbefore !== undefined)
