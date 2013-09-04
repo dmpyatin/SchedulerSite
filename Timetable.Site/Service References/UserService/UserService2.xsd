@@ -239,6 +239,7 @@
         <xs:sequence>
           <xs:element minOccurs="0" name="Auditorium" nillable="true" type="tns:Auditorium" />
           <xs:element minOccurs="0" name="AuditoriumId" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="AutoDelete" type="xs:boolean" />
           <xs:element minOccurs="0" name="DayOfWeek" type="xs:int" />
           <xs:element minOccurs="0" name="EndDate" type="xs:dateTime" />
           <xs:element minOccurs="0" name="Period" nillable="true" type="tns:Time" />

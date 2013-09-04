@@ -22,7 +22,7 @@ var pair = function (first, second) {
 }
 
 //Отображаемая информация в элементе клетки расписания
-var ScheduleDisplay = function (lecturer, tutorial, tutorialType, groups, auditorium, weekType) {
+var ScheduleDisplay = function (lecturer, tutorial, tutorialType, groups, auditorium, weekType, time) {
     var self = this;
     self.Lecturer = ko.observable(lecturer);
     self.Tutorial = ko.observable(tutorial);
@@ -30,6 +30,7 @@ var ScheduleDisplay = function (lecturer, tutorial, tutorialType, groups, audito
     self.Groups = ko.observable(groups);
     self.Auditorium = ko.observable(auditorium);
     self.WeekType = ko.observable(weekType);
+    self.Time = ko.observable(time);
 };
 
 //Служебная информация в элементе клетки расписания
@@ -243,6 +244,8 @@ function baseViewModel() {
         alert(newValue);
     });
 
+  
+
 
     self.currentScheduleEndDate = ko.observable();
     //Границы для отображения таблицы расписания
@@ -250,7 +253,7 @@ function baseViewModel() {
     self.getScheduleEndDate = ko.observable();
 
     //Текущее значение автоудаления
-    self.currentAutoDelete = ko.observable();
+    self.currentAutoDelete = ko.observable(false);
 
     self.currentDayOfweek = ko.observable();
 
@@ -489,6 +492,8 @@ function baseViewModel() {
         console.log("UpdateCurrentScheduleBacket");
 
         self.currentDayOfweek(self.daysOfweek()[index % self.daysOfweek().length]);
+
+        //###
         self.currentDayTimes([self.dayTimes()[self.Div(index, self.daysOfweek().length)]]);
 
         //self.SchedulePlanValidation("back");
@@ -608,7 +613,8 @@ function baseViewModel() {
                                 self.ScheduleInfoArray()[currentSiIndex].Display.TutorialType(),
                                 self.ScheduleInfoArray()[currentSiIndex].Display.Groups(),
                                 self.currentAuditorium().Number,
-                                self.currentWeekType().Name
+                                self.currentWeekType().Name,
+                                self.currentDayTimes()
                                 ),
                         new ScheduleData(
                                 1,
@@ -632,8 +638,9 @@ function baseViewModel() {
                         false,
                         true);
 
+            self.ValidateSchedule(scheduleTicket,self.AddSchedule, scheduleTicket);
 
-            self.AddSchedule(scheduleTicket);
+            
         }
         return 0;
     }
@@ -821,6 +828,7 @@ function baseViewModel() {
 
             var currentDayIndex = newValue.Id - 1;
 
+            //###
             for (var i = 0; i < self.currentDayTimes().length; ++i) {
                 var currentTimeIndex = self.currentDayTimes()[i].ViewId - 1;
                 self.ScheduleBacketSelectedArray.push(self.gi(currentTimeIndex, currentDayIndex));
@@ -944,6 +952,7 @@ function baseViewModel() {
 
         self.cells.removeAll();
         
+        //###
         for (var i = 0; i < 1 + self.daysOfweek().length * self.dayTimes().length + self.daysOfweek().length + self.dayTimes().length; ++i) {
             self.cells.push(1);
         }
@@ -966,7 +975,7 @@ function baseViewModel() {
         }
 
         for (var i = 0; i < data.length; ++i) {
-
+            //###
             //Получение реального периода (неоптимально)
             var realPeriod = 0;
             for (var j = 0; j < self.dayTimes().length; ++j) {
@@ -993,7 +1002,8 @@ function baseViewModel() {
                                         data[i].TutorialTypeName,
                                         data[i].GroupNames,
                                         data[i].AuditoriumNumber,
-                                        data[i].WeekTypeName
+                                        data[i].WeekTypeName,
+                                        data[i].Time
                                         ),
                                 new ScheduleData(
                                         data[i].Id,
@@ -1071,6 +1081,10 @@ function baseViewModel() {
         self.fillScheduleTable();
 
         $("#adddialog").draggable({
+            handle: ".modal-header"
+        });
+
+        $("#validatedialog").draggable({
             handle: ".modal-header"
         });
 
@@ -1700,9 +1714,7 @@ function baseViewModel() {
         console.log("Ok");
         self.hideAllContextMenu();
         self.hideAllDownDropMenu();
-        if (!self.TransferScheduleInfoToScheduleBacket(data, event, 1)) {
-            $('#adddialog').modal('hide');
-        }
+        self.TransferScheduleInfoToScheduleBacket(data, event, 1);
     }
 
     self.SchedulePlanFormCancelButton = function (data, event) {
@@ -1710,6 +1722,23 @@ function baseViewModel() {
         self.hideAllDownDropMenu();
         console.log("Cancel");
         $('#adddialog').modal('hide');
+    }
+
+    //Кнопки на форме сообщений валидации
+    self.validateFormOkButton = function (data, event) {
+        console.log("Ok");
+        self.hideAllContextMenu();
+        self.hideAllDownDropMenu();
+        $('#validatedialog').modal('hide');
+        for(var i = 2; i <= 9; ++i)
+            $("#validatemessage" + i).addClass("hide");
+    }
+
+    self.validateFormCancelButton = function (data, event) {
+        self.hideAllContextMenu();
+        self.hideAllDownDropMenu();
+        console.log("Cancel");
+        $('#validatedialog').modal('hide');
     }
 
     //Кнопки на форме списка свободных аудиторий
@@ -2215,6 +2244,46 @@ function baseViewModel() {
             }
         });
     }
+
+    //Валидация занятия
+    self.ValidateSchedule = function (Schedule, innerFunction, scheduleTicket) {
+
+        console.log(innerFunction);
+
+        var startDate = Schedule.Data.StartDate();
+        var endDate = Schedule.Data.EndDate();
+        if (startDate == undefined)
+            startDate = "";
+        if (endDate == undefined)
+            endDate = "";
+
+        dModel.loadData({
+            address: "schedule/Validate",
+            params: {
+                AuditoriumId: Schedule.Data.AuditoriumId(),
+                ScheduleInfoId: Schedule.Data.ScheduleInfoId(),
+                DayOfWeek: Schedule.Data.DayOfWeek(),
+                PeriodId: Schedule.Data.PeriodId(),
+                WeekTypeId: Schedule.Data.WeekTypeId(),
+                StartDate: startDate,
+                EndDate: endDate
+            },
+            onsuccess: function (data) {
+                console.log(data);
+                console.log("***");
+                if (data !== 1) {
+                    console.log("#validatemessage" + data);
+                    $('#validatedialog').modal('show');
+                    $("#validatemessage" + data).removeClass("hide");
+                } else {
+                    innerFunction(scheduleTicket);
+                    $('#adddialog').modal('hide');
+                    console.log("ok111");
+                }
+            }
+        });
+    }
+
 
     //Обновление сведения к расписанию
     self.UpdateScheduleInfo = function (ScheduleInfo) {

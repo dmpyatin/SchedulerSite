@@ -1386,6 +1386,8 @@
     <None Include="Service References\UserService\UserService5.xsd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Views\Schedule\NewCreate\ValidateForm.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\ProgressBarForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

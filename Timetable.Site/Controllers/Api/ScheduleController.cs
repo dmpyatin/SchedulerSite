@@ -373,6 +373,85 @@ namespace Timetable.Site.Controllers.Api
         }
 
 
+        [HttpGet]
+        public HttpResponseMessage Validate(
+            int AuditoriumId,
+            int ScheduleInfoId,
+            int DayOfWeek,
+            int PeriodId,
+            int WeekTypeId,
+            string StartDate,
+            string EndDate)
+        {
+            return CreateResponse<int, int, int, int, int, string, string, int>(privateValidate,
+             AuditoriumId,
+             ScheduleInfoId,
+             DayOfWeek,
+             PeriodId,
+             WeekTypeId,
+             StartDate,
+             EndDate);
+        }
+
+        private int privateValidate(
+            int AuditoriumId,
+            int ScheduleInfoId,
+            int DayOfWeek,
+            int PeriodId,
+            int WeekTypeId,
+            string StartDate,
+            string EndDate)
+        {
+
+            var aSchedule = new Schedule();
+
+            aSchedule.DayOfWeek = DayOfWeek;
+            if (DayOfWeek == null)
+                return 3;
+
+            aSchedule.AuditoriumId = AuditoriumId;
+            if (AuditoriumId == null)
+                return 4;
+
+            aSchedule.PeriodId = PeriodId;
+            if (PeriodId == null)
+                return 5;
+
+            aSchedule.ScheduleInfoId = ScheduleInfoId;
+            if (ScheduleInfoId == null)
+                return 6;
+
+            aSchedule.WeekTypeId = WeekTypeId;
+            if (WeekTypeId == null)
+                return 7;
+
+            aSchedule.CreatedDate = DateTime.Now.Date;
+            aSchedule.UpdateDate = DateTime.Now.Date;
+            aSchedule.IsActual = true;
+
+            if (StartDate == null)
+                return 8;
+            if (EndDate == null)
+                return 9;
+            aSchedule.StartDate = DateTime.ParseExact(StartDate, "yyyy-MM-dd", null);
+            aSchedule.EndDate = DateTime.ParseExact(EndDate, "yyyy-MM-dd", null);
+
+            aSchedule.AutoDelete = false;
+
+
+            if (DataService.ValidateSchedule(aSchedule))
+            {
+                return 1;
+            }
+            else
+            {
+                return 2;
+            }
+
+            return 0;
+        }
+
+
         //Обновить запись в расписании
         [HttpPost]
         public HttpResponseMessage Update(UpdateModel model)
@@ -424,11 +503,11 @@ namespace Timetable.Site.Controllers.Api
             
             if (model.StartDate != "" && model.StartDate != null)
             {
-                qSchedule.StartDate = DateTime.ParseExact(model.StartDate, "dd-MMM-yyyy", null);
+                qSchedule.StartDate = DateTime.ParseExact(model.StartDate, "yyyy-MM-dd", null);
             }
             if (model.EndDate != "" && model.EndDate != null)
-            {
-                qSchedule.EndDate = DateTime.ParseExact(model.EndDate, "dd-MMM-yyyy", null);
+            {          
+                qSchedule.EndDate = DateTime.ParseExact(model.EndDate, "yyyy-MM-dd", null);
             }
 
 
@@ -463,8 +542,8 @@ namespace Timetable.Site.Controllers.Api
             aSchedule.UpdateDate = DateTime.Now.Date;
             aSchedule.IsActual = true;
 
-            aSchedule.StartDate = DateTime.ParseExact(model.StartDate, "dd-MMM-yyyy", null);
-            aSchedule.EndDate = DateTime.ParseExact(model.EndDate, "dd-MMM-yyyy", null);
+            aSchedule.StartDate = DateTime.ParseExact(model.StartDate, "yyyy-MM-dd", null);
+            aSchedule.EndDate = DateTime.ParseExact(model.EndDate, "yyyy-MM-dd", null);
 
             aSchedule.AutoDelete = model.AutoDelete;
 
@@ -486,67 +565,6 @@ namespace Timetable.Site.Controllers.Api
         }
 
     
-        public HttpResponseMessage ValidateSchedule(
-            int AuditoriumId,
-            int ScheduleInfoId,
-            int DayOfWeek,
-            int PeriodId,
-            int WeekTypeId,
-            string StartDate,
-            string EndDate)
-        {
-            return CreateResponse<int, int, int, int, int, string, string, IEnumerable<ValidateModel>>(privateValidateSchedule, 
-             AuditoriumId,
-             ScheduleInfoId,
-             DayOfWeek,
-             PeriodId,
-             WeekTypeId,
-             StartDate,
-             EndDate);
-        }
-
-        private IEnumerable<ValidateModel> privateValidateSchedule(
-            int AuditoriumId,
-            int ScheduleInfoId,
-            int DayOfWeek,
-            int PeriodId,
-            int WeekTypeId,
-            string StartDate,
-            string EndDate)
-        {
-            var result = new List<ValidateModel>();
-            var messages = new List<string>();
-
-            var aSchedule = new Schedule();
-
-            aSchedule.DayOfWeek = DayOfWeek;
-
-            aSchedule.AuditoriumId = AuditoriumId;
-            aSchedule.PeriodId = PeriodId;
-            aSchedule.ScheduleInfoId = ScheduleInfoId;
-            aSchedule.WeekTypeId = WeekTypeId;
-
-            aSchedule.CreatedDate = DateTime.Now.Date;
-            aSchedule.UpdateDate = DateTime.Now.Date;
-            aSchedule.IsActual = true;
-
-            aSchedule.StartDate = DateTime.ParseExact(StartDate, "dd-MMM-yyyy", null);
-            aSchedule.EndDate = DateTime.ParseExact(EndDate, "dd-MMM-yyyy", null);
-
-            aSchedule.AutoDelete = false;
-
-            /*
-             * TODO
-             * if (DataService.ValidateSchedule(aSchedule))
-            {
-                messages.Add("Выбранная позиция свободна");
-                result.Add(new ValidateModel(true, messages));
-            }else{
-                messages.Add("Выбранная позиция занята");
-                result.Add(new ValidateModel(false, messages ));
-            }*/
-
-            return result;
-        }
+        
     }
 }

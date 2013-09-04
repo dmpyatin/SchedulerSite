@@ -77,13 +77,16 @@ namespace Timetable.Site.Models.Schedules
         [DataMember(Name = "AutoDelete")]
         public bool AutoDelete;
 
+        [DataMember(Name = "Time")]
+        public string Time;
+
         public SendModel() { }
 
         public SendModel(int Id, int ScheduleInfoId, int DayOfWeek, int PeriodId, string WeekTypeName, int WeekTypeId, string AuditoriumNumber,
                                 int AuditoriumId, string LecturerName, int LecturerId, string TutorialName,
                                 int TutorialId, string TutorialTypeName, int TutorialTypeId, string GroupNames,
                                 string GroupIds, bool IsForLecturer, bool IsForAuditorium, bool IsForGroup,
-                                string StartDate, string EndDate, bool AutoDelete)
+                                string StartDate, string EndDate, bool AutoDelete, string Time)
         {
             this.Id = Id;
             this.ScheduleInfoId = ScheduleInfoId;
@@ -107,6 +110,7 @@ namespace Timetable.Site.Models.Schedules
             this.StartDate = StartDate;
             this.EndDate = EndDate;
             this.AutoDelete = AutoDelete;
+            this.Time = Time;
         }
 
         public SendModel(Schedule t, bool IsForLecturer, bool IsForAuditorium, bool IsForGroup)
@@ -212,6 +216,8 @@ namespace Timetable.Site.Models.Schedules
             this.StartDate = t.StartDate.ToShortDateString();
             this.EndDate = t.EndDate.ToShortDateString();
             this.AutoDelete = t.AutoDelete;
+
+            this.Time = t.Period.Start.ToString(@"hh\:mm") + "-" + t.Period.End.ToString(@"hh\:mm");
         }
     }
 }

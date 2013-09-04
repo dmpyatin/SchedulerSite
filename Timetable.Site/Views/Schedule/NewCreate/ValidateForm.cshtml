@@ -1,0 +1,22 @@
+﻿<!-- Validate Form -->
+
+<div class="modal hide" id ="validatedialog" style="width:400px; overflow-x:hidden;">
+  <div class="modal-header" style="overflow-x:hidden;">
+    <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
+  </div>
+  <div class="modal-body" style="overflow-x:hidden;">
+        <div class="alert alert-error">
+        <div id="validatemessage2" class="hide">Выбранная позиция занята</div>
+        <div id="validatemessage3" class="hide">Не выбран день недели</div>
+        <div id="validatemessage4" class="hide">Не выбрана аудитория</div>
+        <div id="validatemessage5" class="hide">Не выбрано время проведения занятия</div>
+        <div id="validatemessage6" class="hide">Не выбрано сведение к расписанию</div>
+        <div id="validatemessage7" class="hide">Не выбран тип недели</div>
+        <div id="validatemessage8" class="hide">Не указана дата начала занятия</div>
+        <div id="validatemessage9" class="hide">Не указана дата окончания занятия</div>
+        </div>
+  </div>
+  <div class="modal-footer" style="overflow-x:hidden;">
+        <input id="validateOkButton" type="button" class="btn btn-primary" value="Продолжить" data-bind="click: $root.validateFormOkButton" />
+  </div>
+</div>

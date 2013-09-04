@@ -2120,6 +2120,12 @@ namespace Timetable.Site.DataService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBaseService/Delete", ReplyAction="http://tempuri.org/IBaseService/DeleteResponse")]
         System.Threading.Tasks.Task<Timetable.Site.DataService.OperationResult> DeleteAsync(Timetable.Site.DataService.BaseEntity entity);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDataService/ValidateSchedule", ReplyAction="http://tempuri.org/IDataService/ValidateScheduleResponse")]
+        bool ValidateSchedule(Timetable.Site.DataService.Schedule schedule);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDataService/ValidateSchedule", ReplyAction="http://tempuri.org/IDataService/ValidateScheduleResponse")]
+        System.Threading.Tasks.Task<bool> ValidateScheduleAsync(Timetable.Site.DataService.Schedule schedule);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDataService/GetBranches", ReplyAction="http://tempuri.org/IDataService/GetBranchesResponse")]
         Timetable.Site.DataService.Branch[] GetBranches();
         
@@ -2430,6 +2436,14 @@ namespace Timetable.Site.DataService {
         
         public System.Threading.Tasks.Task<Timetable.Site.DataService.OperationResult> DeleteAsync(Timetable.Site.DataService.BaseEntity entity) {
             return base.Channel.DeleteAsync(entity);
+        }
+        
+        public bool ValidateSchedule(Timetable.Site.DataService.Schedule schedule) {
+            return base.Channel.ValidateSchedule(schedule);
+        }
+        
+        public System.Threading.Tasks.Task<bool> ValidateScheduleAsync(Timetable.Site.DataService.Schedule schedule) {
+            return base.Channel.ValidateScheduleAsync(schedule);
         }
         
         public Timetable.Site.DataService.Branch[] GetBranches() {

@@ -1,25 +1,4 @@
 ﻿<!-- Add Schedule Form -->
-<script>
-  $(function() {
-      $("#startDate").datepicker({
-      defaultDate: "+1w",
-      changeMonth: true,
-      numberOfMonths: 3,
-      onClose: function( selectedDate ) {
-          $("#endDate").datepicker("option", "minDate", selectedDate);
-      }
-    });
-      $("#endDate").datepicker({
-      defaultDate: "+1w",
-      changeMonth: true,
-      numberOfMonths: 3,
-      onClose: function( selectedDate ) {
-          $("#startDate").datepicker("option", "maxDate", selectedDate);
-      }
-    });
-  });
-  </script>
-
 
 <div class="modal hide fade" id ="adddialog" style="width:400px; overflow-x:hidden;">
   <div class="modal-header" style="overflow-x:hidden;">
@@ -42,12 +21,17 @@
   </div>
   <div class="modal-body" style="overflow-x:hidden;">
 
-  <span>Временной интервал</span>
-  <div id="dateSlider"></div>
+  <span>Временной интервал</span> <br />
+  <!--<div id="dateSlider"></div>-->
 
-  <!--<input style="width:40%" type="text" id="startDate" data-bind="value:$root.currentScheduleStartDate()"/> 
-  <input  style="width:40%" type="text" id="endDate" data-bind="value:$root.currentScheduleEndDate()" />-->
-  <input type="checkbox" id="delAfter"/>  <br />
+  <span>С: </span>
+  <input style="width:40%" type="date" id="startDate" data-bind="value:$root.currentScheduleStartDate, valueUpdate: 'blur'"/> 
+  <span>по: </span>
+  <input  style="width:40%" type="date" id="endDate" data-bind="value:$root.currentScheduleEndDate, valueUpdate: 'blur'" /> <br />
+
+  <span>Удалить после ?: </span>
+
+  <input type="checkbox" id="delAfter" data-bind="checked: $root.currentAutoDelete" />  <br />
 
 
   <span>День недели</span>

@@ -7,7 +7,18 @@ function dataModel() {
 
     self.isLoading = ko.observable(false);
 
+    self.isLoading.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            if(newValue == true)
+                $("#progressbar").removeClass("hide");
+            else
+                $("#progressbar").addClass("hide");
+        }
+    });
+
     self.loadData = function (arg) {
+    
+
         ko.dependentObservable(function () {
 
             self.isLoading(true);
