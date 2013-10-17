@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timetable.Site", "Timetable.Site\Timetable.Site.csproj", "{4D7D6CF6-67E6-4192-800C-0CD43A0A63F1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{0A7F9896-8F53-4C15-B478-0B839BA42A6B}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = PetrSU.Timetable.vsmdi
@@ -16,11 +18,12 @@ Global
 		{4D7D6CF6-67E6-4192-800C-0CD43A0A63F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D7D6CF6-67E6-4192-800C-0CD43A0A63F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D7D6CF6-67E6-4192-800C-0CD43A0A63F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A7F9896-8F53-4C15-B478-0B839BA42A6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A7F9896-8F53-4C15-B478-0B839BA42A6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A7F9896-8F53-4C15-B478-0B839BA42A6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A7F9896-8F53-4C15-B478-0B839BA42A6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

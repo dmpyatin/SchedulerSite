@@ -12,15 +12,21 @@ namespace Timetable.Site.Controllers.Api
     public partial class GroupController : BaseApiController<Group>
     {
         //Получить все группы, чей код попадает под маску 
-        public HttpResponseMessage GetByCode(ForCodeModel model)
+        public HttpResponseMessage GetByCode(string code)
         {
-            return CreateResponse<ForCodeModel, IEnumerable<SendModel>>(privateGetByCode, model);
+            return CreateResponse<string, IEnumerable<SendModel>>(privateGetByCode, code);
         }
 
-        private IEnumerable<SendModel> privateGetByCode(ForCodeModel model)
+        private IEnumerable<SendModel> privateGetByCode(string code)
         {
             var result = new List<SendModel>();
-            //TODO
+            var tmp = DataService.GetGroupsByCode(code, 10);
+
+            foreach (var t in tmp)
+            {
+                result.Add(new SendModel(t));
+            }
+
             return result;
         }
 

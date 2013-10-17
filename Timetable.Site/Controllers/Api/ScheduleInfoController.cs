@@ -60,9 +60,55 @@ namespace Timetable.Site.Controllers.Api
            return result;
        }
 
-       //Получить сведения к расписанию по группам (в текущей версии делается объединение по группам)
 
-        public HttpResponseMessage GetByGroups(
+        public HttpResponseMessage GetByGroupsOnly(
+               string groupIds,
+               int tutorialTypeId,
+               int studyYearId,
+               int semesterId)
+        {
+            return CreateResponse<string, int, int, int, IEnumerable<SendModel>>(privateGetByGroupsOnly,
+                     groupIds,
+                     tutorialTypeId,
+                     studyYearId,
+                     semesterId);
+        }
+
+        private IEnumerable<SendModel> privateGetByGroupsOnly(
+            string groupIds,
+            int tutorialTypeId,
+            int studyYearId,
+            int semesterId)
+        {
+            var result = new List<SendModel>();
+            var groups = new List<Group>();
+
+            var qTutorialType = new TutorialType {Id = tutorialTypeId};
+            var qStudyYear = new StudyYear {Id = studyYearId};
+
+            if (groupIds != null)
+                foreach (var groupId in groupIds.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries))
+                    if (groupId != " ")
+                        groups.Add(new Group(){Id = int.Parse(groupId)});
+
+            var tmp = DataService.GetScheduleInfoesForGroups(groups.ToArray(), qTutorialType, qStudyYear, semesterId);
+ 
+            foreach (var t in tmp)
+            {
+                if (t.Groups.Any())
+                {
+                    int CurrentHours = 0;// DataService.CountSchedulesForScheduleInfoes(t);
+                    result.Add(new SendModel(t, CurrentHours));
+                }
+            }
+
+            return result;
+        }
+
+        //Получить сведения к расписанию по группам (в текущей версии делается объединение по группам)
+
+            public
+            HttpResponseMessage GetByGroups(
                 int facultyId,
                 string courseIds,
                 string groupIds,

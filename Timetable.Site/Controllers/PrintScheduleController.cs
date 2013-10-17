@@ -56,8 +56,8 @@ namespace Timetable.Site.Controllers
                     s.timetableId,
                     s.sequence,
                     s.startTime,
-                    s.endTime
-                    );
+                    s.endTime,
+                    "");
            
 
             if (mode == "forAuditorium")
@@ -178,7 +178,7 @@ namespace Timetable.Site.Controllers
             
             //Достаем занятия для всех групп
             //var Schedules = scheduleController.privateGetByAll(s.lecturerId, s.auditoriumId, s.facultyId, s.courseIds, s.groupIds, s.studyYearId, s.semesterId, s.timetableId, s.sequence);
-            var Schedules = scheduleController.privateGetByGroups(s.facultyId, targetCourseIds, targetGroupsIds, s.studyYearId, s.semesterId, s.timetableId, s.startTime, s.endTime);
+            var Schedules = scheduleController.privateGetByGroups(s.facultyId, targetCourseIds, targetGroupsIds, s.studyYearId, s.semesterId, s.timetableId, s.startTime, s.endTime, "");
 
             string newGroupIds = "";
 

@@ -1,68 +1,85 @@
 ﻿<!-- Add Schedule Form -->
-
+<!-- ko if: $root.currentScheduleAddForm() !== undefined -->
 <div class="modal hide fade" id ="adddialog" style="width:400px; overflow-x:hidden;">
-  <div class="modal-header" style="overflow-x:hidden;">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <!--<div style="height:70px; margin-bottom:20px;">
-        <div class="alert alert-error hide" id="validationError" style="margin:5px; padding:5px;">
-            <p data-bind="foreach: $root.addDialogValidationSummary">
-                <strong id="summary" style="font-size:0.8em; " data-bind="text: $root.addDialogValidationSummary()[$index()].Name" ></strong> <br />
-            </p>
+    <div class="modal-header" style="overflow-x:hidden;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h5>Добавить занятие</h5>
+    </div>
+    <div class="modal-body" style="overflow-x:hidden;">
+
+        <!-- ko if: $root.currentScheduleAddForm().scheduleInfo() !== undefined -->
+        <div style="background-color: #FFFFA8; border: solid 1px; border-color:black">
+    
+            <div style="float:right; right:0px; top:0px; margin-right: 5px;">    
+                <a data-bind="text: '#' + $root.currentScheduleAddForm().currentAuditorium()"></a>
+            </div>
+
+            <div style="float:left;  left:0px; top:0px; margin-left: 5px;">
+                <a data-bind="text: $root.currentScheduleAddForm().currentWeekType().Name">&nbsp;&nbsp;</a>
+            </div>
+
+            <strong data-bind="text: $root.currentScheduleAddForm().scheduleInfo().Display.Tutorial()"></strong>
+            <strong data-bind="text: '(' +  $root.currentScheduleAddForm().scheduleInfo().Display.TutorialType() + ')'"></strong>
+
+            <a data-bind="text: $root.currentScheduleAddForm().scheduleInfo().Display.Lecturer()"></a>
+            <br />
+            <a data-bind="text: $root.currentScheduleAddForm().scheduleInfo().Display.Groups()"></a>
+    
+            <!-- ko if: $root.currentScheduleAddForm().currentSubGroup() != "Все" &&  $root.currentScheduleAddForm().currentSubGroup() !== undefined -->
+            <a data-bind="text: '(' + $root.currentScheduleAddForm().currentSubGroup() + ')'"></a> 
+            <!-- /ko -->    
+
+            <br />
+            <strong data-bind="text: 'с ' + $root.currentScheduleAddForm().startDate() + ' по ' +  $root.currentScheduleAddForm().endDate() "> </strong>
         </div>
 
-        <div class="alert alert-success" id="Hint1" data-bind="if: $root.helperLink() == true" style="margin:5px; padding:5px;">
-           <strong id="help" style="font-size:0.8em; cursor:pointer;" data-bind="if: $root.helperLink() == true, event: {click: $root.helperLinkClick}">Подобрать вариант</strong> <br />
-        </div>
-        <div class="alert alert-success" id="Hint2" data-bind="if: $root.addHoursLink() == true" style="margin:5px; padding:5px;">
-            <strong id="addh" style="font-size:0.8em; cursor:pointer;" data-bind="if: $root.addHoursLink() == true, event: {click: $root.addHoursLinkClick}">Добавить часы</strong> <br />
-        </div>
-
-      </div>-->
-  </div>
-  <div class="modal-body" style="overflow-x:hidden;">
-
-  <span>Временной интервал</span> <br />
-  <!--<div id="dateSlider"></div>-->
-
-  <span>С: </span>
-  <input style="width:40%" type="date" id="startDate" data-bind="value:$root.currentScheduleStartDate, valueUpdate: 'blur'"/> 
-  <span>по: </span>
-  <input  style="width:40%" type="date" id="endDate" data-bind="value:$root.currentScheduleEndDate, valueUpdate: 'blur'" /> <br />
-
-  <span>Удалить после ?: </span>
-
-  <input type="checkbox" id="delAfter" data-bind="checked: $root.currentAutoDelete" />  <br />
-
-
-  <span>День недели</span>
-  <select style="width:100%"  data-placeholder="Выберите день недели" class="span5" id="dayofweek" data-bind="options: $root.daysOfweek, optionsText: 'Name', value: $root.currentDayOfweek">
+        
+        <input type="checkbox" id="delAfter" data-bind="checked: $root.currentScheduleAddForm().autoDelete" /> 
+        <strong>удалить после истечения срока ?</strong>
+        <br />
+        
+        <strong>День недели</strong>
+        <select style="width:100%"  data-placeholder="Выберите день недели" class="span5" id="dayofweek" data-bind="options: $root.currentScheduleAddForm().days, optionsText: 'Name', value: $root.currentScheduleAddForm().currentDay">
             <option></option>
-  </select>
+        </select>
 
-  <span>Тип недели</span>
-  <select style="width:100%"  data-placeholder="Выберите тип недели" class="span5" id="weektype" data-bind="options: $root.weekTypes, optionsText: 'Name', value: $root.currentWeekType">
+        <strong>Тип недели</strong>
+        <select style="width:100%"  data-placeholder="Выберите тип недели" class="span5" id="weektype" data-bind="options: $root.currentScheduleAddForm().weekTypes, optionsText: 'Name', value: $root.currentScheduleAddForm().currentWeekType">
             <option></option>
-  </select>
+        </select>
 
-  <span>Время</span>
-  <!--
-  <input style="width:100%"  placeholder="Выберите время..." class="span5" id="times" data-bind="click: $root.toDownDrop, value: $root.displayDayTimes" />-->
-  <select style="width:100%" data-placeholder="Выберите время" class="span5" id="times" data-bind="options: $root.dayTimes, optionsText: 'StartEnd', selectedOptions: $root.currentDayTimes">
+        <strong>Время</strong>     
+        <select style="width:100%" data-placeholder="Выберите время" class="span5" id="times" data-bind="options: $root.currentScheduleAddForm().times, optionsText: 'StartEnd', value: $root.currentTime">
             <option></option>
-  </select> 
+        </select>
+ 
+        <!--<strong>Тип аудитории</strong>
+            <select style="width:100%;"  data-placeholder="Выберите тип аудитории" class="span5" id="auditoriumtype1" data-bind="options: $root.auditoriumTypes, optionsText: 'Name', value: $root.currentAuditoriumType">
+                <option></option>
+            </select>-->
 
-  <span>Тип аудитории</span>
-  <select style="width:100%;"  data-placeholder="Выберите тип аудитории" class="span5" id="auditoriumtype1" data-bind="options: $root.auditoriumTypes, optionsText: 'Name', value: $root.currentAuditoriumType">
+        <strong>Аудитория</strong>
+        <select style="width:100%"  data-placeholder="Выберите аудиторию" class="span5" id="auditorium" data-bind="options: $root.currentScheduleAddForm().auditoriums, optionsText: 'Number', value: $root.currentScheduleAddForm().currentAuditorium">
             <option></option>
-  </select>
+        </select>
 
-  <span>Аудитория</span>
-  <select style="width:100%"  data-placeholder="Выберите аудиторию" class="span5" id="auditorium" data-bind="options: $root.auditoriums, optionsText: 'Number', value: $root.currentAuditorium">
+
+
+        <strong>Подгруппа</strong>
+        <select style="width:100%"  data-placeholder="Выберите подгруппу" class="span5" id="subgroup" data-bind="options: $root.currentScheduleAddForm().subGroups, value: $root.currentScheduleAddForm().currentSubGroup">
             <option></option>
-  </select>
-  </div>
-  <div class="modal-footer" style="overflow-x:hidden;">
-        <input id="addScheduleOkButton" type="button" class="btn btn-primary" value="Добавить" data-bind="click: $root.SchedulePlanFormOkButton" />
-        <input id="addScheduleCancelButton"; type="button" class="btn " value="Отмена" data-bind="click: $root.SchedulePlanFormCancelButton" />
-  </div>
+        </select>
+        
+        <!-- /ko -->  
+        <!-- ko if: $root.ScheduleInfoArray()[$root.ScheduleInfoSelectedArray()[$root.ScheduleInfoSelectedArray().length - 1]] == undefined -->
+        <strong>Для добавления занятия сначала выберите сведение к расписанию</strong>
+        <!-- /ko --> 
+
+    </div>
+
+    <div class="modal-footer" style="overflow-x:hidden;">
+            <input id="addScheduleOkButton" type="button" class="btn btn-primary" value="Добавить" data-bind="click: $root.currentScheduleAddForm().addButtonPress.bind($data,true)" />
+            <input id="addScheduleCancelButton" type="button" class="btn " value="Отмена" data-bind="click: $root.currentScheduleAddForm().closeDialog.bind($data,true)" />
+    </div>
 </div>
+ <!-- /ko -->  

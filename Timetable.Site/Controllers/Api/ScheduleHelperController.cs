@@ -72,7 +72,7 @@ namespace Timetable.Site.Controllers.Api
                                    //TODO
                                 
 
-                                   var tmp = DataService.GetSchedulesForGroup(qFaculty, qCourse, qGroup, qStudyYear, model.semesterId, StartDate, EndDate);
+                                   var tmp = DataService.GetSchedulesForGroup(qFaculty, qCourse, qGroup, qStudyYear, model.semesterId, StartDate, EndDate, "");
                                    //var tmp = Schedule.GetTempSchedulesForGroup(qFaculty, qCourse, qGroup);
                                    foreach (var t in tmp)
                                    {
@@ -119,7 +119,7 @@ namespace Timetable.Site.Controllers.Api
                {
                    var qPeriod = new Time();
                    qPeriod.Id = t.Id;
-                   var auditoriums = DataService.GetFreeAuditoriums(qBuilding, d, qWeekType, qPeriod, null, qAuditoriumType, capacity);
+                   var auditoriums = DataService.GetFreeAuditoriums(qBuilding, d, qWeekType, qPeriod, null, qAuditoriumType, capacity, new DateTime(), new DateTime() );
                    //var auditoriums = DataService.GetAuditoriums(qBuilding, qAuditoriumType);
 
                    if (auditoriums.ToList().Count > 0)

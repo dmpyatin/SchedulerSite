@@ -51,16 +51,20 @@ namespace Timetable.Site.Controllers.Api
             int day,
             int timeId,
             int tutorialTypeId,
-            int auditoriumTypeId)
+            int auditoriumTypeId,
+            string startTime,
+            string endTime)
         {
 
-            return CreateResponse<int, int, int, int, int, int, IEnumerable<SendModel>>(privateGetFree, 
+            return CreateResponse<int, int, int, int, int, int, string, string, IEnumerable<SendModel>>(privateGetFree, 
                 buildingId, 
                 weekTypeId,
                 day,
                 timeId,
                 tutorialTypeId,
-                auditoriumTypeId);
+                auditoriumTypeId,
+                startTime,
+                endTime);
         }
 
         private IEnumerable<SendModel> privateGetFree(
@@ -69,11 +73,22 @@ namespace Timetable.Site.Controllers.Api
             int day,
             int timeId,
             int tutorialTypeId,
-            int auditoriumTypeId)
+            int auditoriumTypeId,
+            string startTime,
+            string endTime)
         {
 
-            
-            var rrr = DataService.GetLecturersByFirstMiddleLastname("Кузнецов");
+
+            var StartDate = new DateTime();
+            var EndDate = new DateTime();
+            if (startTime != "" && startTime != null)
+            {
+                StartDate = DateTime.ParseExact(startTime, "yyyy-MM-dd", null);
+            }
+            if (endTime != "" && endTime != null)
+            {
+                EndDate = DateTime.ParseExact(endTime, "yyyy-MM-dd", null);
+            }
 
             //TODO
             var result = new List<SendModel>();
@@ -97,7 +112,7 @@ namespace Timetable.Site.Controllers.Api
 
             var capacity = 0;
     
-            var tmp = DataService.GetFreeAuditoriums(qBuilding, dayOfWeek, qWeekType, qTime, null, qAuditoriumType, capacity);
+            var tmp = DataService.GetFreeAuditoriums(qBuilding, dayOfWeek, qWeekType, qTime, null, qAuditoriumType, capacity, StartDate, EndDate);
 
             foreach(var t in tmp){
                 result.Add(new SendModel(t));

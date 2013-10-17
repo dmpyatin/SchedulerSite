@@ -77,8 +77,30 @@ namespace Timetable.Site.Models.Schedules
         [DataMember(Name = "AutoDelete")]
         public bool AutoDelete;
 
-        [DataMember(Name = "Time")]
-        public string Time;
+        [DataMember(Name = "StartTime")]
+        public string StartTime;
+
+        [DataMember(Name = "EndTime")]
+        public string EndTime;
+
+        [DataMember(Name = "LecturerFullName")]
+        public string LecturerFullName;
+
+        [DataMember(Name = "TutorialFullName")]
+        public string TutorialFullName;
+
+        [DataMember(Name = "TutorialTypeFullName")]
+        public string TutorialTypeFullName;
+
+        [DataMember(Name = "WeekTypeFullName")]
+        public string WeekTypeFullName;
+
+        [DataMember(Name = "BuildingFullName")]
+        public string BuildingFullName;
+
+        [DataMember(Name = "SubGroup")]
+        public string SubGroup;
+
 
         public SendModel() { }
 
@@ -86,7 +108,13 @@ namespace Timetable.Site.Models.Schedules
                                 int AuditoriumId, string LecturerName, int LecturerId, string TutorialName,
                                 int TutorialId, string TutorialTypeName, int TutorialTypeId, string GroupNames,
                                 string GroupIds, bool IsForLecturer, bool IsForAuditorium, bool IsForGroup,
-                                string StartDate, string EndDate, bool AutoDelete, string Time)
+                                string StartDate, string EndDate, bool AutoDelete, string StartTime, string EndTime, 
+                                string LecturerFullName,
+                                string TutorialFullName,
+                                string TutorialTypeFullName,
+                                string WeekTypeFullName,
+                                string BuildingFullName, 
+                                string SubGroup)
         {
             this.Id = Id;
             this.ScheduleInfoId = ScheduleInfoId;
@@ -110,13 +138,19 @@ namespace Timetable.Site.Models.Schedules
             this.StartDate = StartDate;
             this.EndDate = EndDate;
             this.AutoDelete = AutoDelete;
-            this.Time = Time;
+            this.StartTime = StartTime;
+            this.EndTime = EndTime;
+            this.LecturerFullName = LecturerFullName;
+            this.TutorialFullName = TutorialFullName;
+            this.TutorialTypeFullName = TutorialTypeFullName;
+            this.WeekTypeFullName = WeekTypeFullName;
+            this.BuildingFullName = BuildingFullName;
+            this.SubGroup = SubGroup;
         }
 
         public SendModel(Schedule t, bool IsForLecturer, bool IsForAuditorium, bool IsForGroup)
         {
-            
-            
+                
             var cns = new CutNameService();
 
             this.IsForLecturer = IsForLecturer;
@@ -143,6 +177,9 @@ namespace Timetable.Site.Models.Schedules
             {
                 this.WeekTypeId = t.WeekType.Id;
                 this.WeekTypeName = t.WeekType.Name;
+                if (this.WeekTypeName == "Л") { this.WeekTypeFullName = "Еженедельно"; }
+                if (this.WeekTypeName == "Ч") { this.WeekTypeFullName = "Числитель"; }
+                if (this.WeekTypeName == "З") { this.WeekTypeFullName = "Знаменатель"; }
             }
 
             this.AuditoriumId = 0;
@@ -151,6 +188,9 @@ namespace Timetable.Site.Models.Schedules
             {
                 this.AuditoriumId = t.Auditorium.Id;
                 this.AuditoriumNumber = t.Auditorium.Number;
+
+                if (t.Auditorium.Building != null)
+                    this.BuildingFullName = t.Auditorium.Building.Name;
             }
 
             this.LecturerId = 0;
@@ -161,6 +201,7 @@ namespace Timetable.Site.Models.Schedules
                 {
                     this.LecturerId = t.ScheduleInfo.Lecturer.Id;
                     this.LecturerName = t.ScheduleInfo.Lecturer.Lastname;// +" " + t.ScheduleInfo.Lecturer.Firstname[0] + ". " + t.ScheduleInfo.Lecturer.Middlename[0] + ".";
+                    this.LecturerFullName = t.ScheduleInfo.Lecturer.Lastname +" " + t.ScheduleInfo.Lecturer.Firstname + " " + t.ScheduleInfo.Lecturer.Middlename + " ";
                 }
             }
 
@@ -172,6 +213,7 @@ namespace Timetable.Site.Models.Schedules
                 {
                     this.TutorialId = t.ScheduleInfo.Tutorial.Id;
                     this.TutorialName = cns.Cut(t.ScheduleInfo.Tutorial.Name);
+                    this.TutorialFullName = t.ScheduleInfo.Tutorial.Name;
                 }
             }
 
@@ -183,7 +225,7 @@ namespace Timetable.Site.Models.Schedules
                 {
                     this.TutorialTypeId = t.ScheduleInfo.TutorialType.Id;
                     this.TutorialTypeName = t.ScheduleInfo.TutorialType.Name;
-
+                    this.TutorialTypeFullName = t.ScheduleInfo.TutorialType.Name;
                     if (this.TutorialTypeId == 1) this.TutorialTypeName = "Лек.";
                     if (this.TutorialTypeId == 2) this.TutorialTypeName = "Лаб.";
                     if (this.TutorialTypeId == 3) this.TutorialTypeName = "Пр.";
@@ -217,7 +259,11 @@ namespace Timetable.Site.Models.Schedules
             this.EndDate = t.EndDate.ToShortDateString();
             this.AutoDelete = t.AutoDelete;
 
-            this.Time = t.Period.Start.ToString(@"hh\:mm") + "-" + t.Period.End.ToString(@"hh\:mm");
+            this.StartTime = t.Period.Start.ToString(@"hh\:mm");
+            this.EndTime = t.Period.End.ToString(@"hh\:mm");
+
+            this.SubGroup = t.SubGroup;
+
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Runtime.Serialization;
+using Microsoft.Ajax.Utilities;
 using Timetable.Site.DataService;
 using Timetable.Site.Controllers.Extends;
 
@@ -106,7 +107,8 @@ namespace Timetable.Site.Models.ScheduleInfoes
             if (t.Lecturer != null)
             {
                 this.LecturerId = t.Lecturer.Id;
-                this.LecturerName = t.Lecturer.Lastname + " " + t.Lecturer.Firstname[0] + ". " + t.Lecturer.Middlename[0] + ".";
+                if (!t.Lecturer.Lastname.IsNullOrWhiteSpace() && !t.Lecturer.Firstname.IsNullOrWhiteSpace() && !t.Lecturer.Middlename.IsNullOrWhiteSpace())
+                    this.LecturerName = t.Lecturer.Lastname + " " + t.Lecturer.Firstname[0] + ". " + t.Lecturer.Middlename[0] + ".";
             }
 
             this.TutorialTypeId = 0;

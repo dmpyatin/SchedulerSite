@@ -1,0 +1,60 @@
+﻿<style>
+    .preselectedScheduleInfo {background-color:green;}
+    .unselectedScheduleInfo {background-color:snow;}
+    .clickedScheduleInfo {background-color:palegreen}
+</style>
+
+<!-- ScheduleInfo Context Menu Form -->
+
+<!-- ko if: $root.currentScheduleInfoSelectForm() !== undefined -->
+<!-- ko if: $root.currentScheduleInfoSelectForm().scheduleInfoContextMenuForm() !== undefined -->
+<div id="scheduleInfoContextMenu" class="dropdown clearfix hide" style="z-index:100500;">
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
+        <li><a tabindex="-1" href="#" data-bind="event:{click:$root.currentScheduleInfoSelectForm().scheduleInfoContextMenuForm().planScheduleInfoClick.bind($data,true) }">Запланировать</a></li>
+        <li><a tabindex="-1" href="#" data-bind="event:{click:$root.currentScheduleInfoSelectForm().scheduleInfoContextMenuForm().updateScheduleInfoClick.bind($data,true) }">Изменить</a></li>
+    </ul>
+</div>
+<!-- /ko -->  
+<!-- /ko -->  
+
+<!-- ScheduleInfo Select Form -->
+<!-- ko if: $root.currentScheduleInfoSelectForm() !== undefined -->
+<div class="modal hide" id ="sidialog" data-bind=" draggable: {handle: '.modal-header', start: $root.currentScheduleInfoSelectForm().startDrag.bind($data,true)}" style="cursor:move; width:250px; overflow-x:hidden;">
+    <div class="modal-header" style="overflow-x:hidden;">
+        <button type="button" class="close" data-bind="event:{click: $root.currentScheduleInfoSelectForm().closeDialog.bind($data,true)}" aria-hidden="true">&times;</button>
+        <h5>Выберите сведение к расписанию</h5>
+         <div>
+            <select style="width:100%" class="span5" data-bind="options: $root.currentScheduleInfoSelectForm().tutorialTypes, optionsText: 'Name', value: $root.currentScheduleInfoSelectForm().currentTutorialType">
+                <option></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-body" style="overflow-x:hidden; height:500px;">
+       
+
+        <div data-bind="foreach: $root.currentScheduleInfoSelectForm().scheduleInfoes,
+                        event: {mouseout: $root.currentScheduleInfoSelectForm().mouseOutForm.bind($data,true)}" style="height:auto;">
+            <div class="scheduleInfo" style="font-family:Arial;font-size:12px; cursor:pointer; border:solid 1px; border-color:grey;  height: 60px; width:200px;"
+                 data-bind=" event:{ click: $root.currentScheduleInfoSelectForm().clickLeftScheduleInfo.bind($data,true,$index()),
+                       contextmenu: $root.currentScheduleInfoSelectForm().clickRightScheduleInfo.bind($data,true,$index()), 
+                       dblclick:  $root.currentScheduleInfoSelectForm().doubleClickScheduleInfo.bind($data,true,$index()),
+                       mouseover: $root.currentScheduleInfoSelectForm().mouseOverScheduleInfo.bind($data,true,$index())
+                      }, css: {
+                           preselectedScheduleInfo: $index() == $root.currentScheduleInfoSelectForm().selectedScheduleInfoIndex(),
+                           unselectedScheduleInfo: $index() != $root.currentScheduleInfoSelectForm().selectedScheduleInfoIndex() && $index() != $root.currentScheduleInfoSelectForm().currentScheduleInfoIndex(),
+                          clickedScheduleInfo: $index() == $root.currentScheduleInfoSelectForm().currentScheduleInfoIndex() }">
+                
+                <p style="text-align:left;  text-indent: 20px; ">
+                    <strong data-bind="text: $root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].LecturerName"></strong> <br />
+                    <strong data-bind="text: $root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].TutorialName"></strong>
+                    <strong data-bind="text: $root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].CurrentHours  + '[' + $root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].HoursPerWeek + ']' + $root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].TutorialTypeName"></strong>
+                    <strong data-bind="text:$root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].GroupNames"></strong> 
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer" style="overflow-x:hidden;">
+        <input id="selectOkButton" type="button" class="btn btn-primary" value="Выбрать" data-bind="click: $root.currentScheduleInfoSelectForm().closeDialog.bind($data,true)" />
+    </div>
+</div>
+<!-- /ko -->  

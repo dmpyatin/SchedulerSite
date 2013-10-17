@@ -50,11 +50,11 @@ namespace Timetable.Site.Controllers.Api
             var EndDate = new DateTime();
             if (startTime != "" && startTime != null)
             {
-                StartDate = DateTime.ParseExact(startTime, "dd-MMM-yyyy", null);
+                StartDate = DateTime.ParseExact(startTime, "yyyy-MM-dd", null);
             }
             if (endTime != "" && endTime != null)
             {
-                EndDate = DateTime.ParseExact(endTime, "dd-MMM-yyyy", null);
+                EndDate = DateTime.ParseExact(endTime, "yyyy-MM-dd", null);
             }
 
             //qLecturer.Id = 50834;
@@ -108,11 +108,11 @@ namespace Timetable.Site.Controllers.Api
             var EndDate = new DateTime();
             if (startTime != "" && startTime != null)
             {
-                StartDate = DateTime.ParseExact(startTime, "dd-MMM-yyyy", null);
+                StartDate = DateTime.ParseExact(startTime, "yyyy-MM-dd", null);
             }
             if (endTime != "" && endTime != null)
             {
-                EndDate = DateTime.ParseExact(endTime, "dd-MMM-yyyy", null);
+                EndDate = DateTime.ParseExact(endTime, "yyyy-MM-dd", null);
             }
 
             //qAuditorium.Id = 1;
@@ -127,10 +127,8 @@ namespace Timetable.Site.Controllers.Api
             return result;
         }
 
-        //Получить расписание для групп (в текущей версии делается объединение по группам)
-        public HttpResponseMessage GetByGroups(
-            int facultyId,
-            string courseIds,
+
+        public HttpResponseMessage GetByGroupsOnlyIds(
             string groupIds,
             int studyYearId,
             int semesterId,
@@ -138,7 +136,202 @@ namespace Timetable.Site.Controllers.Api
             string startTime,
             string endTime)
         {
-            return CreateResponse<int, string, string, int, int, int, string, string, IEnumerable<SendModel>>(privateGetByGroups, 
+            return CreateResponse<string, int, int, int, string, string, IEnumerable<SendModel>>(privateGetByGroupsOnlyIds,
+              groupIds,
+              studyYearId,
+              semesterId,
+              timetableId,
+              startTime,
+              endTime);
+        }
+
+        public IEnumerable<SendModel> privateGetByGroupsOnlyIds(
+            string groupIds,
+            int studyYearId,
+            int semesterId,
+            int timetableId,
+            string startTime,
+            string endTime)
+        {
+            var result = new List<SendModel>();
+
+            DateTime? StartDate = null;
+            DateTime? EndDate = null;
+
+            if (!string.IsNullOrEmpty(startTime))
+                StartDate = DateTime.ParseExact(startTime, "yyyy-MM-dd", null);
+
+            if (!string.IsNullOrEmpty(endTime))
+                EndDate = DateTime.ParseExact(endTime, "yyyy-MM-dd", null);
+     
+            var qGroups = new List<Group>();
+            if (groupIds != null)
+                foreach (var groupId in groupIds.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries))
+                    if (groupId != " ")
+                        qGroups.Add(new Group() { Id = int.Parse(groupId)});
+
+            var tmp = DataService.GetSchedulesForAll(null, null, qGroups.ToArray(), null, null, StartDate, EndDate);
+
+            foreach (var t in tmp)
+                result.Add(new SendModel(t, false, false, true));
+
+            return result;
+        }
+        
+        public HttpResponseMessage GetScheduleByDayPeriodDate(
+                int? dayOfWeek,
+                int? periodId,
+                int? weekTypeId,
+                int? lecturerId,
+                int? auditoriumId,
+                string groupIds,
+                string subGroup,
+                string startTime,
+                string endTime)
+        {
+            return CreateResponse<int?, int?, int?, int?, int?, string, string, string, string, IEnumerable<SendModel>>(privateGetScheduleByDayPeriodDate,
+                dayOfWeek,
+                periodId,
+                weekTypeId,
+                lecturerId,
+                auditoriumId,
+                groupIds,
+                subGroup,
+                startTime,
+                endTime);
+        }
+
+        private IEnumerable<SendModel> privateGetScheduleByDayPeriodDate(
+                int? dayOfWeek,
+                int? periodId,
+                int? weekTypeId,
+                int? lecturerId,
+                int? auditoriumId,
+                string groupIds,
+                string subGroup,
+                string startTime,
+                string endTime)
+        {
+            var result = new List<SendModel>();
+
+            DateTime? StartDate = null;
+            DateTime? EndDate = null;
+
+            if (!string.IsNullOrEmpty(startTime))
+                StartDate = DateTime.ParseExact(startTime, "yyyy-MM-dd", null);
+
+            if (!string.IsNullOrEmpty(endTime))
+                EndDate = DateTime.ParseExact(endTime, "yyyy-MM-dd", null);
+
+            var qPeriod = periodId != null ? new Time { Id = periodId.Value } : null;
+            var qLecturer = lecturerId != null ? new Lecturer { Id = lecturerId.Value } : null;
+            var qAuditorium = auditoriumId != null ? new Auditorium { Id = auditoriumId.Value } : null;
+            var qWeekType = weekTypeId != null ? new WeekType { Id = weekTypeId.Value } : null;
+            var qGroups = new List<Group>();
+
+            if (groupIds != null)
+                foreach (var groupId in groupIds.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                    if (groupId != " ")
+                        qGroups.Add(new Group() { Id = int.Parse(groupId) });
+
+            var tmp = DataService.GetSchedulesForDayTimeDate(dayOfWeek, qPeriod, qWeekType, qLecturer, qAuditorium, qGroups.ToArray(), subGroup,
+              StartDate, EndDate);
+
+
+            foreach (var t in tmp)
+            {
+                //TODO: correct divide on types
+                result.Add(new SendModel(t, t.ScheduleInfo.LecturerId == lecturerId, t.AuditoriumId == auditoriumId, (t.ScheduleInfo.LecturerId != lecturerId) &&
+                                                                                                                     (t.AuditoriumId != auditoriumId)));
+            }
+
+            return result;
+        }
+
+  
+        [HttpGet]
+        public HttpResponseMessage GetScheduleByAll(
+                int? lecturerId,
+                int? auditoriumId,
+                string groupIds,
+                int? weekTypeId,
+                string subGroup,
+                string startTime,
+                string endTime)
+        {
+            return CreateResponse<int?, int?, string, int?, string, string, string, IEnumerable<SendModel>>(privateGetScheduleByAll,
+                lecturerId,
+                auditoriumId,
+                groupIds,
+                weekTypeId,
+                subGroup,
+                startTime,
+                endTime);
+        }
+
+        private IEnumerable<SendModel> privateGetScheduleByAll(
+           int? lecturerId,
+           int? auditoriumId,
+           string groupIds,
+           int? weekTypeId,
+           string subGroup,
+           string startTime,
+           string endTime)
+        {
+            var result = new List<SendModel>();
+
+            DateTime? StartDate = null;
+            DateTime? EndDate = null;
+
+            if (!string.IsNullOrEmpty(startTime))
+                StartDate = DateTime.ParseExact(startTime, "yyyy-MM-dd", null);
+        
+            if (!string.IsNullOrEmpty(endTime))
+                EndDate = DateTime.ParseExact(endTime, "yyyy-MM-dd", null);
+       
+
+            var qLecturer = lecturerId != null ? new Lecturer {Id = lecturerId.Value} : null;
+            var qAuditorium = auditoriumId != null ? new Auditorium { Id = auditoriumId.Value } : null;
+            var qWeekType = weekTypeId != null ? new WeekType { Id = weekTypeId.Value } : null;
+            var qGroups = new List<Group>();
+          
+
+            if (groupIds != null)
+                foreach (var groupId in groupIds.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries))
+                    if (groupId != " ")
+                        qGroups.Add(new Group() { Id = int.Parse(groupId) });
+
+
+            var tmp = DataService.GetSchedulesForAll(qLecturer, qAuditorium, qGroups.ToArray(), qWeekType, subGroup,
+                StartDate, EndDate);
+
+            var answer = tmp.GroupBy(x => new { x.DayOfWeek, x.Period, x.WeekType })
+                        .Select(q => q.OrderBy(x => x.CreatedDate).First()).ToList();
+
+            foreach (var t in answer)
+            {
+                //TODO: correct divide on types
+                result.Add(new SendModel(t, t.ScheduleInfo.LecturerId == lecturerId, t.AuditoriumId == auditoriumId, (t.ScheduleInfo.LecturerId != lecturerId) &&
+                                                                                                                     (t.AuditoriumId != auditoriumId)));
+            }
+
+            return result;
+        }
+
+        //Получить расписание для групп (в текущей версии делается объединение по группам)
+            public
+            HttpResponseMessage GetByGroups(
+            int facultyId,
+            string courseIds,
+            string groupIds,
+            int studyYearId,
+            int semesterId,
+            int timetableId,
+            string startTime,
+            string endTime,
+            string subGroup)
+        {
+            return CreateResponse<int, string, string, int, int, int, string, string, string, IEnumerable<SendModel>>(privateGetByGroups, 
                 facultyId,
                 courseIds,
                 groupIds,
@@ -146,7 +339,8 @@ namespace Timetable.Site.Controllers.Api
                 semesterId,
                 timetableId,
                 startTime,
-                endTime);
+                endTime,
+                subGroup);
         }
 
         public IEnumerable<SendModel> privateGetByGroups(
@@ -157,7 +351,8 @@ namespace Timetable.Site.Controllers.Api
             int semesterId,
             int timetableId,
             string startTime,
-            string endTime)
+            string endTime,
+            string subGroup)
         {
             var result = new List<SendModel>();
             var qFaculty = new Faculty();
@@ -171,11 +366,11 @@ namespace Timetable.Site.Controllers.Api
             var EndDate = new DateTime();
             if (startTime != "" && startTime != null)
             {
-                StartDate = DateTime.ParseExact(startTime, "dd-MMM-yyyy", null);
+                StartDate = DateTime.ParseExact(startTime, "yyyy-MM-dd", null);
             }
             if (endTime != "" && endTime != null)
             {
-                EndDate = DateTime.ParseExact(endTime, "dd-MMM-yyyy", null);
+                EndDate = DateTime.ParseExact(endTime, "yyyy-MM-dd", null);
             }
 
 
@@ -206,7 +401,7 @@ namespace Timetable.Site.Controllers.Api
                                     //qFaculty.Id = 83;
                                     //qCourse.Id = 301;
                                     //qGroup.Id = 687;
-                                    var tmp = DataService.GetSchedulesForGroup(qFaculty, qCourse, qGroup, qStudyYear, semesterId, StartDate, EndDate);
+                                    var tmp = DataService.GetSchedulesForGroup(qFaculty, qCourse, qGroup, qStudyYear, semesterId, StartDate, EndDate, subGroup);
                                     //var tmp = GetTempSchedulesForGroup(qGroup);
                                     foreach (var t in tmp)
                                     {
@@ -251,9 +446,10 @@ namespace Timetable.Site.Controllers.Api
             int timetableId,
             string sequence,
             string startTime,
-            string endTime)
+            string endTime,
+            string subGroup)
         {
-            return CreateResponse<int, int, int, string, string, int, int, int, string, string, string, IEnumerable<SendModel>>(privateGetByAll, 
+            return CreateResponse<int, int, int, string, string, int, int, int, string, string, string, string, IEnumerable<SendModel>>(privateGetByAll, 
                 lecturerId,
                 auditoriumId,
                 facultyId,
@@ -264,7 +460,8 @@ namespace Timetable.Site.Controllers.Api
                 timetableId,
                 sequence,
                 startTime,
-                endTime);
+                endTime,
+                subGroup);
         }
 
 
@@ -279,7 +476,8 @@ namespace Timetable.Site.Controllers.Api
             int timetableId,
             string sequence,
             string startTime,
-            string endTime)
+            string endTime,
+            string subGroup)
         {
             
 
@@ -352,7 +550,8 @@ namespace Timetable.Site.Controllers.Api
                                 semesterId,
                                 timetableId,
                                 startTime,
-                                endTime
+                                endTime,
+                                subGroup
                                 );
                             foreach (var t in groupSchedule)
                             {
@@ -375,15 +574,15 @@ namespace Timetable.Site.Controllers.Api
 
         [HttpGet]
         public HttpResponseMessage Validate(
-            int AuditoriumId,
-            int ScheduleInfoId,
-            int DayOfWeek,
-            int PeriodId,
-            int WeekTypeId,
+            int? AuditoriumId,
+            int? ScheduleInfoId,
+            int? DayOfWeek,
+            int? PeriodId,
+            int? WeekTypeId,
             string StartDate,
             string EndDate)
         {
-            return CreateResponse<int, int, int, int, int, string, string, int>(privateValidate,
+            return CreateResponse<int?, int?, int?, int?, int?, string, string, IEnumerable<int>>(privateValidate,
              AuditoriumId,
              ScheduleInfoId,
              DayOfWeek,
@@ -393,62 +592,68 @@ namespace Timetable.Site.Controllers.Api
              EndDate);
         }
 
-        private int privateValidate(
-            int AuditoriumId,
-            int ScheduleInfoId,
-            int DayOfWeek,
-            int PeriodId,
-            int WeekTypeId,
+        private IEnumerable<int> privateValidate(
+            int? AuditoriumId,
+            int? ScheduleInfoId,
+            int? DayOfWeek,
+            int? PeriodId,
+            int? WeekTypeId,
             string StartDate,
             string EndDate)
         {
 
+            var validateErrors = new List<int>();
             var aSchedule = new Schedule();
 
-            aSchedule.DayOfWeek = DayOfWeek;
+
             if (DayOfWeek == null)
-                return 3;
+                validateErrors.Add(3);
+            else
+                aSchedule.DayOfWeek = DayOfWeek.Value;
 
-            aSchedule.AuditoriumId = AuditoriumId;
+            
             if (AuditoriumId == null)
-                return 4;
+                validateErrors.Add(4);
+            else
+                aSchedule.AuditoriumId = AuditoriumId.Value;
 
-            aSchedule.PeriodId = PeriodId;
+            
             if (PeriodId == null)
-                return 5;
+                validateErrors.Add(5);
+            else
+                aSchedule.PeriodId = PeriodId.Value;
 
-            aSchedule.ScheduleInfoId = ScheduleInfoId;
+         
             if (ScheduleInfoId == null)
-                return 6;
+                validateErrors.Add(6);
+            else
+                aSchedule.ScheduleInfoId = ScheduleInfoId.Value;
 
-            aSchedule.WeekTypeId = WeekTypeId;
             if (WeekTypeId == null)
-                return 7;
+                validateErrors.Add(7);
+            else
+                aSchedule.WeekTypeId = WeekTypeId.Value;
 
             aSchedule.CreatedDate = DateTime.Now.Date;
             aSchedule.UpdateDate = DateTime.Now.Date;
             aSchedule.IsActual = true;
 
             if (StartDate == null)
-                return 8;
+                validateErrors.Add(8);
+            else
+                aSchedule.StartDate = DateTime.ParseExact(StartDate, "yyyy-MM-dd", null);
+
             if (EndDate == null)
-                return 9;
-            aSchedule.StartDate = DateTime.ParseExact(StartDate, "yyyy-MM-dd", null);
-            aSchedule.EndDate = DateTime.ParseExact(EndDate, "yyyy-MM-dd", null);
+                validateErrors.Add(9);
+            else
+                aSchedule.EndDate = DateTime.ParseExact(EndDate, "yyyy-MM-dd", null);
 
             aSchedule.AutoDelete = false;
 
+            if (!DataService.ValidateSchedule(aSchedule))
+                validateErrors.Add(2);
 
-            if (DataService.ValidateSchedule(aSchedule))
-            {
-                return 1;
-            }
-            else
-            {
-                return 2;
-            }
-
-            return 0;
+            return validateErrors;
         }
 
 
@@ -467,6 +672,8 @@ namespace Timetable.Site.Controllers.Api
             if (qSchedule != null)
             {
                 //qSchedule.DayOfWeek = model.DayOfWeek;
+
+                qSchedule.SubGroup = model.SubGroup;
 
                 if (qSchedule.Auditorium != null)
                 {
@@ -532,6 +739,7 @@ namespace Timetable.Site.Controllers.Api
             var aSchedule = new Schedule();
             
             aSchedule.DayOfWeek = model.DayOfWeek;
+            aSchedule.SubGroup = model.SubGroup;
 
             aSchedule.AuditoriumId = model.AuditoriumId;
             aSchedule.PeriodId = model.PeriodId;

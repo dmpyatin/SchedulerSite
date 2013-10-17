@@ -247,6 +247,9 @@
           <xs:element minOccurs="0" name="ScheduleInfo" nillable="true" type="tns:ScheduleInfo" />
           <xs:element minOccurs="0" name="ScheduleInfoId" type="xs:int" />
           <xs:element minOccurs="0" name="StartDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="SubGroup" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TimetableEntity" nillable="true" type="tns:TimetableEntity" />
+          <xs:element minOccurs="0" name="TimetableEntityId" nillable="true" type="xs:int" />
           <xs:element minOccurs="0" name="WeekType" nillable="true" type="tns:WeekType" />
           <xs:element minOccurs="0" name="WeekTypeId" type="xs:int" />
         </xs:sequence>
@@ -305,6 +308,17 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="WeekType" nillable="true" type="tns:WeekType" />
+  <xs:complexType name="TimetableEntity">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q18="http://schemas.datacontract.org/2004/07/Timetable.Base.Entities" base="q18:BaseEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="IsActive" type="xs:boolean" />
+          <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="TimetableEntity" nillable="true" type="tns:TimetableEntity" />
   <xs:complexType name="ArrayOfSchedule">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="Schedule" nillable="true" type="tns:Schedule" />
@@ -319,7 +333,7 @@
   <xs:element name="ArrayOfSpeciality" nillable="true" type="tns:ArrayOfSpeciality" />
   <xs:complexType name="StudyYear">
     <xs:complexContent mixed="false">
-      <xs:extension xmlns:q18="http://schemas.datacontract.org/2004/07/Timetable.Base.Entities" base="q18:BaseEntity">
+      <xs:extension xmlns:q19="http://schemas.datacontract.org/2004/07/Timetable.Base.Entities" base="q19:BaseEntity">
         <xs:sequence>
           <xs:element minOccurs="0" name="Length" type="xs:int" />
           <xs:element minOccurs="0" name="StartYear" type="xs:int" />
@@ -334,6 +348,12 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ArrayOfTutorialType" nillable="true" type="tns:ArrayOfTutorialType" />
+  <xs:complexType name="ArrayOfTimetableEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="TimetableEntity" nillable="true" type="tns:TimetableEntity" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfTimetableEntity" nillable="true" type="tns:ArrayOfTimetableEntity" />
   <xs:complexType name="ArrayOfBranch">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="Branch" nillable="true" type="tns:Branch" />

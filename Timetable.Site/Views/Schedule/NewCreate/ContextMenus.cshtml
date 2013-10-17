@@ -1,4 +1,10 @@
-﻿<div class="ContextMenu" id="ScheduleInfoContextMenuDialog" style="z-index:9999; padding:0px; margin:0px; display:none; background-color:white; border: solid 1px; border-color:lightgray;">
+﻿<style>
+    .preselectedCalendarSchedule {background-color:green;}
+    .unselectedCalendarSchedule {background-color:snow;}
+    .clickedCalendarSchedule {background-color:palegreen}
+</style>
+
+<div class="ContextMenu" id="ScheduleInfoContextMenuDialog" style="z-index:9999; padding:0px; margin:0px; display:none; background-color:white; border: solid 1px; border-color:lightgray;">
     <div style="height:20px; cursor:pointer;" 
         data-bind="event: {click: $root.ScheduleInfoContextMenuElementClick_Plan, 
                            mouseover: $root.ScheduleInfoContextMenuCssState.bind($data, 0,'onContextMenuMouseDownSelect'), 
@@ -34,13 +40,77 @@
 <div class="ContextMenu" id="ScheduleBacketContextMenuDialog" style="z-index:9999;  padding:0px; margin:0px; display:none; background-color:white; border: solid 1px; border-color:lightgray">
    
     <div style="height:20px; cursor:pointer;"
-        data-bind="event: {click: $root.ScheduleBacketContextMenuElementClick_PlanSchedule, 
+         data-bind="event: {click: $root.ScheduleBacketContextMenuElementClick_PlanSchedule, 
                            mouseover: $root.ScheduleBacketContextMenuCssState.bind($data, 0,'onContextMenuMouseDownSelect'), 
                            mouseout: $root.ScheduleBacketContextMenuCssState.bind($data, 0,'onContextMenuMouseDownUnselect')}, 
                     attr: { 'class': $root.ScheduleBacketContextMenuCss[0]() }">Запланировать</div>
     <div style="height:20px; cursor:pointer;"
-        data-bind="event: {click: $root.ScheduleBacketContextMenuElementClick_FreeAuditoriums, 
+         data-bind="event: {click: $root.ScheduleBacketContextMenuElementClick_FreeAuditoriums, 
                            mouseover: $root.ScheduleBacketContextMenuCssState.bind($data, 1,'onContextMenuMouseDownSelect'), 
                            mouseout: $root.ScheduleBacketContextMenuCssState.bind($data, 1,'onContextMenuMouseDownUnselect')}, 
                     attr: { 'class': $root.ScheduleBacketContextMenuCss[1]() }">Доступные аудитории</div>
+
+    <div style="height:20px; cursor:pointer;"
+         data-bind="event: {click: $root.ScheduleBacketContextMenuElementClick_Calendar, 
+                           mouseover: $root.ScheduleBacketContextMenuCssState.bind($data, 2,'onContextMenuMouseDownSelect'), 
+                           mouseout: $root.ScheduleBacketContextMenuCssState.bind($data, 2,'onContextMenuMouseDownUnselect')}, 
+                    attr: { 'class': $root.ScheduleBacketContextMenuCss[2]() }">Календарь</div>
 </div>
+
+<!-- Calendar popover context menu -->
+
+  <!-- ko if: $root.currentCalendar() !== undefined -->
+<div class="modal hide fade" id ="calendardialog" data-bind=" draggable: {handle: '.modal-header', start: $root.currentCalendar().startDrag.bind($data,true)}" style="cursor:move; width:640px; overflow-x:hidden;">
+    <div class="modal-header" style="overflow-x:hidden;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h5 data-bind="text:$root.currentDayOfweek().Name + ' ' + $root.currentDayTimes()[0].StartEnd"></h5>
+    </div>
+
+    <div class="modal-body" style="overflow-x:hidden">
+        
+        <div style="width:100%; min-height:200px;">
+            <div data-bind="foreach: $root.currentCalendar().weeks, event: {mouseout: $root.currentCalendar().mouseOutForm.bind($data,true)}" style="width:auto; float:left; margin:0px; background-color:snow;">
+                <div style="float:left; margin:0px; width:185px; background-color: snow; border:solid 1px;">
+                    <strong data-bind="text: $root.currentCalendar().weeks()[$index()].StartDateFormat + ' - ' + $root.currentCalendar().weeks()[$index()].EndDateFormat "> </strong>
+                    <!-- ko if: $root.currentCalendar().calendarSchedules()[$index()] !== undefined -->
+                    <div data-bind="foreach: $root.currentCalendar().calendarSchedules()[$index()]" >
+                        <div data-bind="css: {
+                                        clickedCalendarSchedule: $root.currentCalendar().clickedSchedule().Id == $root.currentCalendar().calendarSchedules()[$parentContext.$index()]()[$index()].Id, 
+                                        preselectedCalendarSchedule: $root.currentCalendar().preselectedSchedule().Id == $root.currentCalendar().calendarSchedules()[$parentContext.$index()]()[$index()].Id, 
+                                        unselectedCalendarSchedule: $root.currentCalendar().preselectedSchedule().Id != $root.currentCalendar().calendarSchedules()[$parentContext.$index()]()[$index()].Id && $root.currentCalendar().clickedSchedule().Id != $root.currentCalendar().calendarSchedules()[$parentContext.$index()]()[$index()].Id },
+                            event:{
+                                click: $root.currentCalendar().clickOnScheduleLeft.bind($data, $parentContext.$index(), $index(), true),
+                                mouseover: $root.currentCalendar().mouseover.bind($data, $parentContext.$index(), $index(), true)}"  style="width:176px; height:62px; margin:2px; border:solid 1px; border-color:grey;">
+                            <div style="float:right; right:0px; top:0px; margin-right: 2px;">    
+                                <strong data-bind="text: '#' + $root.currentCalendar().calendarSchedules()[$parentContext.$index()]()[$index()].AuditoriumNumber"></strong>
+                            </div>
+                            <div style="float:left; color:green; left:0px; top:0px; margin-left: 5px;">
+                                <strong data-bind="text: $root.currentCalendar().calendarSchedules()[$parentContext.$index()]()[$index()].WeekTypeName">&nbsp;&nbsp;</strong>
+                            </div>
+
+                            <span  data-bind="text: $root.currentCalendar().calendarSchedules()[$parentContext.$index()]()[$index()].LecturerName"></span>
+                            <span  data-bind="text: $root.currentCalendar().calendarSchedules()[$parentContext.$index()]()[$index()].TutorialName"></span>
+                            <span  data-bind="text: $root.currentCalendar().calendarSchedules()[$parentContext.$index()]()[$index()].TutorialTypeName"></span>
+                            <span  data-bind="text: $root.currentCalendar().calendarSchedules()[$parentContext.$index()]()[$index()].GroupNames"></span>
+                        
+                            <!-- ko if: $root.currentCalendar().calendarSchedules()[$parentContext.$index()]()[$index()].SubGroup !== undefined && $root.currentCalendar().calendarSchedules()[$parentContext.$index()]()[$index()].SubGroup !== null -->
+                            <span  data-bind="text: $root.currentCalendar().calendarSchedules()[$parentContext.$index()]()[$index()].SubGroup"></span>
+                            <!-- /ko -->
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                </div>
+
+            </div>
+        </div>
+       
+    </div>
+    <div class="modal-footer" style="overflow-x:hidden;">
+        <div class="btn-group" style="left:150px; width:100px;">
+            <a class="btn" href="#" data-bind="event:{click: $root.currentCalendar().toPrevWeek.bind($data, true)}">На неделю назад</a>
+            <a class="btn" href="#" data-bind="event:{click: $root.currentCalendar().toNextWeek.bind($data, true)}">На неделю вперед</a>
+            <!--<input  style="width:150px; height:30px;" type="date" id="currentWeek" data-bind="value:$root.currentCalendar().currentWeek(), valueUpdate: 'blur'" />-->
+        </div>
+    </div>
+</div>
+ <!-- /ko -->

@@ -94,7 +94,7 @@ namespace Timetable.Site.Controllers
             return View("Database/Index");
         }
 
-        [Authorize]
+       
         public ActionResult Group()
         {
             return View("Group/Index");

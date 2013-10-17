@@ -28,6 +28,42 @@
   <wsdl:message name="IDataService_Delete_OutputMessage">
     <wsdl:part name="parameters" element="tns:DeleteResponse" />
   </wsdl:message>
+  <wsdl:message name="IDataService_GetScheduleInfoesForGroups_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetScheduleInfoesForGroups" />
+  </wsdl:message>
+  <wsdl:message name="IDataService_GetScheduleInfoesForGroups_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetScheduleInfoesForGroupsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataService_GetSchedulesForDayTimeDate_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSchedulesForDayTimeDate" />
+  </wsdl:message>
+  <wsdl:message name="IDataService_GetSchedulesForDayTimeDate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSchedulesForDayTimeDateResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataService_GetSchedulesForAll_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSchedulesForAll" />
+  </wsdl:message>
+  <wsdl:message name="IDataService_GetSchedulesForAll_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSchedulesForAllResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataService_GetSchedulesForGroupOnlyId_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSchedulesForGroupOnlyId" />
+  </wsdl:message>
+  <wsdl:message name="IDataService_GetSchedulesForGroupOnlyId_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSchedulesForGroupOnlyIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataService_GetTimetableEntities_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetTimetableEntities" />
+  </wsdl:message>
+  <wsdl:message name="IDataService_GetTimetableEntities_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetTimetableEntitiesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataService_GetGroupsByCode_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetGroupsByCode" />
+  </wsdl:message>
+  <wsdl:message name="IDataService_GetGroupsByCode_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetGroupsByCodeResponse" />
+  </wsdl:message>
   <wsdl:message name="IDataService_ValidateSchedule_InputMessage">
     <wsdl:part name="parameters" element="tns:ValidateSchedule" />
   </wsdl:message>
@@ -305,6 +341,30 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IBaseService/Delete" message="tns:IDataService_Delete_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IBaseService/DeleteResponse" message="tns:IDataService_Delete_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="GetScheduleInfoesForGroups">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataService/GetScheduleInfoesForGroups" message="tns:IDataService_GetScheduleInfoesForGroups_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataService/GetScheduleInfoesForGroupsResponse" message="tns:IDataService_GetScheduleInfoesForGroups_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSchedulesForDayTimeDate">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataService/GetSchedulesForDayTimeDate" message="tns:IDataService_GetSchedulesForDayTimeDate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataService/GetSchedulesForDayTimeDateResponse" message="tns:IDataService_GetSchedulesForDayTimeDate_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSchedulesForAll">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataService/GetSchedulesForAll" message="tns:IDataService_GetSchedulesForAll_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataService/GetSchedulesForAllResponse" message="tns:IDataService_GetSchedulesForAll_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSchedulesForGroupOnlyId">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataService/GetSchedulesForGroupOnlyId" message="tns:IDataService_GetSchedulesForGroupOnlyId_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataService/GetSchedulesForGroupOnlyIdResponse" message="tns:IDataService_GetSchedulesForGroupOnlyId_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTimetableEntities">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataService/GetTimetableEntities" message="tns:IDataService_GetTimetableEntities_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataService/GetTimetableEntitiesResponse" message="tns:IDataService_GetTimetableEntities_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetGroupsByCode">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataService/GetGroupsByCode" message="tns:IDataService_GetGroupsByCode_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataService/GetGroupsByCodeResponse" message="tns:IDataService_GetGroupsByCode_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="ValidateSchedule">
       <wsdl:input wsaw:Action="http://tempuri.org/IDataService/ValidateSchedule" message="tns:IDataService_ValidateSchedule_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDataService/ValidateScheduleResponse" message="tns:IDataService_ValidateSchedule_OutputMessage" />
@@ -504,6 +564,60 @@
     </wsdl:operation>
     <wsdl:operation name="Delete">
       <soap:operation soapAction="http://tempuri.org/IBaseService/Delete" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetScheduleInfoesForGroups">
+      <soap:operation soapAction="http://tempuri.org/IDataService/GetScheduleInfoesForGroups" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSchedulesForDayTimeDate">
+      <soap:operation soapAction="http://tempuri.org/IDataService/GetSchedulesForDayTimeDate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSchedulesForAll">
+      <soap:operation soapAction="http://tempuri.org/IDataService/GetSchedulesForAll" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSchedulesForGroupOnlyId">
+      <soap:operation soapAction="http://tempuri.org/IDataService/GetSchedulesForGroupOnlyId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTimetableEntities">
+      <soap:operation soapAction="http://tempuri.org/IDataService/GetTimetableEntities" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGroupsByCode">
+      <soap:operation soapAction="http://tempuri.org/IDataService/GetGroupsByCode" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

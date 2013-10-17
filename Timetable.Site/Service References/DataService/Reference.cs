@@ -33,6 +33,7 @@ namespace Timetable.Site.DataService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Timetable.Site.DataService.Position))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Timetable.Site.DataService.Schedule))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Timetable.Site.DataService.Time))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Timetable.Site.DataService.TimetableEntity))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Timetable.Site.DataService.WeekType))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Timetable.Site.DataService.StudyYear))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Timetable.Site.DataService.Tutorial))]
@@ -1557,6 +1558,15 @@ namespace Timetable.Site.DataService {
         private System.DateTime StartDateField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string SubGroupField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Timetable.Site.DataService.TimetableEntity TimetableEntityField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> TimetableEntityIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private Timetable.Site.DataService.WeekType WeekTypeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -1693,6 +1703,45 @@ namespace Timetable.Site.DataService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public string SubGroup {
+            get {
+                return this.SubGroupField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.SubGroupField, value) != true)) {
+                    this.SubGroupField = value;
+                    this.RaisePropertyChanged("SubGroup");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Timetable.Site.DataService.TimetableEntity TimetableEntity {
+            get {
+                return this.TimetableEntityField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.TimetableEntityField, value) != true)) {
+                    this.TimetableEntityField = value;
+                    this.RaisePropertyChanged("TimetableEntity");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> TimetableEntityId {
+            get {
+                return this.TimetableEntityIdField;
+            }
+            set {
+                if ((this.TimetableEntityIdField.Equals(value) != true)) {
+                    this.TimetableEntityIdField = value;
+                    this.RaisePropertyChanged("TimetableEntityId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public Timetable.Site.DataService.WeekType WeekType {
             get {
                 return this.WeekTypeField;
@@ -1801,6 +1850,45 @@ namespace Timetable.Site.DataService {
                 if ((this.StartField.Equals(value) != true)) {
                     this.StartField = value;
                     this.RaisePropertyChanged("Start");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="TimetableEntity", Namespace="http://schemas.datacontract.org/2004/07/Timetable.Base.Entities.Scheduler", IsReference=true)]
+    [System.SerializableAttribute()]
+    public partial class TimetableEntity : Timetable.Site.DataService.BaseEntity {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool IsActiveField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NameField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool IsActive {
+            get {
+                return this.IsActiveField;
+            }
+            set {
+                if ((this.IsActiveField.Equals(value) != true)) {
+                    this.IsActiveField = value;
+                    this.RaisePropertyChanged("IsActive");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Name {
+            get {
+                return this.NameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NameField, value) != true)) {
+                    this.NameField = value;
+                    this.RaisePropertyChanged("Name");
                 }
             }
         }
@@ -2120,6 +2208,42 @@ namespace Timetable.Site.DataService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBaseService/Delete", ReplyAction="http://tempuri.org/IBaseService/DeleteResponse")]
         System.Threading.Tasks.Task<Timetable.Site.DataService.OperationResult> DeleteAsync(Timetable.Site.DataService.BaseEntity entity);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDataService/GetScheduleInfoesForGroups", ReplyAction="http://tempuri.org/IDataService/GetScheduleInfoesForGroupsResponse")]
+        Timetable.Site.DataService.ScheduleInfo[] GetScheduleInfoesForGroups(Timetable.Site.DataService.Group[] groups, Timetable.Site.DataService.TutorialType tutorialtype, Timetable.Site.DataService.StudyYear studyYear, int semester);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDataService/GetScheduleInfoesForGroups", ReplyAction="http://tempuri.org/IDataService/GetScheduleInfoesForGroupsResponse")]
+        System.Threading.Tasks.Task<Timetable.Site.DataService.ScheduleInfo[]> GetScheduleInfoesForGroupsAsync(Timetable.Site.DataService.Group[] groups, Timetable.Site.DataService.TutorialType tutorialtype, Timetable.Site.DataService.StudyYear studyYear, int semester);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDataService/GetSchedulesForDayTimeDate", ReplyAction="http://tempuri.org/IDataService/GetSchedulesForDayTimeDateResponse")]
+        Timetable.Site.DataService.Schedule[] GetSchedulesForDayTimeDate(System.Nullable<int> dayOfWeek, Timetable.Site.DataService.Time period, Timetable.Site.DataService.WeekType weekType, Timetable.Site.DataService.Lecturer lecturer, Timetable.Site.DataService.Auditorium auditorium, Timetable.Site.DataService.Group[] groups, string subGroup, System.Nullable<System.DateTime> startDate, System.Nullable<System.DateTime> endDate);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDataService/GetSchedulesForDayTimeDate", ReplyAction="http://tempuri.org/IDataService/GetSchedulesForDayTimeDateResponse")]
+        System.Threading.Tasks.Task<Timetable.Site.DataService.Schedule[]> GetSchedulesForDayTimeDateAsync(System.Nullable<int> dayOfWeek, Timetable.Site.DataService.Time period, Timetable.Site.DataService.WeekType weekType, Timetable.Site.DataService.Lecturer lecturer, Timetable.Site.DataService.Auditorium auditorium, Timetable.Site.DataService.Group[] groups, string subGroup, System.Nullable<System.DateTime> startDate, System.Nullable<System.DateTime> endDate);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDataService/GetSchedulesForAll", ReplyAction="http://tempuri.org/IDataService/GetSchedulesForAllResponse")]
+        Timetable.Site.DataService.Schedule[] GetSchedulesForAll(Timetable.Site.DataService.Lecturer lecturer, Timetable.Site.DataService.Auditorium auditorium, Timetable.Site.DataService.Group[] groups, Timetable.Site.DataService.WeekType weekType, string subGroup, System.Nullable<System.DateTime> startDate, System.Nullable<System.DateTime> endDate);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDataService/GetSchedulesForAll", ReplyAction="http://tempuri.org/IDataService/GetSchedulesForAllResponse")]
+        System.Threading.Tasks.Task<Timetable.Site.DataService.Schedule[]> GetSchedulesForAllAsync(Timetable.Site.DataService.Lecturer lecturer, Timetable.Site.DataService.Auditorium auditorium, Timetable.Site.DataService.Group[] groups, Timetable.Site.DataService.WeekType weekType, string subGroup, System.Nullable<System.DateTime> startDate, System.Nullable<System.DateTime> endDate);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDataService/GetSchedulesForGroupOnlyId", ReplyAction="http://tempuri.org/IDataService/GetSchedulesForGroupOnlyIdResponse")]
+        Timetable.Site.DataService.Schedule[] GetSchedulesForGroupOnlyId(Timetable.Site.DataService.Group group, Timetable.Site.DataService.StudyYear studyYear, int semester, System.DateTime StartDate, System.DateTime EndDate);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDataService/GetSchedulesForGroupOnlyId", ReplyAction="http://tempuri.org/IDataService/GetSchedulesForGroupOnlyIdResponse")]
+        System.Threading.Tasks.Task<Timetable.Site.DataService.Schedule[]> GetSchedulesForGroupOnlyIdAsync(Timetable.Site.DataService.Group group, Timetable.Site.DataService.StudyYear studyYear, int semester, System.DateTime StartDate, System.DateTime EndDate);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDataService/GetTimetableEntities", ReplyAction="http://tempuri.org/IDataService/GetTimetableEntitiesResponse")]
+        Timetable.Site.DataService.TimetableEntity[] GetTimetableEntities();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDataService/GetTimetableEntities", ReplyAction="http://tempuri.org/IDataService/GetTimetableEntitiesResponse")]
+        System.Threading.Tasks.Task<Timetable.Site.DataService.TimetableEntity[]> GetTimetableEntitiesAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDataService/GetGroupsByCode", ReplyAction="http://tempuri.org/IDataService/GetGroupsByCodeResponse")]
+        Timetable.Site.DataService.Group[] GetGroupsByCode(string code, int count);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDataService/GetGroupsByCode", ReplyAction="http://tempuri.org/IDataService/GetGroupsByCodeResponse")]
+        System.Threading.Tasks.Task<Timetable.Site.DataService.Group[]> GetGroupsByCodeAsync(string code, int count);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDataService/ValidateSchedule", ReplyAction="http://tempuri.org/IDataService/ValidateScheduleResponse")]
         bool ValidateSchedule(Timetable.Site.DataService.Schedule schedule);
         
@@ -2139,10 +2263,10 @@ namespace Timetable.Site.DataService {
         System.Threading.Tasks.Task<Timetable.Site.DataService.Auditorium[]> GetAuditoriumsAsync(Timetable.Site.DataService.Building building, Timetable.Site.DataService.AuditoriumType auditoriumType);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDataService/GetFreeAuditoriums", ReplyAction="http://tempuri.org/IDataService/GetFreeAuditoriumsResponse")]
-        Timetable.Site.DataService.Auditorium[] GetFreeAuditoriums(Timetable.Site.DataService.Building building, int day, Timetable.Site.DataService.WeekType weekType, Timetable.Site.DataService.Time time, Timetable.Site.DataService.TutorialType tutorialType, Timetable.Site.DataService.AuditoriumType auditoriumType, int capacity);
+        Timetable.Site.DataService.Auditorium[] GetFreeAuditoriums(Timetable.Site.DataService.Building building, int day, Timetable.Site.DataService.WeekType weekType, Timetable.Site.DataService.Time time, Timetable.Site.DataService.TutorialType tutorialType, Timetable.Site.DataService.AuditoriumType auditoriumType, int capacity, System.DateTime startDate, System.DateTime endDate);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDataService/GetFreeAuditoriums", ReplyAction="http://tempuri.org/IDataService/GetFreeAuditoriumsResponse")]
-        System.Threading.Tasks.Task<Timetable.Site.DataService.Auditorium[]> GetFreeAuditoriumsAsync(Timetable.Site.DataService.Building building, int day, Timetable.Site.DataService.WeekType weekType, Timetable.Site.DataService.Time time, Timetable.Site.DataService.TutorialType tutorialType, Timetable.Site.DataService.AuditoriumType auditoriumType, int capacity);
+        System.Threading.Tasks.Task<Timetable.Site.DataService.Auditorium[]> GetFreeAuditoriumsAsync(Timetable.Site.DataService.Building building, int day, Timetable.Site.DataService.WeekType weekType, Timetable.Site.DataService.Time time, Timetable.Site.DataService.TutorialType tutorialType, Timetable.Site.DataService.AuditoriumType auditoriumType, int capacity, System.DateTime startDate, System.DateTime endDate);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDataService/GetAuditoriumTypes", ReplyAction="http://tempuri.org/IDataService/GetAuditoriumTypesResponse")]
         Timetable.Site.DataService.AuditoriumType[] GetAuditoriumTypes();
@@ -2291,10 +2415,10 @@ namespace Timetable.Site.DataService {
         System.Threading.Tasks.Task<Timetable.Site.DataService.Schedule[]> GetSchedulesForCourseAsync(Timetable.Site.DataService.Faculty faculty, Timetable.Site.DataService.Course course, Timetable.Site.DataService.StudyYear studyYear, int semester, System.DateTime StartDate, System.DateTime EndDate);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDataService/GetSchedulesForGroup", ReplyAction="http://tempuri.org/IDataService/GetSchedulesForGroupResponse")]
-        Timetable.Site.DataService.Schedule[] GetSchedulesForGroup(Timetable.Site.DataService.Faculty faculty, Timetable.Site.DataService.Course course, Timetable.Site.DataService.Group group, Timetable.Site.DataService.StudyYear studyYear, int semester, System.DateTime StartDate, System.DateTime EndDate);
+        Timetable.Site.DataService.Schedule[] GetSchedulesForGroup(Timetable.Site.DataService.Faculty faculty, Timetable.Site.DataService.Course course, Timetable.Site.DataService.Group group, Timetable.Site.DataService.StudyYear studyYear, int semester, System.DateTime StartDate, System.DateTime EndDate, string SubGroup);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDataService/GetSchedulesForGroup", ReplyAction="http://tempuri.org/IDataService/GetSchedulesForGroupResponse")]
-        System.Threading.Tasks.Task<Timetable.Site.DataService.Schedule[]> GetSchedulesForGroupAsync(Timetable.Site.DataService.Faculty faculty, Timetable.Site.DataService.Course course, Timetable.Site.DataService.Group group, Timetable.Site.DataService.StudyYear studyYear, int semester, System.DateTime StartDate, System.DateTime EndDate);
+        System.Threading.Tasks.Task<Timetable.Site.DataService.Schedule[]> GetSchedulesForGroupAsync(Timetable.Site.DataService.Faculty faculty, Timetable.Site.DataService.Course course, Timetable.Site.DataService.Group group, Timetable.Site.DataService.StudyYear studyYear, int semester, System.DateTime StartDate, System.DateTime EndDate, string SubGroup);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDataService/CountSchedulesForScheduleInfoes", ReplyAction="http://tempuri.org/IDataService/CountSchedulesForScheduleInfoesResponse")]
         int CountSchedulesForScheduleInfoes(Timetable.Site.DataService.ScheduleInfo scheduleInfo);
@@ -2438,6 +2562,54 @@ namespace Timetable.Site.DataService {
             return base.Channel.DeleteAsync(entity);
         }
         
+        public Timetable.Site.DataService.ScheduleInfo[] GetScheduleInfoesForGroups(Timetable.Site.DataService.Group[] groups, Timetable.Site.DataService.TutorialType tutorialtype, Timetable.Site.DataService.StudyYear studyYear, int semester) {
+            return base.Channel.GetScheduleInfoesForGroups(groups, tutorialtype, studyYear, semester);
+        }
+        
+        public System.Threading.Tasks.Task<Timetable.Site.DataService.ScheduleInfo[]> GetScheduleInfoesForGroupsAsync(Timetable.Site.DataService.Group[] groups, Timetable.Site.DataService.TutorialType tutorialtype, Timetable.Site.DataService.StudyYear studyYear, int semester) {
+            return base.Channel.GetScheduleInfoesForGroupsAsync(groups, tutorialtype, studyYear, semester);
+        }
+        
+        public Timetable.Site.DataService.Schedule[] GetSchedulesForDayTimeDate(System.Nullable<int> dayOfWeek, Timetable.Site.DataService.Time period, Timetable.Site.DataService.WeekType weekType, Timetable.Site.DataService.Lecturer lecturer, Timetable.Site.DataService.Auditorium auditorium, Timetable.Site.DataService.Group[] groups, string subGroup, System.Nullable<System.DateTime> startDate, System.Nullable<System.DateTime> endDate) {
+            return base.Channel.GetSchedulesForDayTimeDate(dayOfWeek, period, weekType, lecturer, auditorium, groups, subGroup, startDate, endDate);
+        }
+        
+        public System.Threading.Tasks.Task<Timetable.Site.DataService.Schedule[]> GetSchedulesForDayTimeDateAsync(System.Nullable<int> dayOfWeek, Timetable.Site.DataService.Time period, Timetable.Site.DataService.WeekType weekType, Timetable.Site.DataService.Lecturer lecturer, Timetable.Site.DataService.Auditorium auditorium, Timetable.Site.DataService.Group[] groups, string subGroup, System.Nullable<System.DateTime> startDate, System.Nullable<System.DateTime> endDate) {
+            return base.Channel.GetSchedulesForDayTimeDateAsync(dayOfWeek, period, weekType, lecturer, auditorium, groups, subGroup, startDate, endDate);
+        }
+        
+        public Timetable.Site.DataService.Schedule[] GetSchedulesForAll(Timetable.Site.DataService.Lecturer lecturer, Timetable.Site.DataService.Auditorium auditorium, Timetable.Site.DataService.Group[] groups, Timetable.Site.DataService.WeekType weekType, string subGroup, System.Nullable<System.DateTime> startDate, System.Nullable<System.DateTime> endDate) {
+            return base.Channel.GetSchedulesForAll(lecturer, auditorium, groups, weekType, subGroup, startDate, endDate);
+        }
+        
+        public System.Threading.Tasks.Task<Timetable.Site.DataService.Schedule[]> GetSchedulesForAllAsync(Timetable.Site.DataService.Lecturer lecturer, Timetable.Site.DataService.Auditorium auditorium, Timetable.Site.DataService.Group[] groups, Timetable.Site.DataService.WeekType weekType, string subGroup, System.Nullable<System.DateTime> startDate, System.Nullable<System.DateTime> endDate) {
+            return base.Channel.GetSchedulesForAllAsync(lecturer, auditorium, groups, weekType, subGroup, startDate, endDate);
+        }
+        
+        public Timetable.Site.DataService.Schedule[] GetSchedulesForGroupOnlyId(Timetable.Site.DataService.Group group, Timetable.Site.DataService.StudyYear studyYear, int semester, System.DateTime StartDate, System.DateTime EndDate) {
+            return base.Channel.GetSchedulesForGroupOnlyId(group, studyYear, semester, StartDate, EndDate);
+        }
+        
+        public System.Threading.Tasks.Task<Timetable.Site.DataService.Schedule[]> GetSchedulesForGroupOnlyIdAsync(Timetable.Site.DataService.Group group, Timetable.Site.DataService.StudyYear studyYear, int semester, System.DateTime StartDate, System.DateTime EndDate) {
+            return base.Channel.GetSchedulesForGroupOnlyIdAsync(group, studyYear, semester, StartDate, EndDate);
+        }
+        
+        public Timetable.Site.DataService.TimetableEntity[] GetTimetableEntities() {
+            return base.Channel.GetTimetableEntities();
+        }
+        
+        public System.Threading.Tasks.Task<Timetable.Site.DataService.TimetableEntity[]> GetTimetableEntitiesAsync() {
+            return base.Channel.GetTimetableEntitiesAsync();
+        }
+        
+        public Timetable.Site.DataService.Group[] GetGroupsByCode(string code, int count) {
+            return base.Channel.GetGroupsByCode(code, count);
+        }
+        
+        public System.Threading.Tasks.Task<Timetable.Site.DataService.Group[]> GetGroupsByCodeAsync(string code, int count) {
+            return base.Channel.GetGroupsByCodeAsync(code, count);
+        }
+        
         public bool ValidateSchedule(Timetable.Site.DataService.Schedule schedule) {
             return base.Channel.ValidateSchedule(schedule);
         }
@@ -2462,12 +2634,12 @@ namespace Timetable.Site.DataService {
             return base.Channel.GetAuditoriumsAsync(building, auditoriumType);
         }
         
-        public Timetable.Site.DataService.Auditorium[] GetFreeAuditoriums(Timetable.Site.DataService.Building building, int day, Timetable.Site.DataService.WeekType weekType, Timetable.Site.DataService.Time time, Timetable.Site.DataService.TutorialType tutorialType, Timetable.Site.DataService.AuditoriumType auditoriumType, int capacity) {
-            return base.Channel.GetFreeAuditoriums(building, day, weekType, time, tutorialType, auditoriumType, capacity);
+        public Timetable.Site.DataService.Auditorium[] GetFreeAuditoriums(Timetable.Site.DataService.Building building, int day, Timetable.Site.DataService.WeekType weekType, Timetable.Site.DataService.Time time, Timetable.Site.DataService.TutorialType tutorialType, Timetable.Site.DataService.AuditoriumType auditoriumType, int capacity, System.DateTime startDate, System.DateTime endDate) {
+            return base.Channel.GetFreeAuditoriums(building, day, weekType, time, tutorialType, auditoriumType, capacity, startDate, endDate);
         }
         
-        public System.Threading.Tasks.Task<Timetable.Site.DataService.Auditorium[]> GetFreeAuditoriumsAsync(Timetable.Site.DataService.Building building, int day, Timetable.Site.DataService.WeekType weekType, Timetable.Site.DataService.Time time, Timetable.Site.DataService.TutorialType tutorialType, Timetable.Site.DataService.AuditoriumType auditoriumType, int capacity) {
-            return base.Channel.GetFreeAuditoriumsAsync(building, day, weekType, time, tutorialType, auditoriumType, capacity);
+        public System.Threading.Tasks.Task<Timetable.Site.DataService.Auditorium[]> GetFreeAuditoriumsAsync(Timetable.Site.DataService.Building building, int day, Timetable.Site.DataService.WeekType weekType, Timetable.Site.DataService.Time time, Timetable.Site.DataService.TutorialType tutorialType, Timetable.Site.DataService.AuditoriumType auditoriumType, int capacity, System.DateTime startDate, System.DateTime endDate) {
+            return base.Channel.GetFreeAuditoriumsAsync(building, day, weekType, time, tutorialType, auditoriumType, capacity, startDate, endDate);
         }
         
         public Timetable.Site.DataService.AuditoriumType[] GetAuditoriumTypes() {
@@ -2662,12 +2834,12 @@ namespace Timetable.Site.DataService {
             return base.Channel.GetSchedulesForCourseAsync(faculty, course, studyYear, semester, StartDate, EndDate);
         }
         
-        public Timetable.Site.DataService.Schedule[] GetSchedulesForGroup(Timetable.Site.DataService.Faculty faculty, Timetable.Site.DataService.Course course, Timetable.Site.DataService.Group group, Timetable.Site.DataService.StudyYear studyYear, int semester, System.DateTime StartDate, System.DateTime EndDate) {
-            return base.Channel.GetSchedulesForGroup(faculty, course, group, studyYear, semester, StartDate, EndDate);
+        public Timetable.Site.DataService.Schedule[] GetSchedulesForGroup(Timetable.Site.DataService.Faculty faculty, Timetable.Site.DataService.Course course, Timetable.Site.DataService.Group group, Timetable.Site.DataService.StudyYear studyYear, int semester, System.DateTime StartDate, System.DateTime EndDate, string SubGroup) {
+            return base.Channel.GetSchedulesForGroup(faculty, course, group, studyYear, semester, StartDate, EndDate, SubGroup);
         }
         
-        public System.Threading.Tasks.Task<Timetable.Site.DataService.Schedule[]> GetSchedulesForGroupAsync(Timetable.Site.DataService.Faculty faculty, Timetable.Site.DataService.Course course, Timetable.Site.DataService.Group group, Timetable.Site.DataService.StudyYear studyYear, int semester, System.DateTime StartDate, System.DateTime EndDate) {
-            return base.Channel.GetSchedulesForGroupAsync(faculty, course, group, studyYear, semester, StartDate, EndDate);
+        public System.Threading.Tasks.Task<Timetable.Site.DataService.Schedule[]> GetSchedulesForGroupAsync(Timetable.Site.DataService.Faculty faculty, Timetable.Site.DataService.Course course, Timetable.Site.DataService.Group group, Timetable.Site.DataService.StudyYear studyYear, int semester, System.DateTime StartDate, System.DateTime EndDate, string SubGroup) {
+            return base.Channel.GetSchedulesForGroupAsync(faculty, course, group, studyYear, semester, StartDate, EndDate, SubGroup);
         }
         
         public int CountSchedulesForScheduleInfoes(Timetable.Site.DataService.ScheduleInfo scheduleInfo) {

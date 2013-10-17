@@ -24,5 +24,7 @@ namespace Timetable.Site.Models.Schedules
         public string EndDate { get; set; }
 
         public bool AutoDelete { get; set; }
+
+        public string SubGroup { get; set; }
     }
 }
