@@ -1,0 +1,22 @@
+﻿<!-- Schedule Update Confirm Form -->
+<!-- ko if: $root.currentScheduleInfoSelectForm() !== undefined -->
+<!-- ko if: $root.currentScheduleInfoSelectForm().currentScheduleInfoUpdateForm() !== undefined -->
+<!-- ko if: $root.currentScheduleInfoSelectForm().currentScheduleInfoUpdateForm().currentConfirmForm() !== undefined -->
+<div class="modal hide" id ="updsiconfdialog" data-bind=" draggable: {handle: '.modal-header'}" style="cursor:move; width:250px; overflow-x:hidden;">
+    <div class="modal-header" style="overflow-x:hidden;">
+        <button type="button" class="close" data-bind="event:{click: $root.currentScheduleInfoSelectForm().currentScheduleInfoUpdateForm().currentConfirmForm().closeDialog.bind($data,true)}" aria-hidden="true">&times;</button>
+        <h5>Подтвердите действие</h5>
+    </div>
+    <div class="modal-body" style="overflow-x:hidden; overflow-y:hidden; max-height:130px;" >
+        <div class="alert">
+            <strong>Вы действительно хотите изменить информацию о сведении к расписанию ?</strong>
+        </div>
+    </div>
+    <div class="modal-footer" style="overflow-x:hidden;">
+        <input id="selectOkButton" type="button" class="btn btn-primary" value="Да" data-bind="click: $root.currentScheduleInfoSelectForm().currentScheduleInfoUpdateForm().currentConfirmForm().okButtonClick.bind($data,true)" />
+        <a style="cursor:pointer;" data-bind="click: $root.currentScheduleInfoSelectForm().currentScheduleInfoUpdateForm().currentConfirmForm().cancelButtonClick.bind($data,true)">Нет</a>
+    </div>
+</div>
+<!-- /ko -->  
+<!-- /ko -->  
+<!-- /ko -->  

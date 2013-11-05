@@ -248,6 +248,20 @@ namespace Timetable.Site.Controllers.Api
             return result;
         }
 
+        [HttpGet]
+        public HttpResponseMessage GetScheduleById(
+                int Id)
+        {
+            return CreateResponse<int, SendModel>(privateGetScheduleById, Id);
+        }
+
+        private SendModel privateGetScheduleById(
+               int Id)
+        {
+            var result = DataService.GetScheduleById(Id);
+            return new SendModel(result, false, false, false);
+        }
+
   
         [HttpGet]
         public HttpResponseMessage GetScheduleByAll(
@@ -611,17 +625,25 @@ namespace Timetable.Site.Controllers.Api
             else
                 aSchedule.DayOfWeek = DayOfWeek.Value;
 
-            
+
             if (AuditoriumId == null)
                 validateErrors.Add(4);
             else
+            {
+                aSchedule.Auditorium = new Auditorium();
+                aSchedule.Auditorium.Id = AuditoriumId.Value;
                 aSchedule.AuditoriumId = AuditoriumId.Value;
+            }
 
-            
+
             if (PeriodId == null)
                 validateErrors.Add(5);
             else
+            {
+                aSchedule.Period = new Time();
+                aSchedule.Period.Id = PeriodId.Value;
                 aSchedule.PeriodId = PeriodId.Value;
+            }
 
          
             if (ScheduleInfoId == null)
@@ -632,7 +654,11 @@ namespace Timetable.Site.Controllers.Api
             if (WeekTypeId == null)
                 validateErrors.Add(7);
             else
+            {
+                aSchedule.WeekType = new WeekType();
+                aSchedule.WeekType.Id = WeekTypeId.Value;
                 aSchedule.WeekTypeId = WeekTypeId.Value;
+            }
 
             aSchedule.CreatedDate = DateTime.Now.Date;
             aSchedule.UpdateDate = DateTime.Now.Date;
@@ -671,59 +697,55 @@ namespace Timetable.Site.Controllers.Api
 
             if (qSchedule != null)
             {
-                //qSchedule.DayOfWeek = model.DayOfWeek;
 
                 qSchedule.SubGroup = model.SubGroup;
+                qSchedule.DayOfWeek = model.DayOfWeek;
 
-                if (qSchedule.Auditorium != null)
+                if (model.AuditoriumId != null)
                 {
                     qSchedule.Auditorium = new Auditorium();
                     qSchedule.Auditorium.Id = model.AuditoriumId;
                     qSchedule.AuditoriumId = model.AuditoriumId;
                 }
 
-                /*
-                qSchedule.PeriodId = model.PeriodId;
-                qSchedule.ScheduleInfoId = model.ScheduleInfoId;
-                qSchedule.WeekTypeId = model.WeekTypeId;*/
-
                 qSchedule.UpdateDate = DateTime.Now.Date;
 
 
-                /*
-                if (qSchedule.Period != null)
+                if (model.PeriodId != null)
                 {
+                    qSchedule.Period = new Time();
+                    qSchedule.Period.Id = model.PeriodId;
                     qSchedule.PeriodId = model.PeriodId;
                 }
 
-                if (qSchedule.ScheduleInfo != null)
+
+                if (model.ScheduleInfoId != null)
                 {
                     qSchedule.ScheduleInfoId = model.ScheduleInfoId;
                 }
 
-                if (qSchedule.WeekType != null)
+                if (model.WeekTypeId != null)
                 {
+                    qSchedule.WeekType = new WeekType();
+                    qSchedule.WeekType.Id = model.WeekTypeId;
                     qSchedule.WeekTypeId = model.WeekTypeId;
-                }*/
-            }
-
-            
-            if (model.StartDate != "" && model.StartDate != null)
-            {
-                qSchedule.StartDate = DateTime.ParseExact(model.StartDate, "yyyy-MM-dd", null);
-            }
-            if (model.EndDate != "" && model.EndDate != null)
-            {          
-                qSchedule.EndDate = DateTime.ParseExact(model.EndDate, "yyyy-MM-dd", null);
-            }
+                }
 
 
-            if (model.AutoDelete != null)
-            {
-                qSchedule.AutoDelete = model.AutoDelete;
+
+                if (model.StartDate != "" && model.StartDate != null)
+                    qSchedule.StartDate = DateTime.ParseExact(model.StartDate, "yyyy-MM-dd", null);
+                if (model.EndDate != "" && model.EndDate != null)
+                    qSchedule.EndDate = DateTime.ParseExact(model.EndDate, "yyyy-MM-dd", null);
+
+
+
+                if (model.AutoDelete != null)
+                    qSchedule.AutoDelete = model.AutoDelete;
+
+                DataService.Update(qSchedule);
             }
 
-            DataService.Update(qSchedule);
         }
 
 

@@ -1,0 +1,29 @@
+﻿<!-- ko if: $root.currentFlowSelectForm() !== undefined -->
+<div id ="flowdialogintable" style="cursor:move; width:250px; overflow-x:hidden; ">
+    <div>
+        <h5>Выбор потока</h5>
+    </div>
+    <div>
+            <select style="width:100%" class="span5" id="" data-bind="options: $root.currentFlowSelectForm().branches, optionsText: 'Name', value: $root.currentFlowSelectForm().currentBranch">
+                            <option></option>
+            </select>
+
+            <select style="width:100%" class="span5" id="" data-bind="options: $root.currentFlowSelectForm().faculties, optionsText: 'Name', value: $root.currentFlowSelectForm().currentFaculty">
+                            <option></option>
+            </select>
+
+            <select multiple style="width:100%" size="6" class="span5" id="" data-bind="options: $root.currentFlowSelectForm().courses, optionsText: 'Name', selectedOptions: $root.currentFlowSelectForm().currentCourses">
+                            <option></option>
+            </select>
+
+            <select multiple style="width:100%" size="7" class="span5" id="" data-bind="options: $root.currentFlowSelectForm().specialities, optionsText: 'Name', selectedOptions: $root.currentFlowSelectForm().currentSpecialities">
+                            <option></option>
+            </select>
+
+            <select multiple style="width:100%" size="8" class="span5" id="" data-bind="options: $root.currentFlowSelectForm().groups, optionsText: 'Code', selectedOptions: $root.currentFlowSelectForm().currentGroups">
+                            <option></option>
+            </select>
+    </div>
+</div>
+
+<!-- /ko --> 

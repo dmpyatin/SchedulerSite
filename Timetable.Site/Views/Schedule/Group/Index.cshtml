@@ -26,6 +26,23 @@
     .popover-title { display: none; }
 </style>
 
+
+       <table style="margin:10px;">
+       <tr>
+          <th style="text-align:left;"><strong>Идут с</strong></th>
+          <th style="text-align:left;"><strong>Идут по</strong></th>
+       </tr>
+       <tr>
+          <td>
+            <input style="width:150px; height:30px;" type="date" id="startDate" data-bind="value:$root.getScheduleStartDate, valueUpdate: 'blur'"/> 
+          </td>
+          <td>
+            <input  style="width:150px; height:30px;" type="date" id="endDate" data-bind="value:$root.getScheduleEndDate, valueUpdate: 'blur'" />
+          </td>
+       </tr>
+       </table>
+
+
 <div id="main11">
     <a name="top"></a>
  
@@ -92,6 +109,8 @@
         <div id="nullSchedules" class="hide" style=" font-size:26px; padding:20px; background-color:#f1ccff; color:dimgray; float:left; height:80px; margin:10px; margin-top:10px; width:95%;">  
             <span>Даных о расписании не найдено</span>
         </div>
+
+
         
         <!-- ko if: $root.isSchedulesLoaded() == true -->
         <div style="font-size: 20px; float:left; margin-top:8px; margin-left:10px;">
@@ -100,6 +119,8 @@
         </div>
         <!-- /ko -->
         
+       
+
         <!-- ko if: $root.isTableView() == false -->
         <div id="timeset" style="float:left; margin:10px; margin-top:10px; width:100%;" data-bind="foreach: schedules" >
             <!-- ko if: $root.schedules()[$index()]().length > 0 -->
@@ -138,7 +159,8 @@
         <!-- /ko -->
     </div>
     
-    
+   
+
     <!-- ko if: $root.isTableView() == true -->
     <!--<div style="width:100px; height:20px; float:left; margin:10px; margin-top:10px;background-color:lavender; float:left;"></div>-->
     <!--<div data-bind="foreach: daysOfweek" style="margin-left:135px;">
@@ -244,36 +266,6 @@
     <div style="z-index:100500; font-size:20px; background-color:lavender; -webkit-border-radius:6px; -moz-border-radius:5px; -khtml-border-radius:10px;  position:fixed; right:50%; bottom: 5px;"><a href="#top">Наверх</a></div>
 </div>
 
-
-<div id ="interval" style="right:0px; margin-top:600px;">
-    
-    <div class="btn-group">
-        <div class="btn-group">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
-            <ul class="dropdown-menu">
-                <li><a href="#">На неделю назад</a></li>
-                <li><a href="#">На месяц назад</a></li>
-                <li><a href="#">На год назад</a></li>
-            </ul>
-            <a class="btn" href="#">На неделю назад</a>
-        </div>
-        <span class="btn">Временной интервал</span>
-        <span class="btn">С: </span>
-        <input class="btn" style="height:30px; width:150px;" type="date" id="startDate" data-bind="value:$root.getScheduleStartDate, valueUpdate: 'blur'"/> 
-        <span class="btn">по: </span>
-        <input class="btn"  style="height:30px;  width:150px;" type="date" id="endDate" data-bind="value:$root.getScheduleEndDate, valueUpdate: 'blur'" />
-        <div class="btn-group">
-            <a class="btn" href="#">На неделю вперед</a>
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
-            <ul class="dropdown-menu">
-                <li><a href="#">На неделю вперед</a></li>
-                <li><a href="#">На месяц вперед</a></li>
-                <li><a href="#">На год вперед</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
- 
 <div class="extendInfo hide" style="width:auto;">
     <!-- ko if: $root.clickedSchedule() !== undefined -->
     <span style="font-size:20px;" data-bind="text: $root.clickedSchedule().Time()"></span>

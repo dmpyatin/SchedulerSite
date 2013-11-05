@@ -61,6 +61,19 @@ namespace Timetable.Site.Controllers.Api
        }
 
 
+        public HttpResponseMessage GetById(int Id)
+        {
+            return CreateResponse<int, SendModel>(privateGetById, Id);
+        }
+
+        private SendModel privateGetById(int Id)
+        {
+            var result = DataService.GetScheduleInfoById(Id);
+            return new SendModel(result, 0);
+        }
+
+
+
         public HttpResponseMessage GetByGroupsOnly(
                string groupIds,
                int tutorialTypeId,

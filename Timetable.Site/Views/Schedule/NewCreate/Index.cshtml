@@ -6,20 +6,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!-- <link  rel='stylesheet' type='text/css' href="@Url.Content("~/Content/themes/base/jquery-ui-1.10.1.custom.css")" />
-<link  rel='stylesheet' type='text/css' href="@Url.Content("~/Content/bootstrap.css")" />
-<link href="@Url.Content("~/Content/resources/css/ext-all.css")" rel="stylesheet" type="text/css" />
-<script type='text/javascript' src="@Url.Content("~/Scripts/jquery-1.9.1.js")"></script>
-<script type='text/javascript' src="@Url.Content("~/Scripts/knockout-2.1.0.js")"></script>
-<script type='text/javascript' src="@Url.Content("~/Scripts/jquery-ui-1.10.1.custom.js")"></script>
-<script type='text/javascript' src="@Url.Content("~/Scripts/Site/newbase.viewmodel.js")"></script>
-<script type='text/javascript' src="@Url.Content("~/Scripts/Site/data.model.js")"></script>
-<script type='text/javascript' src="@Url.Content("~/Scripts/bootstrap.js")"></script>
-<script src="@Url.Content("~/Scripts/ext-all.js")" type="text/javascript"></script> --> 
-<!--<link  rel='stylesheet' type='text/css' href="@Url.Content("~/Content/classic-min.css")" />-->
-<!--<script type='text/javascript' src="@Url.Content("~/Scripts/jquery.mousewheel.min.js")"></script>
-<script type='text/javascript' src="@Url.Content("~/Scripts/jQDateRangeSlider-min.js")"></script>-->
-
 
 <style>
   .modal-backdrop {background: white;}
@@ -89,275 +75,42 @@
 
   </style>
 
-<script>
-    
-</script>
-
-   <script>
-  $(function() {
-      //Диалог для добавления занятия
-      /*$("#adddialog").dialog({
-          autoOpen: false,
-          height: 530,
-          width: 250,
-          modal: true,
-      });*/
-
-      // $("#spinner").spinner();
-
-      $("#adddialog").draggable({
-          handle: ".modal-header"
-      });
-
-      $("#auditoriumdialog").draggable({
-          handle: ".modal-header"
-      });
-
-      $("#changeauditoriumdialog").draggable({
-          handle: ".modal-header"
-      });
-
-      $("#addhoursdialog").draggable({
-          handle: ".modal-header"
-      });
-
-      $("#dateSlider").slider({
-          range: true,
-          min: 0,
-          max: 500,
-          values: [75, 300],
-          slide: function (event, ui) {
-
-          }
-      });
-
-      /*
-      $('#adddialog').modal({
-          keyboard: true,
-          show: false
-      });*/
-
-      /*$("#auditoriumdialog").dialog({
-          autoOpen: false,
-          height: 450,
-          width: 280,
-          modal: true,
-      });*/
-
-      /*$("#changeauditoriumdialog").dialog({
-          autoOpen: false,
-          height: 450,
-          width: 280,
-          modal: true,
-         
-      });*/
-
-      /*$("#addhoursdialog").dialog({
-          autoOpen: false,
-          height: 200,
-          width: 280,
-          modal: true,
-      });*/
-    
-    
-    $("#changescheduledialog").dialog({
-        autoOpen: false,
-        height: 280,
-        width: 400,
-        modal: true,
-    });
-    $("#change").click(function () {
-        $("#changescheduledialog").dialog("open");
-    });
-  });
-
-  $(function () {
-      //$("#tabs").tabs();
-      //$("#scheduleinfotab").tabs();
-      
-  });
-
-  $(function () {
-     //$("#accordion").accordion();
-  });
-
-  $(function () {
-    //$("#accordion1").accordion({ heightStyle: "content" });
-
-  });
-  </script>
-
 <body style="overflow-x:hidden; background-color:#E0E0E0;">
-
 
  
 
-  <!-- Main -->
-  <div class="container-fluid"  >
-  <div class="row-fluid">
 
-
-    
-    <div id="div11">
-
-    <div id ="menu11">
-        @Html.Partial("NewCreate/SideSelectMenu")
-    </div>
-
-    <div id="timetable11" style="width:300px;">
-    <div id="timetabletitle" style="margin:0px; text-align:center;" >
-        <strong data-bind="text:$root.timeTableTitle()"></strong>
-    </div>
-    <!-- Timetable -->
-    <!-- ko if: $root.ScheduleRangeLength() !== 0 -->
-    <div id="rty" style="margin-top:13px; width:300px;">
-     
-      <ul id="timetable" data-bind="foreach: cells" >
-          <!-- ko if: $index() <= $root.daysOfweek().length -->
-                <!-- ko if: $index()%($root.daysOfweek().length+1) == 0 -->
-                    <li class="ui-widget-content">
-                        <div style="width:80px;height:30px;">
-                            <strong>Время</strong>
-                        </div>
-                    </li>
-                <!-- /ko -->
-                <!-- ko if: $index()%($root.daysOfweek().length+1) !== 0 -->
-                <li class="ui-widget-content">
-                    <div  style="width: 178px; height:30px;">
-                        <strong data-bind="text: $root.daysOfweek()[$index()-1].Name"></strong>
-                    </div>
-                </li>
-                <!-- /ko -->
-          <!-- /ko -->
-
-           <!-- ko if: $index() > $root.daysOfweek().length -->
-           <!-- ko if: $index()%($root.daysOfweek().length+1) == 0 -->
-                <li class="ui-widget-content">
-                    <div style="width:80px;height:130px;">
-                        <!-- ko if: $root.timesFromSchedules()[$index()/($root.daysOfweek().length+1)-1] !== undefined -->
-                           <!-- ko if: $root.timesFromSchedules()[$index()/($root.daysOfweek().length+1)-1].Start !== undefined -->
-                            <strong data-bind="style: {backgroundColor: $root.timesFromSchedules()[$index()/($root.daysOfweek().length+1)-1].dayTimeId == -1 ? 'red' : 'black' },  text: $root.timesFromSchedules()[$index()/($root.daysOfweek().length+1)-1].Start + '-' + $root.timesFromSchedules()[$index()/($root.daysOfweek().length+1)-1].End"></strong>
-                           <!-- /ko -->
-                        <!-- /ko -->
-                    </div>
-                </li>
-           <!-- /ko -->
-           <!-- ko if: $index()%($root.daysOfweek().length+1) !== 0 -->
-
-          
-
-           <li class="ui-widget-content" data-bind="" style="width:180px;">
-               
-            
-               <div class="ScheduleBacket" 
-                    href="#" rel="popover" data-original-title=""
-                    data-bind="event: {contextmenu: $root.ScheduleBacketSingleRightClick.bind($data,$index()), click: $root.ScheduleBacketSingleLeftClick.bind($data,$index()), mouseover: $root.ScheduleBacketCssState.bind($data, $index(),'onScheduleBacketSelect'), mouseout:  $root.ScheduleBacketCssState.bind($data, $index(),'onScheduleBacketUnselect'), dblclick: $root.ScheduleBacketDoubleClick}, foreach: $root.ScheduleArray()[$index()-($root.daysOfweek().length+1)-($index()/($root.daysOfweek().length+1)>>0)].Tickets, droppable: {drop: $root.ScheduleBacketDrop.bind($data, $index()),  accept: '#sidrag',  over: $root.ScheduleBacketOverDrop.bind($data,$index()), out: $root.ScheduleBacketOutDrop.bind($data,$index())}, attr: {'class': $root.ScheduleArray()[$index()-($root.daysOfweek().length+1)-($index()/($root.daysOfweek().length+1)>>0)].CssClass() }," style="overflow-x:hidden; z-index:inherit;overflow-y:auto; max-height:130px; width: 176px; height:130px;">
-          
-      
-                   <div data-bind="attr: {'class': $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].PaddingCss() }"></div>
-
-                   <!--<div id="sidrag" class="ScheduleTicket" style="height:86px; border:solid 1px; border-color:orange; width:178px;" 
-                       data-bind="event: {contextmenu: $root.ScheduleSingleRightClick.bind($data, $parentContext.$index(), $index()), mouseover: $root.ScheduleTicketCssState.bind($data, $parentContext.$index(), $index(),'onScheduleTicketSelect'), mouseout: $root.ScheduleTicketCssState.bind($data, $parentContext.$index(), $index(),$root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].UnselectCssClass()), droppable: {over: $root.ScheduleTicketOverDrop.bind($data, $parentContext.$index(), $index())}, click: $root.ScheduleSingleLeftClick.bind($data, $parentContext.$index(), $index()) , dblclick: $root.ScheduleDoubleClick}, draggable: { start: $root.ScheduleStartDrag, opacity:1.0, helper:'clone'}, attr: {'class': $root.ScheduleTicketCss()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)][$index()]() },">
-                   -->
-                   <!-- ko if: $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Data.WeekTypeId() == 1 -->
-                   <div id="sidrag" class="ScheduleTicket" style="height:62px; max-height:100px; border:solid 3px; border-color:green; width:176px;" 
-                       data-bind="event: {contextmenu: $root.ScheduleSingleRightClick.bind($data, $parentContext.$index(), $index()), mouseover: $root.ScheduleTicketCssState.bind($data, $parentContext.$index(), $index(),'onScheduleTicketSelect'), mouseout: $root.ScheduleTicketCssState.bind($data, $parentContext.$index(), $index(),$root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].UnselectCssClass()), click: $root.ScheduleSingleLeftClick.bind($data, $parentContext.$index(), $index()) , dblclick: $root.ScheduleDoubleClick}, attr: {'class': $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].CssClass() },">
-                   <div style="float:right; right:0px; top:0px; margin-right: 5px;">    
-                       <strong data-bind="text: '#' + $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.Auditorium()"></strong>
-                   </div>
-                   <div style="float:left; color:green; left:0px; top:0px; margin-left: 5px;">
-                   <strong data-bind="text: $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.WeekType()">&nbsp;&nbsp;</strong>
-                   </div>
-                   <p style="text-align:left;  text-indent: 20px; ">
-                   <span data-bind="text: $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.Lecturer()"></span>
-                   <span data-bind="text: $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.Tutorial()"></span>
-                   <span data-bind="text: '(' + $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.TutorialType() + ')'"></span>
-                   <span data-bind="text: $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.Groups()"></span>
-                       <!-- ko if: $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.subGroup() !== null && $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.subGroup() !== undefined -->
-                       <span data-bind="text: '(' + $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.subGroup() + ')'"></span> 
-                       <!-- /ko -->    
-                   </p>
-                   </div>
-                   <!-- /ko -->
-                   <!-- ko if: $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Data.WeekTypeId() == 2 -->
-                   <div id="sidrag" class="ScheduleTicket" style="height:62px; max-height:100px; border:solid 3px; border-color:red; width:176px;" 
-                       data-bind="event: {contextmenu: $root.ScheduleSingleRightClick.bind($data, $parentContext.$index(), $index()), mouseover: $root.ScheduleTicketCssState.bind($data, $parentContext.$index(), $index(),'onScheduleTicketSelect'), mouseout: $root.ScheduleTicketCssState.bind($data, $parentContext.$index(), $index(),$root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].UnselectCssClass()), click: $root.ScheduleSingleLeftClick.bind($data, $parentContext.$index(), $index()) , dblclick: $root.ScheduleDoubleClick}, attr: {'class': $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].CssClass() },">
-                   <div style="float:right; right:0px; top:0px; margin-right: 5px;">    
-                       <strong data-bind="text: '#' + $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.Auditorium()"></strong>
-                   </div>
-                   <div style="float:left; color:red; left:0px; top:0px; margin-left: 5px;">
-                   <strong data-bind="text: $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.WeekType()">&nbsp;&nbsp;</strong>
-                   </div>
-                   <p style="text-align:left;  text-indent: 20px; ">
-                   <span data-bind="text: $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.Lecturer()"></span>
-                   <span data-bind="text: $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.Tutorial()"></span>
-                   <span data-bind="text: '(' + $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.TutorialType() + ')'"></span>
-                   <span data-bind="text: $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.Groups()"></span>
-                       <!-- ko if: $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.subGroup() !== null && $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.subGroup() !== undefined -->
-                       <span data-bind="text: '(' + $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.subGroup() + ')'"></span> 
-                       <!-- /ko -->    
-                   </p>
-                   </div>
-                   <!-- /ko -->
-                   <!-- ko if: $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Data.WeekTypeId() == 3 -->
-                   <div id="sidrag" class="ScheduleTicket" style="height:62px; max-height:100px; border:solid 3px; border-color:blue; width:176px;" 
-                       data-bind="event: {contextmenu: $root.ScheduleSingleRightClick.bind($data, $parentContext.$index(), $index()), mouseover: $root.ScheduleTicketCssState.bind($data, $parentContext.$index(), $index(),'onScheduleTicketSelect'), mouseout: $root.ScheduleTicketCssState.bind($data, $parentContext.$index(), $index(),$root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].UnselectCssClass()), click: $root.ScheduleSingleLeftClick.bind($data, $parentContext.$index(), $index()) , dblclick: $root.ScheduleDoubleClick}, attr: {'class': $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].CssClass() },">
-                   <div style="float:right; right:0px; top:0px; margin-right: 5px;">    
-                       <strong data-bind="text: '#' + $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.Auditorium()"></strong>
-                   </div>
-                   <div style="float:left; color:blue; left:0px; top:0px; margin-left: 5px;">
-                   <strong data-bind="text: $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.WeekType()">&nbsp;&nbsp;</strong>
-                   </div>
-                   <p style="text-align:left;  text-indent: 20px; ">
-                   <span data-bind="text: $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.Lecturer()"></span>
-                   <span data-bind="text: $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.Tutorial()"></span>
-                   <span data-bind="text: '(' + $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.TutorialType() + ')'"></span>
-                   <span data-bind="text: $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.Groups()"></span>
-                       <!-- ko if: $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.subGroup() !== null && $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.subGroup() !== undefined -->
-                       <span data-bind="text: '(' + $root.ScheduleArray()[$parentContext.$index()-($root.daysOfweek().length+1)-($parentContext.$index()/($root.daysOfweek().length+1)>>0)].Tickets()[$index()].Display.subGroup() + ')'"></span> 
-                       <!-- /ko -->                                      
-                   </p>
-                   </div>
-                   <!-- /ko -->
-               </div>
-           </li>
-            <!-- /ko -->
-          <!-- /ko -->
-      </ul>
-  </div>
- <!-- /ko -->
-    </div>
-    </div>
- </div>
- </div>
-
-@Html.Partial("NewCreate/Forms")
+    @Html.Partial("NewCreate/Forms")
 
     <div id="headerMenu11" style="height:100px;">
-        @Content.Navbar("scheduleCreateLink", this)
+       
+
+        <!--
         <div class="btn-toolbar">
             <div class="btn-group" style="margin-top:35px;">
-                <input style="width:150px; height:30px;" type="date" id="startDate" data-bind="value:$root.currentScheduleStartDate, valueUpdate: 'blur'"/> 
+                <input style="width:150px; height:30px;" type="date" id="startDate" data-bind=""/> 
   
-                <input  style="width:150px; height:30px;" type="date" id="endDate" data-bind="value:$root.currentScheduleEndDate, valueUpdate: 'blur'" />
+                <input  style="width:150px; height:30px;" type="date" id="endDate" data-bind="" />
          
-                <select style="width:110px;"  data-placeholder="Выберите здание" class="span5" id="buildings1" data-bind="options: $root.buildings, optionsText: 'Name', value: $root.currentBuilding">
+                <select style="width:110px;"  data-placeholder="Выберите здание" class="span5" id="buildings1" data-bind="">
                     <option></option>
                 </select>
             </div>
 
             <div class="btn-group"">
-                <input  type="button"  id="si" class="btn btn-primary" value="Сведения к расписанию" data-bind="click: $root.ScheduleInfoButton" />
-                <input  type="button"  id="add" class="btn btn-primary disabled" value="Запланировать" data-bind="click: $root.SchedulePlanButton" />
-                <input  type="button"  id="del" class="btn disabled" value="Снять занятие" data-bind="click: $root.ScheduleDeleteButton" />
-                <!--<input type="button" id="change" class="btn disabled" value="Сделать замену" data-bind="click: $root.ScheduleChangeButton" />-->
-                <input  type="button"  id="changeAuditorium" class="btn disabled" value="Поменять ауд." data-bind="click: $root.AuditoriumChangeButton" />
-                <input  type="button"  id="freeAuditorium" class="btn disabled" value="Доступные ауд." data-bind="click: $root.FreeAuditoriumsButton" />
+                <input  type="button"  id="si1" class="btn btn-primary" value="Таблица занятий" data-bind="" />
+                <input  type="button"  id="si2" class="btn btn-primary" value="Выбор потока" data-bind="" />
+                <input  type="button"  id="si3" class="btn btn-primary" value="Сведения к расписанию" data-bind="" />
+                <input  type="button"  id="add" class="btn btn-primary disabled" value="Запланировать" data-bind="" />
+                <input  type="button"  id="del" class="btn disabled" value="Снять занятие" data-bind="" />
+                
+                <input  type="button"  id="changeAuditorium" class="btn disabled" value="Поменять ауд." data-bind="" />
+                <input  type="button"  id="freeAuditorium" class="btn disabled" value="Доступные ауд." data-bind="" />
             </div>
             <div class="btn-group"">    
-                <button type="button"  id="printSchedule" class="btn" value="Сформировать отчет" data-bind="click: $root.ShowPrintSettingMenu" > <i class="icon-print"></i>Сформировать отчет</button>
+                <button type="button"  id="printSchedule" class="btn" value="Сформировать отчет" data-bind="" > <i class="icon-print"></i>Сформировать отчет</button>
             </div>
-        </div>
+        </div>-->
 
     </div>
    

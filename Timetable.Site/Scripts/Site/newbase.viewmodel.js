@@ -219,29 +219,1534 @@ var ScheduleInfo = function (scheduleInfoDisplay, scheduleInfoData, isSelected, 
     this.IsDragged = ko.observable(isDragged);
 };
 
-
-var ScheduleSelectForm=function(creteria) {
+//Форма печати отчетов
+var PrintReportForm = function () {
     var self = this;
-};
 
-
-var ScheduleContextMenuForm = function (schedule) {
-    var self = this;
-    
-    self.currentSchedule = ko.observable(schedule);
-    self.updateScheduleClick=function(status) {
-        if(status==true) {
-            
-        }
-    };
-    self.deleteScheduleClick=function(status) {
+    self.init = function (status) {
         if (status == true) {
 
         }
     };
+
+    self.openDialog = function (status) {
+        if (status == true) {
+            $("#printdialog").modal('show');
+        }
+    }
+
+    self.closeDialog = function (status) {
+        if (status == true) {
+            $("#printdialog").modal('hide');
+        }
+    }
+
+    self.init(true);
+
 };
 
-var ScheduleInfoContextMenuForm = function (scheduleInfo, xPos, yPos) {
+//Форма подтверждения обновления сведения к расписанию
+var UpdateScheduleInfoConfirmForm = function (action) {
+    var self = this;
+
+    self.init = function (status) {
+        if (status == true) {
+
+        }
+    };
+
+    self.openDialog = function (status) {
+        if (status == true) {
+            $("#updsiconfdialog").modal('show');
+        }
+    }
+
+    self.closeDialog = function (status) {
+        if (status == true) {
+            $("#updsiconfdialog").modal('hide');
+        }
+    }
+
+    self.okButtonClick = function (status) {
+        if (status == true) {
+            action(true);
+            self.closeDialog(true);
+        }
+    }
+
+    self.cancelButtonClick = function (status) {
+        if (status == true) {
+            self.closeDialog(true);
+        }
+    }
+
+    self.init(true);
+
+};
+
+//Форма подтверждения удаления занятия
+var DeleteScheduleConfirmForm = function (action, schedule) {
+    var self = this;
+
+    self.init = function (status) {
+        if (status == true) {
+
+        }
+    };
+
+    self.openDialog = function (status) {
+        if (status == true) {
+            $("#delsconfdialog").modal('show');
+        }
+    }
+
+    self.closeDialog = function (status) {
+        if (status == true) {
+            $("#delsconfdialog").modal('hide');
+        }
+    }
+
+    self.okButtonClick = function (status) {
+        if (status == true) {
+            action(true, schedule);
+            self.closeDialog(true);
+        }
+    }
+
+    self.cancelButtonClick = function (status) {
+        if (status == true) {
+            self.closeDialog(true);
+        }
+    }
+
+    self.init(true);
+
+};
+
+//Форма подтверждения обновления занятия
+var UpdateScheduleConfirmForm = function (action) {
+    var self = this;
+
+    self.openDialog = function (status) {
+        if (status == true) {
+            $("#updsconfdialog").modal('show');
+        }
+    }
+
+    self.closeDialog = function (status) {
+        if (status == true) {
+            $("#updsconfdialog").modal('hide');
+        }
+    }
+
+    self.okButtonClick = function (status) {
+        if (status == true) {
+            action(true);
+            self.closeDialog(true);
+        }
+    }
+
+    self.cancelButtonClick = function (status) {
+        if (status == true) {
+            self.closeDialog(true);
+        }
+    }
+
+    //self.init(true);
+
+};
+
+//Форма обновления занятия
+var UpdateScheduleForm = function (parentForm, param) {
+
+    var self = this;
+
+    self.currentConfirmForm = ko.observable();
+    self.validateScheduleForm = ko.observable();
+
+    self.translateDate = function (status, date) {
+        if (status == true) {
+            res = date.split(".");
+            return res[2] + "-" + res[1] + "-" + res[0];
+        }
+    }
+
+    self.days = ko.observableArray([{ Id: 1, Name: "Понедельник" }, { Id: 2, Name: "Вторник" }, { Id: 3, Name: "Среда" }, { Id: 4, Name: "Четверг" }, { Id: 5, Name: "Пятница" }, { Id: 6, Name: "Суббота" }]);
+    self.auditoriumTypes = ko.observableArray([]);
+    self.currentAuditoriumType = ko.observable();
+    self.auditoriums = ko.observableArray([]);
+    self.currentAuditorium = ko.observable();
+    self.currentSchedule = ko.observable(parentForm.clickedSchedule());
+
+
+    self.currentStartDate = ko.observable(self.translateDate(true, self.currentSchedule().StartDate));
+    self.currentEndDate = ko.observable(self.translateDate(true, self.currentSchedule().EndDate));
+
+    
+    self.presetAuditoriumType = function (status) {
+        
+        if (status == true) {
+
+
+            for (var i = 0; i < self.auditoriumTypes().length; ++i)
+                if (self.currentSchedule().AuditoriumTypeId == self.auditoriumTypes()[i].Id) {
+            
+                    self.currentAuditoriumType(self.auditoriumTypes()[i]);
+                }
+        }
+    }
+
+    self.presetDay = function (status) {
+        if (status == true) {
+   
+            for (var i = 0; i < self.days().length; ++i)
+                if (self.currentSchedule().DayOfWeek == self.days()[i].Id) {
+      
+                    self.currentDay(self.days()[i]);
+                }
+        }
+    }
+
+    self.presetTime = function (status) {
+        if (status == true) {
+
+            for (var i = 0; i < self.times().length; ++i)
+                if (self.currentSchedule().PeriodId == self.times()[i].Id) {
+  
+                    self.currentTime(self.times()[i]);
+                }
+            //TODO: preset schedule paramenters in fields
+        }
+    }
+
+    self.presetWeekType = function (status) {
+        if (status == true) {
+
+            for (var i = 0; i < self.weekTypes().length; ++i)
+                if (self.currentSchedule().WeekTypeId == self.weekTypes()[i].Id) {
+       
+                    self.currentWeekType(self.weekTypes()[i]);
+                }
+            //TODO: preset schedule paramenters in fields
+        }
+    }
+
+    self.presetAuditorium = function (status) {
+        if (status == true) {
+      
+            for (var i = 0; i < self.auditoriums().length; ++i)
+                if (self.currentSchedule().AuditoriumId == self.auditoriums()[i].Id) {
+  
+                    self.currentAuditorium(self.auditoriums()[i]);
+                }
+        }
+    }
+
+    self.currentStartDate.subscribe(function (newValue) {
+   
+    });
+
+    self.currentEndDate.subscribe(function (newValue) {
+
+    });
+
+    self.currentDay = ko.observable(self.days()[parentForm.clickedSchedule().DayOfWeek - 1]);
+    self.currentDay.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            self.loadFreeAuditoriums(true, 1, self.currentAuditoriumType());
+        }
+    });
+
+    self.times = ko.observableArray([]);
+    self.currentTime = ko.observable();
+
+    self.currentTime.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            self.loadFreeAuditoriums(true, 1, self.currentAuditoriumType());
+        }
+    });
+
+    self.subGroups = ko.observableArray(["Все", "1", "2", "3"]);
+    self.currentSubGroup = ko.observable();
+
+    self.weekTypes = ko.observableArray([]);
+    self.currentWeekType = ko.observable();
+    self.currentWeekType.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            self.loadFreeAuditoriums(true, 1, self.currentAuditoriumType());
+        }
+    });
+ 
+
+    self.currentAuditoriumType.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            self.loadFreeAuditoriums(true, 1, newValue);
+        }
+    });
+
+    self.loadTimes = function (status, buildingId, isInit) {
+        if (status == true) {
+            dModel.loadData({
+                address: "time/getall",
+                obj: self.times,
+                params: {
+                    buildingId: 1 //TODO: Fix Host Project
+                },
+                onsuccess: function () {
+       
+                    if (isInit)
+                        self.presetTime(true);
+                }
+            });
+        }
+    }
+
+    self.loadAuditoriumTypes = function (status, isInit) {
+        if (status == true) {
+            dModel.loadData({
+                address: "auditoriumtype/getall",
+                obj: self.auditoriumTypes,
+                onsuccess: function () {
+                    if (isInit)
+                        self.presetAuditoriumType(true);
+                }
+            });
+        }
+    }
+
+    self.loadFreeAuditoriums = function (status, buildingId, auditoriumType) {
+      
+        if (status == true &&
+            self.currentWeekType() !== undefined &&
+            self.currentDay() !== undefined &&
+            self.currentTime() !== undefined &&
+            self.currentSchedule() !== undefined &&
+            auditoriumType !== undefined) {
+
+            dModel.loadData({
+                address: "auditorium/GetFree",
+                obj: self.auditoriums,
+                params: {
+                    buildingId: buildingId,
+                    weekTypeId: self.currentWeekType().Id,
+                    day: self.currentDay().Id,
+                    timeId: self.currentTime().Id,
+                    tutorialtypeid: self.currentSchedule().TutorialTypeId,
+                    auditoriumtypeid: auditoriumType.Id,
+                    starttime: self.currentStartDate(),
+                    endtime: self.currentEndDate(),
+                },
+                onsuccess: function () {
+                    self.presetAuditorium(true);
+                }
+            });
+        }
+    }
+    
+
+
+    self.loadWeekTypes = function (status, isInit) {
+        if (status == true) {
+            dModel.loadData({
+                address: "weektype/getall",
+                obj: self.weekTypes,
+                onsuccess: function () {
+          
+                    if(isInit)
+                        self.presetWeekType(true);
+                }
+            });
+        }
+    }
+
+    self.ValidateSchedule = function (status, innerFunction) {
+        if (status == true) {
+
+     
+            dModel.loadData({
+                address: "schedule/Validate",
+                params: {
+                    AuditoriumId: self.currentAuditorium().Id,
+                    ScheduleInfoId: self.currentSchedule().ScheduleInfoId,
+                    DayOfWeek: self.currentDay().Id,
+                    PeriodId: self.currentTime().Id,
+                    WeekTypeId: self.currentWeekType().Id,
+                    StartDate: self.currentStartDate(),
+                    EndDate: self.currentEndDate()
+                },
+                onsuccess: function (data) {
+                    if (data.length == 0) {
+                   
+                        innerFunction(true);
+                    } else {
+                        self.validateScheduleForm(new ValidateScheduleForm(data));
+                        self.validateScheduleForm().openDialog(true);
+           
+                    }
+                }
+            });
+        }
+    };
+
+    self.ValidateSchedule2 = function (status, innerFunction, schedule) {
+        if (status == true) {
+     
+
+  
+         
+            dModel.loadData({
+                address: "schedule/Validate",
+                params: {
+                    AuditoriumId: schedule.Id,
+                    ScheduleInfoId: schedule.ScheduleInfoId,
+                    DayOfWeek: schedule.DayOfWeek,
+                    PeriodId: schedule.PeriodId,
+                    WeekTypeId: schedule.WeekTypeId,
+                    StartDate: self.translateDate(true, schedule.StartDate),
+                    EndDate: self.translateDate(true, schedule.EndDate)
+                },
+                onsuccess: function (data) {
+                    if (data.length == 0) {
+             
+                        innerFunction(true, schedule);
+                    } else {
+                        self.validateScheduleForm(new ValidateScheduleForm(data));
+                        self.validateScheduleForm().openDialog(true);
+              
+                    }
+                }
+            });
+        }
+    };
+
+    self.updateSchedule = function (status) {
+        if (status == true) {
+            var subGroup = self.currentSubGroup();
+            if (subGroup == "Все")
+                subGroup = "";
+
+            if (self.currentSchedule() !== undefined &&
+                self.currentAuditorium() !== undefined &&
+                self.currentDay() !== undefined &&
+                self.currentTime() !== undefined &&
+                self.currentWeekType() !== undefined &&
+                self.currentStartDate() !== undefined &&
+                self.currentEndDate() !== undefined) {
+
+                dModel.sendData({
+                    address: "schedule/update",
+                    params: {
+                        'ScheduleId': self.currentSchedule().Id,
+                        'AuditoriumId': self.currentAuditorium().Id,
+                        'ScheduleInfoId': self.currentSchedule().ScheduleInfoId,
+                        'DayOfWeek': self.currentDay().Id,
+                        'PeriodId': self.currentTime().Id,
+                        'WeekTypeId': self.currentWeekType().Id,
+                        'StartDate': self.currentStartDate(),
+                        'EndDate': self.currentEndDate(),
+                        'AutoDelete': self.currentSchedule().AutoDelete,
+                        'SubGroup': subGroup
+                    },
+                    onsuccess: function () {
+                  
+                        parentForm.updateReload(true, self.currentSchedule(), self.currentTime().Id, self.currentDay().Id, self.currentWeekType().Id);
+                    }
+                });
+            }
+        }
+    }
+
+    self.updateSchedule2 = function (status, schedule) {
+        if (status == true) {
+            var subGroup = schedule.SubGroup;
+            if (subGroup == "Все")
+                subGroup = "";
+
+            dModel.sendData({
+                address: "schedule/update",
+                params: {
+                    'ScheduleId': schedule.Id,
+                    'AuditoriumId': schedule.AuditoriumId,
+                    'ScheduleInfoId': schedule.ScheduleInfoId,
+                    'DayOfWeek': schedule.DayOfWeek,
+                    'PeriodId': schedule.PeriodId,
+                    'WeekTypeId': schedule.WeekTypeId,
+                    'StartDate': self.translateDate(schedule.StartDate),
+                    'EndDate': self.translateDate(schedule.EndDate),
+                    'AutoDelete': schedule.AutoDelete,
+                    'SubGroup': schedule.subGroup
+                },
+                onsuccess: function () {
+                
+                    parentForm.updateReload(true, schedule, schedule.PeriodId, schedule.DayOfWeek, schedule.WeekTypeId);
+                }
+            });
+        }
+
+    }
+  
+    self.init = function (status) {
+        if (status == true) {
+            if (param !== true) {
+                self.loadWeekTypes(true, true);
+                self.loadTimes(true, self.currentSchedule().BuildingId, true);
+
+                self.loadAuditoriumTypes(true, true);
+
+
+                self.presetDay(true);
+            }
+        }
+    };
+
+    self.updateButtonClick = function (status) {
+        if (status == true) {
+            self.currentConfirmForm(new UpdateScheduleConfirmForm(self.updateSchedule));
+            self.currentConfirmForm().openDialog(true);
+   
+            //self.updateSchedule(true);
+        }
+    }
+
+
+    self.openDialog = function (status) {
+        if (status == true) {
+            $("#updsdialog").modal('show');
+        }
+    }
+
+    self.closeDialog = function (status) {
+        if (status == true) {
+            $("#updsdialog").modal('hide');
+        }
+    }
+
+    self.cancelButtonClick = function (status) {
+        if (status == true) {
+            self.closeDialog(true);
+        }
+    }
+
+    self.init(true);
+
+};
+
+var FreeAuditoriumsForm = function (timeId, dayId, wtId, tutorialTypeId, parentForm) {
+    var self = this;
+
+    self.startDate = ko.observable("");
+    self.endDate = ko.observable("");
+
+    self.auditoriumTypes = ko.observableArray([]);
+    self.currentAuditoriumType = ko.observable();
+    self.currentAuditoriumType.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            self.loadFreeAuditoriums(true, parentForm.currentBuilding().Id, newValue);
+        }
+    });
+
+    self.auditoriums = ko.observableArray([]);
+    self.currentAuditorium = ko.observable();
+
+    self.loadAuditoriumTypes = function (status) {
+        if (status == true) {
+            dModel.loadData({
+                address: "auditoriumtype/getall",
+                obj: self.auditoriumTypes,
+                onsuccess: function () {
+
+                }
+            });
+        }
+    }
+
+    self.loadFreeAuditoriums = function (status, buildingId, auditoriumType) {
+        if (status == true &&
+            auditoriumType !== undefined) {
+
+            dModel.loadData({
+                address: "auditorium/GetFree",
+                obj: self.auditoriums,
+                params: {
+                    buildingId: buildingId,
+                    weekTypeId: wtId,
+                    day: dayId,
+                    timeId: timeId,
+                    tutorialtypeid: tutorialTypeId,
+                    auditoriumtypeid: auditoriumType.Id,
+                    starttime: self.startDate(),
+                    endtime: self.endDate(),
+                },
+                onsuccess: function () {
+
+                }
+            });
+        }
+    }
+
+
+    self.init = function (status) {
+        if (status == true) {
+            self.loadAuditoriumTypes(true);
+        }
+    };
+
+
+    self.openDialog = function (status) {
+        if (status == true) {
+            $("#auditoriumdialog").modal('show');
+        }
+    }
+
+    self.closeDialog = function (status) {
+        if (status == true) {
+            $("#auditoriumdialog").modal('hide');
+        }
+    }
+
+    self.cancelButtonClick = function (status) {
+        if (status == true) {
+            self.closeDialog(true);
+        }
+    }
+
+    self.selectButtonClick = function (status) {
+        if (status == true) {
+            self.closeDialog(true);
+        }
+    }
+
+    self.init(true);
+
+};
+
+//Форма контекстного меню для клетки таблицы занятий
+var ScheduleBacketContextMenuForm = function (xPos, yPos, parentForm) {
+    var self = this;
+
+    $(document).click(function () {
+        $("#scheduleBacketContextMenu").addClass("hide");
+    });
+
+
+    self.init = function (status) {
+        if (status == true) {
+
+        }
+    };
+
+    self.openDialog = function (status) {
+        if (status == true) {
+            $("#scheduleBacketContextMenu").removeClass("hide");
+            $("#scheduleBacketContextMenu").css({
+                left: xPos,
+                top: yPos
+            });
+        }
+    };
+
+    self.closeDialog = function (status) {
+        if (status == true) {
+            $("#scheduleBacketContextMenu").addClass("hide");
+        }
+    };
+
+
+    self.addScheduleClick = function (status) {
+        if (status == true) {
+            
+            console.log("Add Schedule Click");
+
+            var ind = parentForm.clickedBacketIndexes();
+            var weekTypeId = 1;
+            if (ind.wt == 0) weekTypeId = 2;
+            if (ind.wt == 2) weekTypeId = 3;
+
+            parentForm.currentScheduleAddForm(new ScheduleAddForm(parentForm, parentForm.parentForm.currentScheduleInfoSelectForm().currentScheduleInfo(),
+                                                    parentForm.times()[ind.row].Id, parentForm.days()[ind.col].Id, weekTypeId));
+            parentForm.currentScheduleAddForm().openDialog(true);
+            self.closeDialog(true);
+        }
+    };
+
+    self.freeAuditoriumsClick = function (status) {
+        if (status == true) {
+            var ind = parentForm.clickedBacketIndexes();
+            var weekTypeId = 1;
+            if (ind.wt == 0) weekTypeId = 2;
+            if (ind.wt == 2) weekTypeId = 3;
+            parentForm.freeAuditoriumsForm(new FreeAuditoriumsForm(parentForm.times()[ind.row].Id, parentForm.days()[ind.col].Id, weekTypeId, 1, parentForm));
+            parentForm.freeAuditoriumsForm().openDialog(true);
+            self.closeDialog(true);
+        }
+    };
+
+    self.calendarClick = function (status) {
+        if (status == true) {
+
+            var ind = parentForm.clickedBacketIndexes();
+            var weekTypeId = 1;
+            if (ind.wt == 0) weekTypeId = 2;
+            if (ind.wt == 2) weekTypeId = 3;
+
+            console.log("Calendar click");
+            var groupIds = "";
+            for(var i = 0; i < parentForm.groups().length; ++i)
+                groupIds += parentForm.groups()[i].Id + ", ";
+            var lecturerId = undefined;
+            if(parentForm.lecturer() !== undefined)
+                lecturerId = parentForm.lecturer().Id;
+
+            parentForm.currentCalendarForm(new Calendar(parentForm.days()[ind.col].Id, parentForm.times()[ind.row].Id, weekTypeId,
+                                                        lecturerId, groupIds, parentForm.currentSubGroup()));
+
+            parentForm.currentCalendarForm().openDialog(true);
+            self.closeDialog(true);
+        }
+    };
+
+
+};
+
+//Форма выбора занятий
+var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endTime, parentForm) {
+    var self = this;
+
+
+
+    self.parentForm = parentForm;
+
+    self.title = ko.computed(function() {
+        var res = "";
+        if(parentForm.currentFlowSelectForm() !== undefined){
+            if(parentForm.currentFlowSelectForm().currentBranch() !== undefined)
+                res += parentForm.currentFlowSelectForm().currentBranch().Name + " ";
+
+            if(parentForm.currentFlowSelectForm().currentFaculty() !== undefined)
+                res += parentForm.currentFlowSelectForm().currentFaculty().Name + " ";
+
+            if (parentForm.currentFlowSelectForm().currentGroups() !== undefined) {
+                for (var i = 0; i < parentForm.currentFlowSelectForm().currentGroups().length; ++i)
+                    res += parentForm.currentFlowSelectForm().currentGroups()[i].Code + " ";
+            }
+
+        }
+        return res;
+    });
+        
+       
+    self.isScheduleLoad = false;
+
+    self.currentDeleteConfirmForm = ko.observable();
+    self.currentScheduleUpdateForm = ko.observable();
+    self.scheduleBacketContextMenuForm = ko.observable();
+    self.scheduleContextMenuForm = ko.observable();
+    self.scheduleUpdateForm = ko.observable();
+    self.currentScheduleAddForm = ko.observable();
+    self.currentCalendarForm = ko.observable();
+    self.freeAuditoriumsForm = ko.observable();
+
+   
+
+    self.buildings = ko.observableArray([]);
+    self.currentBuilding = ko.observable();
+    self.currentBuilding.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            self.loadTimes(true, newValue);
+        }
+    });
+
+    self.buildingTimes = ko.observableArray([]);
+    self.scheduleTimes = ko.observableArray([]);
+    self.times = ko.observableArray([]);
+
+    self.lecturer = ko.observable(lecturer);
+    self.lecturer.subscribe(function (newValue) {
+        //self.loadSchedules(true);
+    });
+
+    self.auditorium = ko.observable(auditorium);
+    self.auditorium.subscribe(function (newValue) {
+        //self.loadSchedules(true);
+    });
+
+
+    self.groups = ko.observable(groups);
+    self.groups.subscribe(function (newValue) {
+        //self.loadSchedules(true);
+    });
+
+
+    self.weekTypes = ko.observableArray([]);
+    self.currentWeekType = ko.observable();
+    self.currentWeekType.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            self.loadSchedules(true);
+        }
+    });
+
+    self.subGroups = ko.observableArray(["Все", "1", "2", "3"]);
+    self.currentSubGroup = ko.observable();
+    self.currentSubGroup.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            self.loadSchedules(true);
+        }
+    });
+
+
+    self.startTime = ko.observable(startTime);
+    self.startTime.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            self.loadSchedules(true);
+        }
+    });
+
+    self.endTime = ko.observable(endTime);
+    self.endTime.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            self.loadSchedules(true);
+        }
+    });
+
+    self.days = ko.observableArray([{}, { Id: 1, Name: "Понедельник" }, { Id: 2, Name: "Вторник" }, { Id: 3, Name: "Среда" }, { Id: 4, Name: "Четверг" }, { Id: 5, Name: "Пятница" }, { Id: 6, Name: "Суббота" }]);
+
+
+    self.preselectedBacketIndexes = ko.observable({ row: -1, col: -1, wt: -1 });
+    self.clickedBacketIndexes = ko.observable({ row: -1, col: -1, wt: -1 });
+
+    self.preselectedSchedule = ko.observable();
+    self.clickedSchedule = ko.observable();
+
+    self.blockedRows = ko.observableArray();
+
+    self.preselectBacket = function(status, row, col, wt){
+        if (status == true) {
+            self.preselectedBacketIndexes({row: row, col: col, wt: wt});
+        }
+    }
+
+    self.clickBacketLeft = function (status, row, col, wt) {
+        if (status == true) {
+  
+            self.clickedBacketIndexes({ row: row, col: col, wt: wt });
+        }
+    }
+
+    self.doubleClickBacket = function (status, row, col, wt) {
+        if (status == true) {
+            console.log("db-click");
+            var weekTypeId = 1;
+            if (wt == 0) weekTypeId = 2;
+            if (wt == 2) weekTypeId = 3;
+
+            self.currentScheduleAddForm(new ScheduleAddForm(self, parentForm.currentScheduleInfoSelectForm().currentScheduleInfo(), self.times()[row].Id, self.days()[col].Id, weekTypeId));
+            self.currentScheduleAddForm().openDialog(true);
+            //self.currentScheduleAddForm().ValidateSchedule(true, self.currentScheduleAddForm().AddSchedule);
+        }
+    }
+
+    
+    self.clickBacketRight = function (status, row, col, wt, data, event) {
+        if (status == true) {
+            if (self.schedules()[row]()[col]()[wt]() == undefined) {
+
+                if (self.scheduleContextMenuForm() !== undefined)
+                    self.scheduleContextMenuForm().closeDialog(true);
+
+            
+                self.clickedBacketIndexes({ row: row, col: col, wt: wt });
+
+                self.scheduleBacketContextMenuForm(new ScheduleBacketContextMenuForm(event.pageX, event.pageY, self));
+                self.scheduleBacketContextMenuForm().openDialog(true);
+            } else {
+                if (self.scheduleBacketContextMenuForm() !== undefined)
+                    self.scheduleBacketContextMenuForm().closeDialog(true);
+            }
+        }
+    }
+
+    self.mouseOutBacket = function (status) {
+        if (status == true) {
+            self.preselectedBacketIndexes({ row: -1, col: -1, wt: -1});
+        }
+    }
+
+    self.preselectSchedule = function (status, row, col, wt) {
+        if (status == true) {
+            self.preselectedSchedule(self.schedules()[row]()[col]()[wt]());
+        }
+    }
+
+    self.clickScheduleLeft = function (status, row, col, wt) {
+        if (status == true) {
+
+            self.clickedSchedule(self.schedules()[row]()[col]()[wt]());
+        }
+    }
+
+    self.clickScheduleRight = function (status, row, col, wt, data, event) {
+        if (status == true) {
+            self.clickedSchedule(self.schedules()[row]()[col]()[wt]());
+            self.scheduleContextMenuForm(new ScheduleContextMenuForm(self.clickedSchedule(), event.pageX, event.pageY, self));
+            self.scheduleContextMenuForm().openDialog(true);
+
+     
+        }
+    }
+
+    self.mouseOutSchedule = function (status) {
+        if (status == true) {
+            self.preselectedSchedule(null);
+        }
+    }
+
+    self.startDragSchedule = function (status, row, col, wt) {
+        if (status) {
+            self.clickedSchedule(self.schedules()[row]()[col]()[wt]());
+
+            self.clickedBacketIndexes({ row: row, col: col, wt: wt });
+
+        }
+    }
+
+    self.stopDragSchedule = function (status, row, col) {
+        if (status == true) {
+          
+        }
+    }
+
+    self.dropBacket = function (status, row, col, wt, event, data) {
+        if (status == true) {
+     
+            var myIndexes = event.target.firstElementChild.innerText.split(" ");
+   
+            row = myIndexes[0];
+            col = myIndexes[1];
+            wt = myIndexes[2];
+       
+            self.clickedBacketIndexes({ row: row, col: col, wt: wt });
+
+            if (data.draggable.context.className.indexOf("scheduleInfo") !== -1) {
+        
+                var weekTypeId = 1;
+                if (wt == 0) weekTypeId = 2;
+                if (wt == 2) weekTypeId = 3;
+
+                self.currentScheduleAddForm(new ScheduleAddForm(self, parentForm.currentScheduleInfoSelectForm().currentScheduleInfo(), self.times()[row].Id, self.days()[col].Id, weekTypeId));
+                self.currentScheduleAddForm().openDialog(true);
+
+            }else{
+             
+                self.scheduleUpdateForm(new UpdateScheduleForm(self, true));
+                self.clickedSchedule().DayOfWeek = self.days()[col].Id;
+                self.clickedSchedule().PeriodId = self.times()[row].Id;
+                self.clickedSchedule().WeekTypeId = wt;
+                if (wt == 0) self.clickedSchedule().WeekTypeId = 2;
+                if (wt == 2) self.clickedSchedule().WeekTypeId = 3;
+
+                self.scheduleUpdateForm().ValidateSchedule2(true, self.scheduleUpdateForm().updateSchedule2, self.clickedSchedule());
+            }
+        }
+    }
+
+    self.outBacket = function (status) {
+        if (status == true) {
+            //self.preselectedBacketIndexes({ row: -1, col: -1, wt: -1 });
+        }
+    }
+
+    self.overBacket = function (status, row, col, wt, data, event) {
+        if (status == true) {
+    
+        }
+    }
+
+    self.schedules = ko.observableArray([]);
+
+    self.addReload = function (status, timeId, dayId, wtId) {
+        if (status == true) {
+            //TODO: reload only one backet
+            self.loadSchedules(true);
+        }
+    }
+
+    self.updateReload = function (status, schedule, timeId, dayId, wtId) {
+        //if (wtId == 1) wtId = 1;
+        if (wtId == 2) wtId = 0;
+        if (wtId == 3) wtId = 2;
+
+        if (status == true) {
+            for (var i = 0; i < self.times().length; ++i) {
+                if (self.times()[i].Id == timeId) {
+                    timeId = i;
+                    break;
+                }
+            }
+
+            for (var i = 0; i < self.days().length; ++i) {
+                if (self.days()[i].Id == dayId) {
+                    dayId = i;
+                    break;
+                }
+            }
+
+            for (var i = 0; i < self.schedules().length; ++i)
+                for (var j = 0; j < self.schedules()[i]().length; ++j)
+                    for (var k = 0; k < self.schedules()[i]()[j]().length; ++k)
+                        if (self.schedules()[i]()[j]()[k]() !== undefined) {
+                            if (self.schedules()[i]()[j]()[k]().Id == schedule.Id) {
+                                self.schedules()[i]()[j]()[k](undefined);
+                                self.getScheduleByIdToObject(true, schedule.Id, timeId, dayId, wtId);
+                            }
+                        }
+        }
+    }
+
+    self.deleteReload = function (status, schedule) {
+        if (status == true) {
+            for (var i = 0; i < self.schedules().length; ++i)
+                for (var j = 0; j < self.schedules()[i]().length; ++j)
+                    for (var k = 0; k < self.schedules()[i]()[j]().length; ++k)
+                        if (self.schedules()[i]()[j]()[k]() !== undefined)
+                            if (self.schedules()[i]()[j]()[k]().Id == schedule.Id)
+                                self.schedules()[i]()[j]()[k](undefined);
+        }
+    }
+
+    self.realDeleteSchedule = function (status, schedule) {
+        if (status == true) {
+         
+            if (schedule !== undefined) {
+                dModel.sendData({
+                    address: "schedule/delete",
+                    params: {
+                        'Id': schedule.Id,
+                    },
+                    onsuccess: function () {
+                        self.deleteReload(true, schedule);
+                    }
+                });
+            }
+        }
+    }
+
+    self.deleteSchedule = function (status, schedule) {
+        if (status == true) {
+            self.currentDeleteConfirmForm(new DeleteScheduleConfirmForm(self.realDeleteSchedule, schedule));
+            self.currentDeleteConfirmForm().openDialog(true);
+        }
+    }
+
+    self.getScheduleByIdToObject = function (status, id, i, j, k) {
+        if (status == true) {
+            dModel.loadData({
+                address: "schedule/GetScheduleById",
+                params: {
+                    Id: id,
+                },
+                onsuccess: function (data) {
+                    self.schedules()[i]()[j]()[k](data);
+                }
+            });
+        }
+    }
+
+    self.init = function (status) {
+        if (status == true) {
+            self.loadWeekTypes(true);
+            self.loadBuildings(true);
+        }
+    };
+
+    self.loadBuildings = function (status) {
+        if (status == true) {
+            dModel.loadData({
+                address: "building/getall",
+                obj: self.buildings,
+                onsuccess: function () {
+                   
+                }
+            });
+        }
+    }
+
+    self.loadTimes = function (status, building) {
+        if (status == true && building !== undefined) {
+            dModel.loadData({
+                address: "time/getall",
+                obj: self.buildingTimes,
+                params: {
+                    buildingId: building.Id
+                },
+                onsuccess: function () {
+                  
+                    self.loadSchedules(true);
+                }
+            });
+        }
+    }
+
+    self.loadWeekTypes = function (status) {
+        if (status == true) {
+            dModel.loadData({
+                address: "weektype/getall",
+                obj: self.weekTypes,
+                onsuccess: function () {
+             
+                }
+            });
+        }
+    }
+
+    self.loadSchedules = function (status) {
+   
+        if (status == true && !self.isScheduleLoad) {
+
+
+            self.isScheduleLoad = true;
+
+            if(self.lecturer() !== undefined)
+                var lecturerId = self.lecturer().Id;
+            if (self.auditorium() !== undefined)
+                var auditoriumId = self.auditorium().Id;
+            if (self.currentWeekType() !== undefined)
+                var weekTypeId = self.currentWeekType().Id;
+            if (self.currentSubGroup() !== undefined)
+                var subGroup = self.currentSubGroup();
+            if (self.startTime() !== undefined)
+                var startTime = self.startTime();
+            if (self.endTime() !== undefined)
+                var endTime = self.endTime();
+
+            
+            if (lecturerId == undefined) lecturerId = null;
+            if (auditoriumId == undefined) auditoriumId = null;
+            if (weekTypeId == undefined) weekTypeId = null;
+            if (lecturerId == undefined) lecturerId = null;
+            if (startTime == undefined) startTime = "";
+            if (endTime == undefined) endTime = "";
+            if (subGroup == "Все") subGroup = "";
+
+            var groupIds = "";
+            if (self.groups() !== undefined) {
+                for (var i = 0; i < self.groups().length; ++i)
+                    groupIds += self.groups()[i].Id + ", ";
+            }
+
+            dModel.loadData({
+                address: "schedule/GetScheduleByAll",
+                params: {
+                    lecturerId: lecturerId,
+                    auditoriumId: auditoriumId,
+                    groupIds: groupIds,
+                    weekTypeId: weekTypeId,
+                    subGroup: subGroup,
+                    startTime: startTime,
+                    endTime: endTime
+                },
+                onsuccess: function (data) {
+                    
+               
+
+                    self.filteredTimes = ko.observableArray([]);
+                    self.scheduleTimes([]);
+                    self.times([]);
+                    self.schedules([]);
+
+
+                    for (var i = 0; i < self.buildingTimes().length; ++i) {
+                        var t = { Id: self.buildingTimes()[i].Id, Start: self.buildingTimes()[i].Start, End: self.buildingTimes()[i].End, StartEnd: self.buildingTimes()[i].StartEnd, IsBuilding: true };
+                        if (self.filteredTimes.indexOf(t.StartEnd) == -1) {
+                            self.filteredTimes.push(t.StartEnd);
+                            self.times.push(t);
+                        }
+                    }
+
+                    for (var i = 0; i < data.length; ++i) {
+                        var t = { Id: data[i].PeriodId, Start: data[i].StartTime, End: data[i].EndTime, StartEnd: data[i].StartTime + "-" + data[i].EndTime, IsBuilding: false };
+                        if (self.filteredTimes.indexOf(t.StartEnd) == -1) {
+                            self.filteredTimes.push(t.StartEnd);
+                            self.scheduleTimes.push(t);
+                            self.times.push(t);
+                        }
+                    }
+
+                    self.times.sort(function (left, right) {
+                        return left.Start == right.Start ? 0 : (left.Start < right.Start ? -1 : 1)
+                    });
+
+                    for (var i = 0; i < self.times().length; ++i) {
+                        self.schedules.push(new ko.observableArray([new ko.observableArray([new ko.observable(), new ko.observable(), new ko.observable()]),
+                                                                    new ko.observableArray([new ko.observable(), new ko.observable(), new ko.observable()]),
+                                                                    new ko.observableArray([new ko.observable(), new ko.observable(), new ko.observable()]),
+                                                                    new ko.observableArray([new ko.observable(), new ko.observable(), new ko.observable()]),
+                                                                    new ko.observableArray([new ko.observable(), new ko.observable(), new ko.observable()]),
+                                                                    new ko.observableArray([new ko.observable(), new ko.observable(), new ko.observable()]),
+                                                                    new ko.observableArray([new ko.observable(), new ko.observable(), new ko.observable()])]));
+                        if (self.times()[i].IsBuilding == false)
+                            self.blockedRows()[i] = true;
+                        else
+                            self.blockedRows()[i] = false;
+                    }
+
+
+                    //self.times.sort(function(left, right) { return left.lastName == right.lastName ? 0 : (left.lastName < right.lastName ? -1 : 1) });
+
+                    
+                    for (var i = 0; i < data.length; ++i) {
+                        var row = -1;
+                        for (var j = 0; j < self.times().length; ++j)
+                            if (data[i].PeriodId == self.times()[j].Id)
+                                row = j;
+                        var col = data[i].DayOfWeek;
+                        var wt = 1;
+                        if (data[i].WeekTypeId == 2)wt = 0;
+                        if (data[i].WeekTypeId == 3)wt = 2;
+
+                        self.schedules()[row]()[col]()[wt](data[i]);
+             
+                    }
+                    self.isScheduleLoad = false;
+
+          
+                
+      
+                }
+
+
+                
+            });
+        }
+    }
+
+    self.init(true);
+
+    self.startDrag = function (status) {
+        if (status == true) {
+        
+        }
+    };
+
+    self.openDialog = function (status) {
+        if (status == true) {
+            $("#ssdialog").modal('show');
+        }
+    };
+
+    self.closeDialog = function (status) {
+        if (status == true) {
+            $("#ssdialog").modal('hide');
+        }
+    };
+
+
+
+    self.copiedSchedule = ko.observable();
+    self.cutedSchedule = ko.observable();
+
+    self.copySchedule = function (status) {
+        if (status == true) {
+            self.cutedSchedule(undefined);
+            self.copiedSchedule(self.clickedSchedule());
+        }
+    };
+
+    
+    self.cutSchedule = function (status) {
+        if (status == true) {
+            self.copiedSchedule(undefined);
+            self.cutedSchedule(self.clickedSchedule());
+        }
+    }
+
+    self.pasteSchedule = function (status) {
+        if (status == true) {
+            if (self.cutedSchedule() !== undefined) {
+                self.scheduleUpdateForm(new UpdateScheduleForm(self, true));
+
+                var ind = self.clickedBacketIndexes();
+
+                self.cutedSchedule().DayOfWeek = self.days()[ind.col].Id;
+                self.cutedSchedule().PeriodId = self.times()[ind.row].Id;
+                self.cutedSchedule().WeekTypeId = ind.wt;
+                if (ind.wt == 0) self.cutedSchedule().WeekTypeId = 2;
+                if (ind.wt == 2) self.cutedSchedule().WeekTypeId = 3;
+
+                self.scheduleUpdateForm().ValidateSchedule2(true, self.scheduleUpdateForm().updateSchedule2, self.cutedSchedule());
+
+                //self.cutedSchedule(undefined);
+            }
+            if (self.copiedSchedule() !== undefined) {
+                //self.copiedSchedule(undefined);
+            }
+        }
+    }
+
+};
+
+//Форма выбора потока
+var FlowSelectForm = function (parentForm) {
+    var self = this;
+
+    var specialityIds = "";
+    var courseIds = "";
+
+    self.branches = ko.observableArray([]);
+
+    self.currentBranch = ko.observable();
+    self.currentBranch.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            self.loadFaculties(true,newValue.Id);
+            self.groups("");
+        }
+    });
+
+    self.courses = ko.observableArray([]);
+    self.currentCourses = ko.observableArray([]);
+    self.faculties = ko.observableArray([]);
+
+    self.currentFaculty = ko.observable();
+    self.currentFaculty.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            self.loadSpecialities(true,newValue.Id);
+            self.groups("");
+        }
+    });
+
+    self.specialities = ko.observableArray([]);
+    self.currentSpecialities = ko.observableArray([]);
+    self.currentSpecialities.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            if (self.currentFaculty() !== undefined) {
+                specialityIds = "";
+                for(var i = 0; i < newValue.length; ++i)
+                    specialityIds += newValue[i].Id + ", ";
+                self.loadGroups(true, self.currentFaculty().Id, courseIds, specialityIds);
+            }
+        }
+    });
+
+    self.currentCourses.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            if (self.currentFaculty() !== undefined) {
+                courseIds = "";
+                for (var i = 0; i < newValue.length; ++i)
+                     courseIds += newValue[i].Id + ", ";
+                self.loadGroups(true, self.currentFaculty().Id, courseIds, specialityIds);
+            }
+        }
+    });
+
+    self.groups = ko.observableArray([]);
+    self.currentGroups = ko.observableArray([]);
+    self.currentGroups.subscribe(function (newValue) {
+        parentForm.currentScheduleInfoSelectForm(new ScheduleInfoSelectForm(newValue, { Id: 12 }, { Id: 0 }, parentForm));
+        if (newValue !== undefined) {
+            parentForm.currentScheduleSelectForm().groups(newValue);
+
+            parentForm.currentScheduleSelectForm().loadSchedules(true);
+        }
+    });
+
+
+    self.loadFaculties = function (status, branchId) {
+        if (status == true) {
+            dModel.loadData({
+                address: "faculty/getall",
+                obj: self.faculties,
+                params: {
+                    branchid: branchId,
+                },
+                onsuccess: function () {
+                }
+            });
+        }
+    };
+
+    self.loadSpecialities = function (status, facultyId) {
+        if (status == true) {
+            dModel.loadData({
+                address: "speciality/getall",
+                params: {
+                    facultyid: facultyId,
+                },
+                obj: self.specialities,
+                onsuccess: function () {
+                }
+            });
+        }
+    };
+
+    self.loadGroups = function (status, facultyId, courseIds, specialityIds) {
+        if (status == true) {
+            dModel.loadData({
+                address: "group/GetAll",
+                params: {
+                    facultyid: facultyId,
+                    courseids: courseIds,
+                    specialityids: specialityIds
+                },
+                obj: self.groups,
+                onsuccess: function () {
+                }
+            });
+        }
+    };
+
+    self.init = function (status) {
+        if (status == true) {
+            dModel.loadData({
+                address: "course/getall",
+                obj: self.courses,
+                onsuccess: function () {
+
+                }
+            });
+            dModel.loadData({
+                address: "branch/getall",
+                obj: self.branches,
+                onsuccess: function () {
+                    //self.loadFaculties(true, self.branches()[0].Id);
+                }
+            });
+        }
+    };
+
+    self.init(true);
+
+    self.openDialog = function (status) {
+        if (status == true) {
+            $("#flowdialog").modal('show');
+        }
+    };
+
+    self.closeDialog = function (status) {
+        if (status == true) {
+            $("#flowdialog").modal('hide');
+        }
+    };
+}
+
+//Форма редактирования сведения к расписанию
+var UpdateScheduleInfoForm = function (parentForm) {
+    var self = this;
+
+    self.currentConfirmForm = ko.observable();
+
+    self.newScheduleInfo = ko.observable(parentForm.currentScheduleInfo());
+    self.newHoursPerWeek = ko.observable(parentForm.currentScheduleInfo().HoursPerWeek);
+    self.newLecturer = ko.observable(parentForm.currentScheduleInfo().LecturerName);
+
+    self.updateScheduleInfo = function (status) {
+        if (status == true) {
+            self.newScheduleInfo().HoursPerWeek = self.newHoursPerWeek();
+
+            dModel.sendData({
+                address: "scheduleinfo/update",
+                params: {
+                    'ScheduleInfoId': self.newScheduleInfo().Id,
+                    'HoursPerWeek': self.newScheduleInfo().HoursPerWeek
+                },
+                onsuccess: function () {
+                    parentForm.updateReload(true, self.newScheduleInfo());
+                    //parentForm.scheduleInfoes()[parentForm.currentScheduleInfoIndex()] = self.newScheduleInfo();
+                    //parentForm.scheduleInfoes(parentForm.scheduleInfoes());
+                }
+            });
+        }
+    }
+
+
+    self.init = function (status) {
+        if (status == true) {
+
+        }
+    };
+
+    self.updateButtonClick = function (status) {
+        if (status == true) {
+            self.currentConfirmForm(new UpdateScheduleInfoConfirmForm(self.updateScheduleInfo));
+            self.currentConfirmForm().openDialog(true);
+            //self.updateScheduleInfo(true);
+        }
+    }
+
+    self.openDialog = function (status) {
+        if (status == true) {
+            $("#updsidialog").modal('show');
+        }
+    }
+
+    self.closeDialog = function (status) {
+        if (status == true) {
+            $("#updsidialog").modal('hide');
+        }
+    }
+
+    self.cancelButtonClick = function (status) {
+        if (status == true) {
+            self.closeDialog(true);
+        }
+    }
+
+    self.init(true);
+
+};
+
+//Форма контекстного меню для занятия
+var ScheduleContextMenuForm = function (schedule, xPos, yPos, parentForm) {
+    var self = this;
+
+    self.isOpen = false;
+
+    $(document).click(function () {
+        $("#scheduleContextMenu").addClass("hide");
+    });
+
+    self.currentSchedule = ko.observable(schedule);
+
+    self.init = function (status) {
+        if (status == true) {
+
+        }
+    };
+
+    self.openDialog = function (status) {
+        if (status == true) {
+            self.isOpen = true;
+            $("#scheduleContextMenu").removeClass("hide");
+            $("#scheduleContextMenu").css({
+                left: xPos,
+                top: yPos
+            });
+        }
+    };
+
+    self.closeDialog = function (status) {
+        if (status == true) {
+            self.isOpen = false;
+            $("#scheduleContextMenu").addClass("hide");
+        }
+    };
+
+ 
+    self.updateScheduleClick = function (status) {
+        if (status == true) {
+            parentForm.currentScheduleUpdateForm(new UpdateScheduleForm(parentForm));
+            parentForm.currentScheduleUpdateForm().openDialog(true);
+            self.closeDialog(true);
+        }
+    };
+    self.deleteScheduleClick = function (status) {
+        if (status == true) {
+            parentForm.deleteSchedule(true, schedule);
+            self.closeDialog(true);
+        }
+    };
+};
+
+//Форма контексного меню для сведения к расписанию
+var ScheduleInfoContextMenuForm = function (scheduleInfo, xPos, yPos, parentForm) {
     var self = this;
     
     $(document).click(function () {
@@ -249,6 +1754,12 @@ var ScheduleInfoContextMenuForm = function (scheduleInfo, xPos, yPos) {
     });
     
     self.currentScheduleInfo = ko.observable(scheduleInfo);
+
+    self.init = function (status) {
+        if (status == true) {
+
+        }
+    };
 
     self.openDialog=function(status) {
         if(status==true) {
@@ -268,6 +1779,8 @@ var ScheduleInfoContextMenuForm = function (scheduleInfo, xPos, yPos) {
 
     self.updateScheduleInfoClick = function (status) {
         if (status == true) {
+            parentForm.currentScheduleInfoUpdateForm(new UpdateScheduleInfoForm(parentForm));
+            parentForm.currentScheduleInfoUpdateForm().openDialog(true);
             self.closeDialog(true);
         }
     };
@@ -278,11 +1791,11 @@ var ScheduleInfoContextMenuForm = function (scheduleInfo, xPos, yPos) {
     };
 };
 
-var ScheduleInfoSelectForm = function (groups,currentStudyYear,currentSemester) {
+//Форма выбора сведений к расписанию
+var ScheduleInfoSelectForm = function (groups, currentStudyYear, currentSemester, parentForm) {
     var self = this;
-    
-    console.log("11111111111111111111111111aaaaaa::");
-    console.log(groups);
+
+    self.currentScheduleInfoUpdateForm = ko.observable();
 
     self.scheduleInfoContextMenuForm=ko.observable();
 
@@ -300,10 +1813,28 @@ var ScheduleInfoSelectForm = function (groups,currentStudyYear,currentSemester) 
 
     self.scheduleInfoes = ko.observableArray([]);
     self.currentScheduleInfo = ko.observable();
-
+  
 
     self.currentScheduleInfoIndex = ko.observable(-1);
     self.selectedScheduleInfoIndex = ko.observable(-1);
+
+    var oldScheduleInfo;
+    self.currentScheduleInfo.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            if (newValue != oldScheduleInfo) {
+                var newGroups = newValue.GroupIds.split(", "); newGroups.pop();
+                var ng = [];
+                for(var i = 0; i < newGroups.length; ++i)
+                    ng.push({Id: newGroups[i]});
+  
+                parentForm.currentScheduleSelectForm().groups(ng);
+                parentForm.currentScheduleSelectForm().lecturer({ Id: newValue.LecturerId });
+       
+                parentForm.currentScheduleSelectForm().loadSchedules(true);
+            }
+        }
+        oldScheduleInfo = newValue;
+    });
     
     self.loadTutorialTypes = function (status) {
         if (status == true) {
@@ -317,17 +1848,49 @@ var ScheduleInfoSelectForm = function (groups,currentStudyYear,currentSemester) 
         }
     };
 
-    self.loadTutorialTypes(true);
+    self.init = function (status) {
+        if (status == true) {
+            self.loadTutorialTypes(true);
+        }
+    };
+
+    self.init(true);
+    
+    self.updateReload = function (status, scheduleInfo) {
+        for(var i = 0; i < self.scheduleInfoes().length; ++i)
+            if (self.scheduleInfoes()[i].Id == scheduleInfo.Id) {
+                self.loadScheduleInfoByIdToObject(true, scheduleInfo.Id, i);
+            }
+    }
+
+    self.loadScheduleInfoByIdToObject = function (status, id, i) {
+        if (status == true) {
+            dModel.loadData({
+                address: "scheduleinfo/GetById",
+                params: {
+                    Id: id
+                },
+                onsuccess: function (data) {
+                    var newScheduleInfoes = self.scheduleInfoes();
+                    newScheduleInfoes[i] = data;
+                    self.scheduleInfoes(newScheduleInfoes);
+                }
+            });
+            
+        }
+    }
 
     self.loadScheduleInfoes = function (status) {
         if (status == true && self.currentTutorialType() !== undefined
                            && self.currentStudyYear() !== undefined
                            && self.currentSemester() !== undefined) {
             var groupIds = "";
-            for(var i=0;i<self.currentGroups().length;++i)
-                groupIds+=self.currentGroups()[i].Id+", ";
+            if (self.currentGroups() !== undefined) {
+                for (var i = 0; i < self.currentGroups().length; ++i)
+                    groupIds += self.currentGroups()[i].Id + ", ";
+            }
 
-            console.log("aaa:::: "+groupIds);
+
             dModel.loadData({
                 address: "scheduleinfo/GetByGroupsOnly",
                 params: {
@@ -337,7 +1900,7 @@ var ScheduleInfoSelectForm = function (groups,currentStudyYear,currentSemester) 
                     semesterid: self.currentSemester().Id
                 },
                 onsuccess: function (data) {
-                    console.log(data);
+                  
                     self.scheduleInfoes(data);
                 }
             });
@@ -371,7 +1934,7 @@ var ScheduleInfoSelectForm = function (groups,currentStudyYear,currentSemester) 
             self.currentScheduleInfo(self.scheduleInfoes()[index]);
             self.currentScheduleInfoIndex(index);
 
-            self.scheduleInfoContextMenuForm(new ScheduleInfoContextMenuForm(self.currentScheduleInfo(), event.pageX, event.pageY));
+            self.scheduleInfoContextMenuForm(new ScheduleInfoContextMenuForm(self.currentScheduleInfo(), event.pageX, event.pageY, self));
             self.scheduleInfoContextMenuForm().openDialog(true);
         }
     };
@@ -381,18 +1944,31 @@ var ScheduleInfoSelectForm = function (groups,currentStudyYear,currentSemester) 
             self.selectedScheduleInfoIndex(index);
         }
     };
+
+    self.startDragScheduleInfo = function (status, index) {
+        if (status == true) {
+            self.currentScheduleInfo(self.scheduleInfoes()[index]);
+            self.currentScheduleInfoIndex(index);
+        }
+    };
+
+    self.stopDragScheduleInfo = function (status, index) {
+        if (status == true) {
+
+        }
+    };
     
     self.mouseOutForm = function (status) {
         
         if (status == true) {
-            console.log("MouseOutForm");
+      
             self.selectedScheduleInfoIndex(-1);
         }
     };
 
     self.openDialog = function (status) {
         if (status == true) {
-            console.log("openDialog");
+    
             $("#sidialog").modal('show');
         }
     };
@@ -402,18 +1978,22 @@ var ScheduleInfoSelectForm = function (groups,currentStudyYear,currentSemester) 
         if (status == true) {
             if(self.scheduleInfoContextMenuForm()!==undefined)
                 self.scheduleInfoContextMenuForm().closeDialog(true);
-            
-            console.log("closeDialog");
+         
             $("#sidialog").modal('hide');
         }
     };
 };
 
-
-//Форма валидации
+//Форма валидации добавляемого занятия
 var ValidateScheduleForm = function (validateErrors) {
     var self=this;
     self.validateErrors = ko.observableArray(validateErrors);
+
+    self.init = function (status) {
+        if (status == true) {
+
+        }
+    };
     
     self.openDialog=function(status) {
         if (status == true) {
@@ -426,50 +2006,174 @@ var ValidateScheduleForm = function (validateErrors) {
 
     self.closeDialog=function(status) {
         if(status==true) {
-            console.log("closeDialog");
+       
             $("#validatedialog").modal('hide');
         }
     };
 };
 
 //Меню добавления занятия
-var ScheduleAddForm = function (auditoriums,
-                                presetAuditoriumIndex,
-                                scheduleInfo,
-                                days,
-                                presetDayIndex,
-                                times,
-                                presetTimeIndex,
-                                weekTypes,
-                                presetWeekTypeIndex,
-                                startDate,
-                                endDate,
-                                autoDelete,
-                                subGroups,
-                                presetSubGroupIndex) {
-    var self=this;
-    self.auditoriums=ko.observable(auditoriums);
+var ScheduleAddForm = function (parentForm, scheduleInfo, timeId, dayId, weekTypeId) {
+
+    var self = this;
+
+    self.validateScheduleForm = ko.observable();
+
+    self.translateDate = function (status, date) {
+        if (status == true) {
+            res = date.split(".");
+            return res[2] + "-" + res[1] + "-" + res[0];
+        }
+    }
+
     self.scheduleInfo = ko.observable(scheduleInfo);
-    self.days = ko.observable(days);
-    self.times = ko.observable(times);
-    self.weekTypes = ko.observable(weekTypes);
-    self.startDate = ko.observable(startDate);
-    self.endDate = ko.observable(endDate);
-    self.autoDelete = ko.observable(autoDelete);
-    self.subGroups = ko.observable(subGroups);
 
-    self.currentAuditorium = ko.observable(auditoriums[presetAuditoriumIndex]);
-    self.currentWeekType = ko.observable(weekTypes[presetWeekTypeIndex]);
-    self.currentSubGroup = ko.observable(subGroups[presetSubGroupIndex]);
-    self.currentDay = ko.observable(days[presetDayIndex]);
-    self.currentTime = ko.observable(times[presetTimeIndex]);
+    self.auditoriums = ko.observableArray([]);
+    self.currentAuditorium = ko.observable();
 
+    self.days = ko.observableArray([{ Id: 1, Name: "Понедельник" }, { Id: 2, Name: "Вторник" }, { Id: 3, Name: "Среда" }, { Id: 4, Name: "Четверг" }, { Id: 5, Name: "Пятница" }, { Id: 6, Name: "Суббота" }]);
+    self.currentDay = ko.observable();
+    self.currentDay.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            self.loadFreeAuditoriums(true, 1, self.currentAuditoriumType());
+        }
+    });
 
-    self.validateScheduleForm=ko.observable();
+    self.times = ko.observableArray([]);
+    self.currentTime = ko.observable();
+    self.currentTime.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            self.loadFreeAuditoriums(true, 1, self.currentAuditoriumType());
+        }
+    });
+
+    self.preselectTime = function (status) {
+        if (status == true) {
+            for (var i = 0; i < self.times().length; ++i)
+                if (self.times()[i].Id == timeId)
+                    self.currentTime(self.times()[i]);
+        }
+    };
+
+    self.preselectDay= function (status) {
+        if (status == true) {
+            for (var i = 0; i < self.days().length; ++i)
+                if (self.days()[i].Id == dayId)
+                    self.currentDay(self.days()[i]);
+        }
+    };
+
+    self.preselectWeekType = function (status) {
+        if (status == true) {
+            for (var i = 0; i < self.weekTypes().length; ++i)
+                if (self.weekTypes()[i].Id == weekTypeId)
+                    self.currentWeekType(self.weekTypes()[i]);
+        }
+    };
+
+    self.weekTypes = ko.observableArray([]);
+    self.currentWeekType = ko.observable();
+    self.currentWeekType.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            self.loadFreeAuditoriums(true, 1, self.currentAuditoriumType());
+        }
+    });
+   
+
+    self.subGroups = ko.observableArray(["Все", "1", "2", "3"]);
+    self.currentSubGroup = ko.observable();
+
+    self.auditoriumTypes = ko.observableArray([]);
+    self.currentAuditoriumType = ko.observable();
+    self.currentAuditoriumType.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            self.loadFreeAuditoriums(true, 1, newValue);
+        }
+    });
+ 
+    self.startDate = ko.observable("");
+    self.endDate = ko.observable("");
+    self.autoDelete = ko.observable(false);
+
+    self.loadTimes = function (status, buildingId) {
+        if (status == true) {
+            dModel.loadData({
+                address: "time/getall",
+                obj: self.times,
+                params: {
+                    buildingId: 1 //TODO: Fix Host Project
+                },
+                onsuccess: function () {
+                    self.preselectTime(true);
+                }
+            });
+        }
+    }
+
+    self.loadAuditoriumTypes = function (status) {
+        if (status == true) {
+            dModel.loadData({
+                address: "auditoriumtype/getall",
+                obj: self.auditoriumTypes,
+                onsuccess: function () {
+                   
+                }
+            });
+        }
+    }
+
+    self.loadFreeAuditoriums = function (status, buildingId, auditoriumType) {
+        if (status == true &&
+            self.currentWeekType() !== undefined &&
+            self.currentDay() !== undefined &&
+            self.currentTime() !== undefined &&
+            self.scheduleInfo() !== undefined &&
+            auditoriumType !== undefined) {
+
+            dModel.loadData({
+                address: "auditorium/GetFree",
+                obj: self.auditoriums,
+                params: {
+                    buildingId: buildingId,
+                    weekTypeId: self.currentWeekType().Id,
+                    day: self.currentDay().Id,
+                    timeId: self.currentTime().Id,
+                    tutorialtypeid: self.scheduleInfo().TutorialTypeId,
+                    auditoriumtypeid: auditoriumType.Id,
+                    starttime: self.startDate(),
+                    endtime: self.endDate(),
+                },
+                onsuccess: function () {
+                    
+                }
+            });
+        }
+    }
+
+    self.loadWeekTypes = function (status) {
+        if (status == true) {
+            dModel.loadData({
+                address: "weektype/getall",
+                obj: self.weekTypes,
+                onsuccess: function () {
+                    self.preselectWeekType(true);
+                }
+            });
+        }
+    }
+
+    self.init = function (status) {
+        if (status == true) {
+            self.preselectDay(true);
+            self.loadWeekTypes(true);
+            self.loadTimes(true, 1);
+            self.loadAuditoriumTypes(true);
+        }
+    };
 
     self.ValidateSchedule=function(status, innerFunction) {
         if (status == true) {
-            console.log("ValidateSchedule");
+        
             var startDateLocal = self.startDate();
             var endDateLocal = self.endDate();
             if (startDateLocal == undefined)
@@ -481,7 +2185,7 @@ var ScheduleAddForm = function (auditoriums,
                 address: "schedule/Validate",
                 params: {
                     AuditoriumId: self.currentAuditorium().Id,
-                    ScheduleInfoId: self.scheduleInfo().Data.ScheduleInfoId(),
+                    ScheduleInfoId: self.scheduleInfo().Id,
                     DayOfWeek: self.currentDay().Id,
                     PeriodId: self.currentTime().Id,
                     WeekTypeId: self.currentWeekType().Id,
@@ -490,12 +2194,13 @@ var ScheduleAddForm = function (auditoriums,
                 },
                 onsuccess: function (data) {
                     if(data.length==0) {
-                        console.log("ok111");
+                   
                         innerFunction(true);
+                        parentForm.addReload(true, self.currentTime().Id, self.currentDay().Id, self.currentWeekType().Id);
                     } else {
                         self.validateScheduleForm(new ValidateScheduleForm(data));
                         self.validateScheduleForm().openDialog(true);
-                        console.log("sorry, validate error");
+           
                     }
                 }
             });
@@ -504,35 +2209,45 @@ var ScheduleAddForm = function (auditoriums,
 
     self.AddSchedule=function(status) {
         if (status == true) {
-            console.log("AddSchedule");
+   
             var subGroup = self.currentSubGroup();
             if (subGroup == "Все")
                 subGroup = "";
 
-            dModel.sendData({
-                address: "schedule/add",
-                params: {
-                    'AuditoriumId': self.currentAuditorium().Id,
-                    'ScheduleInfoId': self.scheduleInfo().Data.ScheduleInfoId(),
-                    'DayOfWeek': self.currentDay().Id,
-                    'PeriodId': self.currentTime().Id,
-                    'WeekTypeId': self.currentWeekType().Id,
-                    'StartDate': self.startDate(),
-                    'EndDate': self.endDate(),
-                    'AutoDelete': self.autoDelete(),
-                    'SubGroup': subGroup
-                },
-                onsuccess: function () {
-                    console.log("correct add need refresh page");
-                }
-            });
+            if(self.currentAuditorium() !== undefined &&
+               self.scheduleInfo() !== undefined &&
+               self.currentDay() !== undefined &&
+               self.currentTime() !== undefined &&
+               self.currentWeekType() !== undefined &&
+               self.startDate() !== undefined &&
+               self.endDate() !== undefined &&
+               self.autoDelete() !== undefined){
+
+                dModel.sendData({
+                    address: "schedule/add",
+                    params: {
+                        'AuditoriumId': self.currentAuditorium().Id,
+                        'ScheduleInfoId': self.scheduleInfo().Id,
+                        'DayOfWeek': self.currentDay().Id,
+                        'PeriodId': self.currentTime().Id,
+                        'WeekTypeId': self.currentWeekType().Id,
+                        'StartDate': self.startDate(),
+                        'EndDate': self.endDate(),
+                        'AutoDelete': self.autoDelete(),
+                        'SubGroup': subGroup
+                    },
+                    onsuccess: function () {
+                    
+                    }
+                });
+            }
         }
     };
 
     self.openDialog = function (status) {
         
         if (status == true) {
-            console.log("openDialog");
+      
             $("#adddialog").modal('show');
         }
     };
@@ -540,7 +2255,7 @@ var ScheduleAddForm = function (auditoriums,
     self.closeDialog = function (status) {
        
         if (status == true) {
-            console.log("closeDialog");
+      
             $("#adddialog").modal('hide');
         }
     };
@@ -548,29 +2263,12 @@ var ScheduleAddForm = function (auditoriums,
     self.addButtonPress = function (status) {
        
         if (status == true) {
-            console.log("addButtonPress");
+         
             self.ValidateSchedule(true, self.AddSchedule);
         }
     };
 
-    console.log("auditoriums");
-    console.log(auditoriums);
-    console.log("scheduleInfo");
-    console.log(self.scheduleInfo());
-    console.log("days");
-    console.log(days);
-    console.log("times");
-    console.log(times);
-    console.log("weekTypes");
-    console.log(weekTypes);
-    console.log("startDate");
-    console.log(startDate);
-    console.log("endDate");
-    console.log(endDate);
-    console.log("autoDelete");
-    console.log(autoDelete);
-    console.log("subGroups");
-    console.log(subGroups);
+    self.init(true);
 };
 
 
@@ -588,19 +2286,21 @@ function toStrDateDDMMYYYY(date) {
 }
 
 //Календарь
-var Calendar=function(dayOfWeek, periodId, weekTypeId, lecturerId, auditoriumId, groupIds, subGroup) {
+var Calendar=function(dayOfWeek, periodId, weekTypeId, lecturerId, groupIds, subGroup) {
     var self = this;
     
     if (lecturerId == undefined) lecturerId = null;
-    if (auditoriumId == undefined) auditoriumId = null;
     if (weekTypeId == undefined) weekTypeId = null;
     if (periodId == undefined) periodId = null;
+
+    self.scheduleContextMenuForm = ko.observable();
+    self.currentScheduleUpdateForm = ko.observable();
+    self.currentDeleteConfirmForm = ko.observable();
 
     self.dayOfWeek=ko.observable(dayOfWeek);
     self.periodId=ko.observable(periodId);
     self.weekTypeId=ko.observable(weekTypeId);
     self.lecturerId=ko.observable(lecturerId);
-    self.auditoriumId=ko.observable(auditoriumId);
     self.groupIds=ko.observable(groupIds);
     self.subGroup = ko.observable(subGroup);
     self.clickedSchedule = ko.observable({ Id: -1 });
@@ -610,7 +2310,7 @@ var Calendar=function(dayOfWeek, periodId, weekTypeId, lecturerId, auditoriumId,
     self.currentWeek = ko.observable();
     
     
-    
+   
  
     self.weeks = ko.observableArray([]);
     self.calendarSchedules = ko.observableArray([new ko.observableArray([]),
@@ -622,9 +2322,10 @@ var Calendar=function(dayOfWeek, periodId, weekTypeId, lecturerId, auditoriumId,
                                                  new ko.observableArray([])]);
 
 
-    self.startDrag=function(status) {
-        if(status==true) {
-            
+    self.startDrag = function (status) {
+        if (status == true) {
+            if (self.scheduleContextMenuForm() !== undefined)
+                self.scheduleContextMenuForm().closeDialog(true);
         }
     };
 
@@ -634,11 +2335,15 @@ var Calendar=function(dayOfWeek, periodId, weekTypeId, lecturerId, auditoriumId,
             self.clickedScheduleIndex(index);
         }
     };
-    
-    self.clickOnScheduleRight = function (parentIndex, index, flag) {
+
+
+    self.clickOnScheduleRight = function (parentIndex, index, flag, data, event) {
         if (flag == true) {
             self.clickedSchedule(self.calendarSchedules()[parentIndex]()[index]);
             self.clickedScheduleIndex(index);
+
+            self.scheduleContextMenuForm(new ScheduleContextMenuForm(self.clickedSchedule(), event.pageX, event.pageY, self));
+            self.scheduleContextMenuForm().openDialog(true);
         }
     };
 
@@ -690,6 +2395,21 @@ var Calendar=function(dayOfWeek, periodId, weekTypeId, lecturerId, auditoriumId,
             setTimeout(function () { self.loadCalendarSchedules(toStrDate(tss), toStrDate(tes), self.weeks().length - 1, true); }, 500);
         }
     };
+
+    self.updateReload = function (status, schedule, timeId, dayId, wtId) {
+        if (status == true) {
+            for (var i = 0; i < 7; ++i) {
+                for(var j = 0; j < self.calendarSchedules()[i]().length; ++j)
+                    if (self.calendarSchedules()[i]()[j].Id == schedule.Id) {
+                        if (self.dayOfWeek().Id == dayId && self.periodId() == timeId)
+                            self.getScheduleByIdToObject(true, schedule.Id, i, j);
+                        else {
+                            self.calendarSchedules()[i].remove(self.calendarSchedules()[i]()[j]);
+                        }
+                    }
+            }
+        }
+    }
     
     self.toPrevWeek = function (flag) {
         if (flag == true) {
@@ -724,6 +2444,22 @@ var Calendar=function(dayOfWeek, periodId, weekTypeId, lecturerId, auditoriumId,
         }
     };
     
+    self.getScheduleByIdToObject = function (status, id, i, j) {
+        if (status == true) {
+            dModel.loadData({
+                address: "schedule/GetScheduleById",
+                params: {
+                    Id: id,
+                },
+                onsuccess: function (data) {
+                    var newSchedules = self.calendarSchedules()[i]();
+                    newSchedules[j] = data;
+                    self.calendarSchedules()[i](newSchedules);
+                }
+            });
+        }
+    }
+
     self.loadCalendarSchedules = function (startDate, endDate, index, flag) {
         if(flag==true) {
             dModel.loadData({
@@ -733,7 +2469,7 @@ var Calendar=function(dayOfWeek, periodId, weekTypeId, lecturerId, auditoriumId,
                     periodId:self.periodId(),
                     weekTypeId:null,
                     lecturerId:self.lecturerId(),
-                    auditoriumId:self.auditoriumId(),
+                    auditoriumId:null,
                     groupIds:self.groupIds(),
                     subGroup:self.subGroup(),
                     startTime:startDate,
@@ -776,1013 +2512,82 @@ var Calendar=function(dayOfWeek, periodId, weekTypeId, lecturerId, auditoriumId,
     setTimeout(function () { self.loadCalendarSchedules(self.weeks()[0].StartDate, self.weeks()[0].EndDate, 0, true); }, 200);
     setTimeout(function () { self.loadCalendarSchedules(self.weeks()[1].StartDate, self.weeks()[1].EndDate, 1, true); }, 200);
     setTimeout(function () { self.loadCalendarSchedules(self.weeks()[2].StartDate, self.weeks()[2].EndDate, 2, true); }, 200);
-    setTimeout(function () { self.loadCalendarSchedules(self.weeks()[2].StartDate, self.weeks()[3].EndDate, 3, true); }, 200);
-    setTimeout(function () { self.loadCalendarSchedules(self.weeks()[2].StartDate, self.weeks()[4].EndDate, 4, true); }, 200);
-    setTimeout(function () { self.loadCalendarSchedules(self.weeks()[2].StartDate, self.weeks()[5].EndDate, 5, true); }, 200);
-    setTimeout(function () { self.loadCalendarSchedules(self.weeks()[2].StartDate, self.weeks()[6].EndDate, 6, true); }, 200);
+    setTimeout(function () { self.loadCalendarSchedules(self.weeks()[3].StartDate, self.weeks()[3].EndDate, 3, true); }, 200);
+    setTimeout(function () { self.loadCalendarSchedules(self.weeks()[4].StartDate, self.weeks()[4].EndDate, 4, true); }, 200);
+    setTimeout(function () { self.loadCalendarSchedules(self.weeks()[5].StartDate, self.weeks()[5].EndDate, 5, true); }, 200);
+    setTimeout(function () { self.loadCalendarSchedules(self.weeks()[6].StartDate, self.weeks()[6].EndDate, 6, true); }, 200);
     
+
+    self.realDeleteSchedule = function (status, schedule) {
+        if (status == true) {
+        
+            if (schedule !== undefined) {
+                dModel.sendData({
+                    address: "schedule/delete",
+                    params: {
+                        'Id': schedule.Id,
+                    },
+                    onsuccess: function () {
+                        self.deleteReload(true, schedule);
+                    }
+                });
+            }
+        }
+    }
+
+    self.deleteReload = function (status, schedule) {
+
+        if (status == true) {
+            for (var i = 0; i < 7; ++i) {
+                for (var j = 0; j < self.calendarSchedules()[i]().length; ++j)
+                    if (self.calendarSchedules()[i]()[j].Id == schedule.Id) {
+                        self.calendarSchedules()[i].remove(self.calendarSchedules()[i]()[j]);
+                    }
+            }
+        }
+    }
+
+    self.deleteSchedule = function (status, schedule) {
+        if (status == true) {
+
+            self.currentDeleteConfirmForm(new DeleteScheduleConfirmForm(self.realDeleteSchedule, schedule));
+            self.currentDeleteConfirmForm().openDialog(true);
+        }
+    }
+
+    self.openDialog = function (status) {
+
+        if (status == true) {
+
+            $("#calendardialog").modal('show');
+        }
+    };
+
+    self.closeDialog = function (status) {
+
+        if (status == true) {
+
+            $("#calendardialog").modal('hide');
+        }
+    };
 };
 
 
 function baseViewModel() {
     var self = this;
 
-
-    self.hints = ko.observableArray([]);
-
-   // self.addDialogValidationSummary = ko.observableArray([]);
-   // self.addHoursValidationSummary = ko.observableArray([]);
-
-    self.IsPrint = ko.observable(false);
-    self.PrintHandler=function() {
-        //self.IsPrint(!self.IsPrint());
-    };
-
-    //Отображается или нет ссылка для автоматического выбора клетки
-    self.helperLink = ko.observable(false);
-    self.addHoursLink = ko.observable(false);
-
-    //Верхние и нижние границы временных интервалов
-    //Переменные для установки границы
-    self.currentScheduleStartDate = ko.observable();
-    self.currentScheduleEndDate = ko.observable();
-    
-    self.currentScheduleStartDate.subscribe(function (newValue) {
-        self.loadScheduleByAll();
-    });
-    
-    self.currentScheduleEndDate.subscribe(function (newValue) {
-        self.loadScheduleByAll();
-    });
+    dModel = new dataModel();
 
     
-    //Границы для отображения таблицы расписания
-   // self.getScheduleStartDate = ko.observable();
-   // self.getScheduleEndDate = ko.observable();
-
-    //Текущее значение автоудаления
-    self.currentAutoDelete = ko.observable(false);
-
-    self.currentDayOfweek = ko.observable();
-
-    self.timetables = ko.observableArray([{ Id: 1, Name: "Расписание 1" }, { Id: 2, Name: "Расписание 2" }, { Id: 3, Name: "Расписание 3" }]);
-    self.currentTimetable = ko.observable();
-
-    //Массивы которые хранят подмножество выбранных объектов #SelectedItemsArrays
-    self.ScheduleSelectedArray = ko.observableArray([]);
-    self.ScheduleInfoSelectedArray = ko.observableArray([]);
-    self.ScheduleBacketSelectedArray = ko.observableArray([]);
-    self.ScheduleBacketSelectedArray.subscribe(function (newValue) {
-        if (newValue !== undefined) {
-        }
-    });
-
-
-    self.ScheduleInfoes = ko.observableArray([]);
-    self.ScheduleTicketSelectedArray = ko.observableArray([]);
-
-    self.currentDayTimeId=ko.observable();
-
-    //Массив открытых контекстных меню
-    self.ContextMenuArray = ko.observableArray([]);
-
-    //Массив открытых downdrop меню
-    self.DownDropMenuArray = ko.observableArray([]);
-
-    self.weekTypes = ko.observableArray([]);
-    self.currentWeekType = ko.observable();
-
-    //Динамически привязываемые css классы
-    self.ScheduleInfoContextMenuCss = [new ko.observable(""), new ko.observable("")];
-    self.ScheduleContextMenuCss = [new ko.observable(""), new ko.observable(""), new ko.observable("")];
-    self.ScheduleBacketContextMenuCss = [new ko.observable(""), new ko.observable(""), new ko.observable("")];
-
-    self.ScheduleArray = ko.observableArray([]);
-    self.ScheduleInfoArray = ko.observableArray([]);
-
-    //Текущее сведение к расписанию
-    self.currentScheduleInfo = ko.observable();
-
-    self.currentScheduleInfoSelectForm=ko.observable();
-
-    self.currentCalendar=ko.observable();
-    self.currentScheduleAddForm=ko.observable();
-
-    self.currentGroupsIds=ko.observable();
-
-    self.cells = ko.observableArray([]);
-
-    self.daysOfweek = ko.observableArray([{ Id: 1, Name: "Понедельник" }, {Id:2, Name: "Вторник"}, {Id:3, Name: "Среда"},{Id: 4, Name: "Четверг"},{Id:5, Name: "Пятница"},{Id:6, Name: "Суббота"}]);
-
-
-    self.tutorialtypes = ko.observableArray([]);
-    self.currentSiTutorialType = ko.observable();
-
-    
-
-    //Установка заголовка таблицы
-    self.timeTableTitle = ko.observable("");
-    self.fillTimeTableTitle=function(faculty,building,groups) {
-        var title="";
-        if(faculty!==undefined)
-            title+=faculty+' > ';
-        if(building!==undefined)
-            title+=building+' > ';
-        ;
-        if(groups!==undefined)
-            title+=groups;
-
-        self.timeTableTitle(title);
-    };
-
-
-    self.auditoriumTypes = ko.observableArray([{ Id: 1, Name: "аудитории" }, { Id: 2, Name: "кабинеты" }, { Id: 3, Name: "дисплейные" },
-         { Id: 4, Name: "лабораторные" }, { Id: 5, Name: "комнаты" }, { Id: 6, Name: "залы" }, { Id: 7, Name: "отделы" }, { Id: 8, Name: "лингафонные" },
-         { Id: 9, Name: "разные" }]);
-
-    self.currentAuditoriumType = ko.observable();
-
-    self.studyyears = ko.observableArray([]);
-    self.currentStudyYear = ko.observable();
-    self.semesters = ko.observableArray([{ Id: 0, Name: "0" }, { Id: 1, Name: "1" }, 
-                                         { Id: 2, Name: "2" }, { Id: 3, Name: "3" }, { Id: 4, Name: "4" }, { Id: 5, Name: "5" }, { Id: 6, Name: "6" },
-                                         { Id: 7, Name: "7" }, { Id: 8, Name: "8" }, { Id: 9, Name: "9" }, { Id: 10, Name: "10" }, { Id: 11, Name: "11" },
-                                         { Id: 12, Name: "12" }, { Id: 13, Name: "13" }]);
-    self.currentSemester = ko.observable({ Id: 0, Name: "0" });
-
-    self.dayTimes = ko.observableArray(["", "", "", "", "", "", "", "", "", "", "", "", ""]);
-    self.currentDayTimes = ko.observableArray([]);
-
-    self.faculties = ko.observableArray([]);
-    self.currentFaculties = ko.observable();
-    self.displayFaculties = ko.observable();
-
-    self.departments = ko.observableArray([]);
-    self.currentDepartment = ko.observable();
-
-    self.lecturers = ko.observableArray([]);
-    self.currentLecturer = ko.observable();
-
-    self.courses = ko.observableArray([]);
-    self.currentCourses = ko.observableArray([]);
-    self.displayCourses = ko.observable();
-
-
-    self.specialities = ko.observableArray([]);
-    self.currentSpecialities = ko.observableArray([]);
-    self.displaySpecialities = ko.observable();
-   
-
-    self.groups = ko.observableArray([]);
-    self.currentGroups = ko.observableArray([]);
-    self.displayGroups = ko.observable();
-
-
-    self.auditoriums = ko.observableArray([]);
-    self.currentAuditorium = ko.observable();
-    self.currentChangeAuditorium = ko.observable();
-
-    self.buildings = ko.observableArray([]);
-    self.currentBuilding = ko.observable();
-
-    self.branches = ko.observableArray([]);
-    self.currentBranches = ko.observable();
-    self.displayBranches = ko.observable();
-
-    self.subgroups = ko.observableArray(["Все", "1", "2", "3"]);
-    self.currentSubGroup = ko.observable("Все");
-    
-
-    self.toRealIndex = function (index) {
-        return index - (self.daysOfweek().length + 1) - (index / (self.daysOfweek().length + 1) >> 0);
-    };
-
-    self.Div = function (a, b) {
-        return (a / b) >> 0;
-    }
-
-    //загрузка свободных аудиторий
-    self.loadFreeAuditoriumsT1 = function () {
-        if (self.currentBuilding() !== undefined && self.currentWeekType() !== undefined && self.currentSiTutorialType() !== undefined && self.currentDayTimes()[0] !== undefined && self.currentAuditoriumType() !== undefined) {
-            self.loadFreeAuditoriums(self.currentBuilding().Id, self.currentWeekType().Id,
-             self.currentDayOfweek().Id, self.currentDayTimes()[0].Id, self.currentSiTutorialType().Id, self.currentAuditoriumType().Id, self.currentScheduleStartDate(), self.currentScheduleEndDate());
-        }
-    }
-
-
-    self.checkCurrentScheduleInfoHours = function (currentSiIndex) {
-        if (self.ScheduleInfoArray()[currentSiIndex] !== undefined) {
-            var prevHours = self.ScheduleInfoArray()[currentSiIndex].Display.curHours();
-            var maxHours = self.ScheduleInfoArray()[currentSiIndex].Display.maxHours();
-            //Проверка на количество свободных часов.
-            if (maxHours <= prevHours) {
-                //Если часов недостаточно отобразить форму добавления часов
-                self.ShowAddHoursMenu(data, event);
-            }
-        }
-    }
-
-    //Выделить ScheduleBacket
-    self.selectScheduleBacket = function (index) {
-        $("#freeAuditorium").removeClass("disabled");
-        $("#freeAuditorium").addClass("enabled");
-
-        self.ScheduleBacketSelectedArray.push(self.toRealIndex(index));
-        if (self.ScheduleArray()[self.toRealIndex(index)] !== undefined) {
-            self.ScheduleArray()[self.toRealIndex(index)].IsSelected(true);
-            self.ScheduleArray()[self.toRealIndex(index)].CssClass("onScheduleBacketClick");
-        }   
-    }
-
-    //Выделить ScheduleTicket
-    self.selectScheduleTicket=function(parentIndex,index) {
-        $("#del").removeClass("disabled");
-        $("#del").addClass("enabled");
-
-        $("#changeAuditorium").removeClass("disabled");
-        $("#changeAuditorium").addClass("enabled");
-        self.ScheduleTicketSelectedArray.push(new pair(self.toRealIndex(parentIndex),index));
-
-        if(self.ScheduleArray()[self.toRealIndex(parentIndex)].Tickets()[index]!==undefined) {
-            self.ScheduleArray()[self.toRealIndex(parentIndex)].Tickets()[index].IsSelected(true);
-            self.ScheduleArray()[self.toRealIndex(parentIndex)].Tickets()[index].CssClass("onScheduleTicketClick");
-        }
-    };
-
-    self.currentScheduleInfo.subscribe(function(newValue) {
-        if(newValue !== undefined) {
-            self.currentLecturer(newValue.Data.LecturerId());
-            self.currentGroupsIds(newValue.Data.GroupsIds());
-        } else {
-            self.currentLecturer(undefined);
-            self.currentGroupsIds(groupIds);
-        }
-    });
-
-    //Выделить ScheduleInfo
-    self.selectScheduleInfo=function(index) {
-        $("#add").removeClass("disabled");
-        $("#add").addClass("enabled");
-        self.ScheduleInfoSelectedArray.push(index);
-        self.currentScheduleInfo(self.ScheduleInfoArray()[index]);
-        self.ScheduleInfoArray()[index].IsSelected(true);
-        self.ScheduleInfoArray()[index].Display.CssClass("onScheduleInfoClick");
-    };
-
-    //Очистить выделенные ScheduleBackets
-    self.clearSelectedScheduleBackets = function () {
-        $("#freeAuditorium").removeClass("enabled");
-        $("#freeAuditorium").addClass("disabled");
-
-        this.t = ko.observableArray([]);
-        t = self.ScheduleBacketSelectedArray.removeAll();
-        for (var i = 0; i < t.length; ++i) {
-            if (self.ScheduleArray()[t[i]] !== undefined) {
-                self.ScheduleArray()[t[i]].IsSelected(false);
-                self.ScheduleArray()[t[i]].CssClass("onScheduleBacketUnclick");
-            }
-        }
-    }
-
-    //Очистить выделенные ScheduleTickets
-    self.clearSelectedScheduleTickets = function () {
-        $("#del").removeClass("enabled");
-        $("#del").addClass("disabled");
-
-        $("#changeAuditorium").removeClass("enabled");
-        $("#changeAuditorium").addClass("disabled");
-
-        this.t = ko.observableArray([]);
-        t = self.ScheduleTicketSelectedArray.removeAll();
-
-        for (var i = 0; i < t.length; ++i) {
-            if (self.ScheduleArray()[t[i].first].Tickets()[t[i].second] !== undefined) {
-                self.ScheduleArray()[t[i].first].Tickets()[t[i].second].IsSelected(false);
-                self.ScheduleArray()[t[i].first].Tickets()[t[i].second].CssClass(self.ScheduleArray()[t[i].first].Tickets()[t[i].second].UnselectCssClass());
-            }
-        }
-        return t;
-    }
-
-    //Очистить выделенные ScheduleInfoes
-    self.clearSelectedScheduleInfoes = function () {
-        $("#del").removeClass("enabled");
-        $("#del").addClass("disabled");
-
-        this.t = ko.observableArray([]);
-        t = self.ScheduleInfoSelectedArray.removeAll();
-        self.currentScheduleInfo(undefined);
-        for (var i = 0; i < t.length; ++i) {
-            if (self.ScheduleInfoArray()[t[i]] !== undefined) {
-                self.ScheduleInfoArray()[t[i]].IsSelected(false);
-                self.ScheduleInfoArray()[t[i]].Display.CssClass(self.ScheduleInfoArray()[t[i]].Display.UnselectCssClass());
-            }
-        }
-    }
-
-
-    //Действия при обновлении ScheduleBacket
-    self.UpdateCurrentScheduleBacket = function (index) {
-        console.log("UpdateCurrentScheduleBacket");
-        //###
-        self.currentDayOfweek(self.daysOfweek()[index % self.daysOfweek().length]);
-        
-        if (self.timesFromSchedules()[self.Div(index, self.daysOfweek().length)].dayTimeId !== -1) {
-            self.currentDayTimes([self.dayTimes()[
-                    self.timesFromSchedules()[self.Div(index, self.daysOfweek().length)].dayTimeId]]);
-
-            console.log(self.currentDayTimes()[0]);
-
-            console.log("!!!!!!!!!!!!!!!!!!!");
-        } else {
-            self.currentDayTimes([self.dayTimes()[0]]);
-            console.log("**************");
-        }
-
-            //self.SchedulePlanValidation("back");
-    };
-    
-    //Pop Up меню под курсором
-    self.toDownDrop = function (data, event) {
-        console.log(event);
-        eid = event.toElement.id;
-
-        var x = event.pageX - $(document).scrollLeft();
-        var y = event.pageY - $(document).scrollTop();
-
-        $("#" + eid + "DownDrop").dialog({
-            position: [x, y + 15],
-            dialogClass: "noTitleStuff",
-
-            open: function (event, ui) {
-                $(event.target).dialog('widget')
-                    .css({ position: 'fixed' })
-            },
-
-            autoOpen: false,
-            height: "auto",
-            width: "auto",//event.toElement.clientWidth,
-            modal: false,
-            resizable: false,
-        });
-
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-
-        $("#" + eid + "DownDrop").dialog("open");
-
-        self.DownDropMenuArray.push("#" + eid + "DownDrop");
-    }
-
-    //ContextMenu
-    self.toContextMenu = function (data, event, selector) {
-        var x = event.pageX - $(document).scrollLeft();
-        var y = event.pageY - $(document).scrollTop();
-
-        $(selector).dialog({
-            position: [x, y + 15],
-            dialogClass: "noTitleStuff",
-            autoOpen: false,
-
-            open: function (event, ui) {
-                $(event.target).dialog('widget')
-                    .css({position:'fixed'});
-            },
-
-            height: "auto",
-            width: "auto",//event.toElement.clientWidth,
-            modal: false,
-            resizable: false,
-        });
-
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-
-        $(selector).dialog("open");
-        self.ContextMenuArray.push(selector);
-    }
-
-
-    //Закрыть downdrop меню
-    self.hideDownDropMenu = function (selector) {
-        console.log("Colose dialog " + selector);
-        $(selector).dialog("close");
-        self.DownDropMenuArray.remove(selector);
-    }
-
-    //Закрыть все downdrop меню на экране
-    self.hideAllDownDropMenu = function () {
-        console.log("hideAllDownDropMenu");
-        this.t = ko.observableArray([]);
-        t = self.DownDropMenuArray.removeAll();
-        for (var i = 0; i < t.length; ++i) {
-            $(t[i]).dialog("close");
-        }
-    }
-
-    //Закрыть контекстное меню
-    self.hideContextMenu = function (selector) {
-        console.log("Colose dialog " + selector);
-        $(selector).dialog("close");
-        self.ContextMenuArray.remove(selector);
-    }
-
-    //Закрыть все контекстные меню на экране
-    self.hideAllContextMenu = function () {
-        console.log("hideAllContextMenu");
-        this.t = ko.observableArray([]);
-        t = self.ContextMenuArray.removeAll();
-        for (var i = 0; i < t.length; ++i) {
-            $(t[i]).dialog("close");
-        }
-    }
-
-    //Поместить выбраное сведение к расписанию в выбраную клетку при двойном щелчке
-    self.TransferScheduleInfoToScheduleBacket=function(data,event,prevformstate) {
-
-        var scheduleTicket=new ScheduleTicket(
-            new ScheduleDisplay(
-                self.currentScheduleInfo().Display.Lecturer(),
-                self.currentScheduleInfo().Display.Tutorial(),
-                self.currentScheduleInfo().Display.TutorialType(),
-                self.currentScheduleInfo().Display.Groups(),
-                self.currentAuditorium().Number,
-                self.currentWeekType().Name,
-                self.currentDayTimes(),
-                self.currentSubGroup()
-            ),
-            new ScheduleData(
-                1,
-                self.currentScheduleInfo().Data.ScheduleInfoId(),
-                self.currentScheduleInfo().Data.TutorialId(),
-                self.currentScheduleInfo().Data.TutorialTypeId(),
-                self.currentScheduleInfo().Data.GroupsIds(),
-                self.currentAuditorium().Id,
-                self.currentWeekType().Id,
-                self.currentDayOfweek().Id,
-                self.currentDayTimes()[0].Id,
-                self.currentScheduleInfo().Data.LecturerId(),
-                self.currentScheduleStartDate(),
-                self.currentScheduleEndDate(),
-                self.currentAutoDelete()),
-            false,
-            false,
-            false,
-            "onScheduleTicketUnselectForGroup",
-            false,
-            false,
-            true);
-
-        self.ValidateSchedule(scheduleTicket,self.AddSchedule,scheduleTicket);
-
-        return 0;
-    };
-
-   
-    //Удалить выбранный предмет из клетки расписания
-    self.DeleteScheduleTicket=function() {
-        console.log("DeleteScheduleTicket");
-
-        //Удаляются все выбранные ScheduleTicket
-        for(var i=0;i<self.ScheduleTicketSelectedArray().length;++i) {
-            self.DelSchedule(self.ScheduleArray()[self.ScheduleTicketSelectedArray()[i].first].Tickets()[self.ScheduleTicketSelectedArray()[i].second]);
-        }
-
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-
-        return 0;
-    };
-
-    self.fontSize = ko.observable(12);
-
-    self.fontSize.subscribe(function (newValue) {
-        console.log("1111111asd");
-    });
-    self.ShowPrintSettingMenu=function(data,event) {
-        console.log("111111111111dadsad");
-        $("#printsettingdialog").modal('show');
-    };
-
-
-    //Показать меню выбора свободных аудиторий
-    self.ShowFreeAuditoriumsMenu=function(data,event) {
-
-        self.loadFreeAuditoriumsT1();
-
-        var x=event.pageX-$(document).scrollLeft();
-        var y=event.pageY-$(document).scrollTop();
-
-        console.log("ShowFreeAuditoriumsMenu");
-      
-        $("#auditoriumdialog").modal('show');
-    };
-
-    //Показать меню замены аудитории
-    self.ShowChangeAuditoriumsMenu=function(data,event) {
-        self.loadFreeAuditoriumsT1();
-
-        var x=event.pageX-$(document).scrollLeft();
-        var y=event.pageY-$(document).scrollTop();
-
-        console.log("ShowChangeAuditoriumsMenu");
-
-        //$('#pop').popover('show')
-
-        $('#changeauditoriumdialog').modal('show');
-    };
-
-    //Показать меню замены занятия
-    self.ShowChangeScheduleMenu=function(data,event) {
-        var x=event.pageX-$(document).scrollLeft();
-        var y=event.pageY-$(document).scrollTop();
-
-        console.log("ShowChangeScheduleMenu");
-
-        $("#changescheduledialog").dialog({
-            position:[x,y],
-            autoOpen:false,
-            height:280,
-            width:400,
-            modal:true,
-        });
-
-        $("#changescheduledialog").dialog("open");
-    };
-
-
-   /* self.addDialogValidationSummary.subscribe(function (newValue) {
-        if (newValue !== undefined) {
-            if (newValue.length > 0) {
-                $("#validationError").removeClass('hide')
-                $("#addScheduleOkButton").removeClass("enabled");
-                $("#addScheduleOkButton").addClass("disabled");
-            } else {
-                $("#addScheduleOkButton").removeClass("disabled");
-                $("#addScheduleOkButton").addClass("enabled");
-                $("#validationError").addClass('hide');
-                
-            }
-        }
-    });*/
-       
-
-    /*self.SchedulePlanValidation = function (param) {
-        self.addDialogValidationSummary([]);
-
-        self.addHoursLink(false);
-        self.helperLink(false);
-
-        var currentSiIndex = self.ScheduleInfoSelectedArray()[self.ScheduleInfoSelectedArray().length - 1];
-        if (self.ScheduleInfoArray()[currentSiIndex] !== undefined) {
-            var prevHours = self.ScheduleInfoArray()[currentSiIndex].Display.curHours();
-            var maxHours = self.ScheduleInfoArray()[currentSiIndex].Display.maxHours()
-
-            if (self.currentWeekType() == undefined){
-                self.addDialogValidationSummary.push({ Id: 1, Name: "Не выбран тип недели" });
-                return -1;
-            }
-
-            if(self.currentDayTimes() == undefined){
-                self.addDialogValidationSummary.push({ Id: 2, Name: "Не выбрано время" });
-                return -1;
-            }
-
-            if(self.currentDayOfweek() == undefined){
-                self.addDialogValidationSummary.push({ Id: 3, Name: "Не выбран день" });
-                return -1;
-            }
-
-            for (var i = 0; i < self.currentDayTimes().length; ++i) {
-                var add = true;
-                var currentSb = self.ScheduleArray()[self.gi(self.currentDayTimes()[i].ViewId - 1, self.currentDayOfweek().Id - 1)];
-                var len = currentSb.Tickets().length;
-                for (var i = 0; i < len; ++i) {
-                    if (currentSb.Tickets()[i].Data.WeekTypeId() == self.currentWeekType().Id ||
-                        currentSb.Tickets()[i].Data.WeekTypeId() == 1)
-                        add = false;
-                }
-                if (currentSb.Tickets().length > 0 && self.currentWeekType().Id == 1)
-                    add = false;
-                if (!add) {
-                    self.addDialogValidationSummary.push({ Id: 4, Name: "Выбраная позиция занята!" });
-                    self.helperLink(true);
-                }
-            } 
-
-            if (maxHours <= prevHours) {
-                self.addDialogValidationSummary.push({ Id: 5, Name: "Недостаточно часов" });
-                self.addHoursLink(true);
-                return -1;
-            }
-
-            if (self.currentAuditorium() == undefined) {
-                self.addDialogValidationSummary.push({ Id: 6, Name: "Не выбрана аудитория" });
-                return -1;
-            }
-
-            return 0;
-        } else {
-            if (param !== "back") {
-                alert("Выберите сведение к расписанию!");
-            }
-            return -2;
-        }
-    }*/
-
-    //Показать меню планирования занятия
-    self.ShowSchedulePlanMenu = function (data, event) {
-
-        self.loadFreeAuditoriumsT1();
-
-        //var state = self.SchedulePlanValidation("to");
-
-       // if (state !== -2) {
-            var x = event.pageX - $(document).scrollLeft();
-            var y = event.pageY - $(document).scrollTop();
-
-            console.log("ShowSchedulePlanMenu");
-
-            $('#adddialog').modal('show');
-
-            //if(state == -3){
-                //self.ShowAddHoursMenu(data, event);
-            //}
-       // }
-    }
-
-
-    //Обработка выбора дней в меню планирования занятия
-    self.currentDayOfweek.subscribe(function (newValue) {
-        if (newValue !== undefined) {
-            self.clearSelectedScheduleBackets();
-
-            var currentDayIndex = newValue.Id - 1;
-
-            //###
-            for (var i = 0; i < self.currentDayTimes().length; ++i) {
-                var currentTimeIndex = self.currentDayTimes()[i].ViewId - 1;
-                self.ScheduleBacketSelectedArray.push(self.gi(currentTimeIndex, currentDayIndex));
-                if (self.ScheduleArray()[self.gi(currentTimeIndex, currentDayIndex)] !== undefined) {
-                    self.ScheduleArray()[self.gi(currentTimeIndex, currentDayIndex)].IsSelected(true);
-                    self.ScheduleArray()[self.gi(currentTimeIndex, currentDayIndex)].CssClass("onScheduleBacketClick");
-                }
-            }
-
-            //self.SchedulePlanValidation("back");
-        }
-    });
-
-    //Обработка выбора типа недели
-    self.currentWeekType.subscribe(function (newValue) {
-        //if (newValue !== undefined) {
-           //self.SchedulePlanValidation("back");
-        //}
-    });
-    //Обработка выбора времени в меню планирования занятия
-    self.currentDayTimes.subscribe(function (newValue) {
-        if (newValue !== undefined) {
-            self.clearSelectedScheduleBackets();
-
-            var currentDayIndex = self.currentDayOfweek().Id - 1;
-
-            for (var i = 0; i < newValue.length; ++i) {
-                var currentTimeIndex = newValue[i].ViewId - 1;
-                self.ScheduleBacketSelectedArray.push(self.gi(currentTimeIndex, currentDayIndex));
-                if (self.ScheduleArray()[self.gi(currentTimeIndex, currentDayIndex)] !== undefined) {
-                    self.ScheduleArray()[self.gi(currentTimeIndex, currentDayIndex)].IsSelected(true);
-                    self.ScheduleArray()[self.gi(currentTimeIndex, currentDayIndex)].CssClass("onScheduleBacketClick");
-                }   
-            }
-            //self.SchedulePlanValidation("back");
-        }
-    });
-
-    //Обработка нажатия на ссылку подсказки
-    self.helperLinkClick=function(data,event) {
-        var s2=self.ScheduleInfoSelectedArray().length;
-        var currentSiIndex=self.ScheduleInfoSelectedArray()[s2-1];
-
-        if(self.currentFaculties()!==undefined&&self.currentBuilding()!==undefined&&
-            self.currentStudyYear()!==undefined&&self.currentSemester()!==undefined&&self.currentTimetable()!==undefined&&
-            self.currentWeekType()!==undefined&&self.currentSiTutorialType()!==undefined&&self.currentAuditoriumType()!==undefined) {
-
-            self.loadHint(self.currentFaculties().Id,self.currentBuilding().Id,self.ScheduleInfoArray()[currentSiIndex].Data.LecturerId(),
-                courseIds,groupIds,self.currentStudyYear().Id,self.currentSemester().Id,self.currentTimetable().Id,
-                self.currentWeekType().Id,self.currentSiTutorialType().Id,self.currentAuditoriumType().Id,
-                self.currentScheduleStartDate(),self.currentScheduleEndDate());
-        }
-    };
-
-    self.addHoursLinkClick = function (data, event) {
-        self.ShowAddHoursMenu(data, event);
-    }
-
-    self.gi = function (i, j) {
-        return i * self.daysOfweek().length + j;
-    };
-
-    self.gf = function (index) {
-        return index - (self.daysOfweek().length + 1) - (index / (self.daysOfweek().length + 1) >> 0);
-    }
-
-
-    /*self.addHoursValidationSummary.subscribe(function (newValue) {
-        if (newValue !== undefined) {
-            if (newValue.length > 0) {
-
-                $("#AddHoursFormOkButton").removeClass("enabled");
-                $("#AddHoursFormOkButton").addClass("disabled");
-            } else {
-
-                $("#AddHoursFormOkButton").removeClass("disabled");
-                $("#AddHoursFormOkButton").addClass("enabled");
-            }
-        } else {
-
-        }
-    });*/
-
-   
-
-   /* self.AddHoursValidation = function () {
-        //self.addHoursValidationSummary([]);
-        if (self.newScheduleInfoMaxHours() == undefined || self.newScheduleInfoMaxHours() == 0 || self.newScheduleInfoMaxHours() == "") {
-           // self.addHoursValidationSummary.push({ Id: 1, Name: "Часы не введены" });
-            return -1;
-        }
-        return 0;
-    }*/
-
-
-    //Показать меню добавления времени к сведению о расписании
-    self.ShowAddHoursMenu = function (data, event) {
-
-        //self.AddHoursValidation();
-
-        var x = event.pageX - $(document).scrollLeft();
-        var y = event.pageY - $(document).scrollTop();
-
-        console.log("ShowAddHoursMenu");
-
-        /*
-        $("#addhoursdialog").dialog({
-            position: [x, y],
-            autoOpen: false,
-            height: 200,
-            width: 280,
-            modal: true,
-        });*/
-
-        $("#addhoursdialog").modal('show');
-    }
-
-
-    //Заполнение таблицы с расписанием
-    self.ScheduleRangeLength = ko.observable(10);
-
-    self.fillScheduleTable = function (data) {
-
-        self.cells.removeAll();
-        
-        //###
-        for (var i = 0; i < 1 + self.daysOfweek().length * self.ScheduleRangeLength() + self.daysOfweek().length + self.ScheduleRangeLength(); ++i) {
-            self.cells.push(1);
-        }
-
-        for (var i = 0; i < self.ScheduleRangeLength(); ++i) {
-            for (var j = 0; j < self.daysOfweek().length; ++j) {
-                //2x
-                var scheduleTickets = [];
-                self.ScheduleArray.push(new ScheduleBacket(scheduleTickets, false, false));
-            }
-        }
-    }
-
-
-    self.timesFromSchedules = ko.observableArray([]);
-    self.usedTimes = ko.observableArray([]);
-
-    self.fillScheduleTable2 = function (data) {
-
-        var tt = self.clearSelectedScheduleTickets();
-  
-        for (var i = 0; i < self.ScheduleArray().length; ++i) {
-            self.ScheduleArray()[i].Tickets.removeAll();
-        }
-
-        self.timesFromSchedules.removeAll();
-        self.usedTimes.removeAll();
-
-        for (var i = 0; i < self.dayTimes().length; ++i) {
-            var curTime = {
-                Start: self.dayTimes()[i].Start,
-                End: self.dayTimes()[i].End,
-                dayTimeId: i,
-            };
-
-            if (self.usedTimes.indexOf(curTime.Start + curTime.End) == -1) {
-                self.timesFromSchedules.push(curTime);
-                self.usedTimes.push(curTime.Start + curTime.End);
-            }
-        }
-
-        for (var i = 0; i < data.length; ++i) {
-            var curTime = {
-                Start: data[i].StartTime,
-                End: data[i].EndTime,
-                dayTimeId: -1,
-            };
-
-            if (self.usedTimes.indexOf(curTime.Start+curTime.End) == -1) {
-                self.timesFromSchedules.push(curTime);
-                self.usedTimes.push(curTime.Start + curTime.End);
-            }
-        }
-
-       
-
-       
-        self.timesFromSchedules.sort(function (left, right)
-        {
-            return left.Start == right.Start ? 0 : (left.Start < right.Start ? -1 : 1)
-        });
-
-        console.log(self.timesFromSchedules());
-
-       
-
-        self.ScheduleRangeLength(self.timesFromSchedules().length);
-        self.fillScheduleTable();
-       
-        for (var i = 0; i < data.length; ++i) {
-
-            var Index = 0;
-            for (var j = 0; j < self.timesFromSchedules().length; ++j) {
-                if (self.timesFromSchedules()[j].Start == data[i].StartTime &&
-                    self.timesFromSchedules()[j].End == data[i].EndTime) {
-                    Index = j;
-                    break;
-                }
-            }
-
-            var currentSbIndex = self.gi(Index, data[i].DayOfWeek - 1);
-
-            //console.log(self.timesFromSchedules()[i].Start / 60 + ":" + self.timesFromSchedules()[i].Start % 60 + "  " + self.timesFromSchedules()[i].Index + " - " + (self.timesFromSchedules()[i].Data.DayOfWeek - 1) + " " + currentSbIndex);
-
-            var currentCss = "";
-            if (data[i].IsForLecturer == true)
-                currentCss = "onScheduleTicketUnselectForLecturer";
-            if (data[i].IsForAuditorium == true)
-                currentCss = "onScheduleTicketUnselectForAuditorium";
-            if (data[i].IsForGroup == true)
-                currentCss = "onScheduleTicketUnselectForGroup";
-
-            self.ScheduleArray()[currentSbIndex].Tickets.push(new ScheduleTicket(
-                                new ScheduleDisplay(
-                                        data[i].LecturerName,
-                                        data[i].TutorialName,
-                                        data[i].TutorialTypeName,
-                                        data[i].GroupNames,
-                                        data[i].AuditoriumNumber,
-                                        data[i].WeekTypeName,
-                                        data[i].StartTime + "-" + data[i].EndTime,
-                                        data[i].SubGroup
-                                        ),
-                                new ScheduleData(
-                                        data[i].Id,
-                                        data[i].ScheduleInfoId,
-                                        data[i].TutorialId,
-                                        data[i].TutorialTypeId,
-                                        data[i].GroupIds,
-                                        data[i].AuditoriumId,
-                                        data[i].WeekTypeId,
-                                        data[i].DayOfWeek,
-                                        data[i].PeriodId,
-                                        data[i].LecturerId,
-                                        data[i].StartDate,
-                                        data[i].EndDate,
-                                        data[i].AutoDelete),
-                                false,
-                                false,
-                                false,
-                                currentCss,
-                                data[i].IsForLecturer,
-                                data[i].IsForAuditorium,
-                                data[i].IsForGroup));
-        }
-        
-
-        for (var i = 0; i < tt.length; ++i) {
-            self.ScheduleTicketSelectedArray.push(new pair(tt[i].first, tt[i].second));
-
-            if (self.ScheduleArray()[tt[i].first].Tickets()[tt[i].second] !== undefined) {
-                self.ScheduleArray()[tt[i].first].Tickets()[tt[i].second].IsSelected(true);
-                self.ScheduleArray()[tt[i].first].Tickets()[tt[i].second].CssClass("onScheduleTicketClick");
-            }
-        }
-    }
-
-    //Заполнение списка сведений к расписанию
-    self.fillScheduleInfoTable = function (data) {
-
-        self.ScheduleInfoArray.removeAll();
-
-        for (var i = 0; i < data.length; ++i) {
-            var t = setTimeout(function (data) {
-                var startedCss = "simpleScheduleInfo";
-                if (data.CurrentHours > 0)
-                    startedCss = "plannedScheduleInfo";
-                if (data.CurrentHours >= data.HoursPerWeek)
-                    startedCss = "limitedScheduleInfo";
-
-                self.ScheduleInfoArray.push(new ScheduleInfo(
-                    new ScheduleInfoDisplay(
-                          data.TutorialName,
-                          data.LecturerName,
-                          data.TutorialTypeName,
-                          data.HoursPerWeek,
-                          data.CurrentHours,
-                          data.CourseNames,
-                          data.GroupNames,
-                          startedCss),
-                     new ScheduleInfoData(
-                          data.TutorialId,
-                          data.Id,
-                          data.LecturerId,
-                          data.TutorialTypeId,
-                          data.GroupIds,
-                          data.CourseIds),
-                    false,
-                    false));
-            }, 0, data[i]);
-        }
-    }
+    self.currentFlowSelectForm = ko.observable(new FlowSelectForm(self));
+    self.currentScheduleInfoSelectForm = ko.observable();
+    self.currentScheduleAddForm = ko.observable();
+    self.currentCalendar = ko.observable();
+    self.currentScheduleSelectForm = ko.observable(new ScheduleSelectForm(undefined, undefined, undefined, undefined, undefined, self));
 
     //#init function
     self.init = function () {
-        
-        var start = new Date();
-        start.setDate(start.getDate() - (start.getDay() - 1));
-        start=toStrDate(start);
-
-        var end = new Date();
-        end.setDate(end.getDate() + 7 - end.getDay());
-        end = toStrDate(end);
-
-        self.currentScheduleStartDate(start);
-        self.currentScheduleEndDate(end);
-
-        
-       
-        self.currentTimetable(self.timetables()[0]);
-        self.fillScheduleTable();
-
-        $("#adddialog").draggable({
-            handle: ".modal-header"
-        });
-
-        $("#validatedialog").draggable({
-            handle: ".modal-header"
-        });
-
-        $("#auditoriumdialog").draggable({
-            handle: ".modal-header"
-        });
-
-        $("#changeauditoriumdialog").draggable({
-            handle: ".modal-header"
-        });
-
-        $("#addhoursdialog").draggable({
-            handle: ".modal-header"
-        });
-
-        Ext.create('Ext.panel.Panel', {
-            width: 'auto',
-            height: 600,
-            layout: 'accordion',
-            renderTo: 'flowTab',
-            defaults: {
-                bodyStyle: 'padding:3px'
-            },
-            layoutConfig: {
-                titleCollapse: false,
-                animate: true,
-                activeOnTop: true
-            },
-            items: [{
-                title: 'Группы',
-                contentEl: 'flowGroups'
-            }, {
-                title: 'Сведения к расписанию',
-                contentEl: 'flowSI'
-            },{
-                title: 'Добавить занятие',
-                contentEl: 'flowAdd'
-            }]
-        });
-
+     
         Ext.create('Ext.container.Viewport', {
             width: 1400,
             height: '100%',
@@ -1797,7 +2602,7 @@ function baseViewModel() {
                     region: 'west',
                     margins: '5 0 0 0',
                     cmargins: '5 5 0 0',
-                    width: 200,
+                    width: 260,
                     minSize: 100,
                     maxSize: 250,
                     preventHeader: true ,
@@ -1807,1380 +2612,27 @@ function baseViewModel() {
                  {
                      region: 'north',
                      autoScroll: false,
-                     height: 85,
+                     height: 110,
                      preventHeader: true,
                      hideCollapseTool: true,
-                     contentEl: 'headerMenu11'
+                     contentEl: 'ssheader'
                  }, {
-                    collapsible: false,
-                    layout: 'fit',
-                    region: 'center',
-                    height: 500,
-                    margins: '5 0 0 0',
-                    contentEl: 'timetable11',
-                    autoScroll: true
-                }],
+                     collapsible: false,
+                     layout: 'fit',
+                     region: 'center',
+                     height: 500,
+                     margins: '5 0 0 0',
+                     contentEl: 'ssdialogintable',
+                     autoScroll: true
+                 }],
 
 
             renderTo: 'div11'
-
+            
         });
-    }
-
-    //Обработчики щелчков #ClickEventHandlers
-    self.currentScheduleClicked = ko.observable();
-    self.currentScheduleInfoClicked = ko.observable();
-
-    self.ScheduleSingleLeftClick = function (parentIndex, index, data, event) {
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-
-        self.clearSelectedScheduleTickets();
-
-        self.selectScheduleTicket(parentIndex, index);
-    }
-
-    self.ScheduleSingleRightClick = function (parentIndex, index, data, event) {
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-        self.toContextMenu(data, event, "#ScheduleContextMenuDialog");
-
-        self.clearSelectedScheduleTickets();
-
-        self.selectScheduleTicket(parentIndex, index);
-    }
-
-    self.ScheduleDoubleClick = function (data, event) {
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-    }
-
-    self.ScheduleBacketSingleLeftClick = function (index, data, event) {
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-
-        self.UpdateCurrentScheduleBacket(self.toRealIndex(index));
-  
-        self.clearSelectedScheduleBackets();
-
-        self.selectScheduleBacket(index);
-    }
-
-    self.ScheduleBacketSingleRightClick=function(index,data,event) {
-
-        self.UpdateCurrentScheduleBacket(self.toRealIndex(index));
-
-        self.clearSelectedScheduleBackets();
-
-        self.selectScheduleBacket(index);
-
-
-        if(event.target.classList[0]=="ScheduleBacket"||event.target.classList[0]=="onScheduleBacketSelect"||event.target.classList[0]=="onScheduleBacketClick") {
-            self.hideAllContextMenu();
-            self.hideAllDownDropMenu();
-            self.toContextMenu(data,event,"#ScheduleBacketContextMenuDialog");
-        }
-    };
-
-    self.ScheduleBacketDoubleClick=function(data,event) {
-
-        if(event.target.classList[0]=="ScheduleBacket"||event.target.classList[0]=="onScheduleBacketSelect"||event.target.classList[0]=="onScheduleBacketClick") {
-            self.hideContextMenu("#ScheduleBacketContextMenuDialog");
-        }
-    };
-
-    self.ScheduleInfoSingleLeftClick = function (index, data, event) {
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-   
-        self.clearSelectedScheduleInfoes();
-
-        //Загрузка расписания для преподавателя
-      
-        self.selectScheduleInfo(index);
-        self.loadScheduleByAll();
-    }
-
-    self.ScheduleInfoSingleRightClick = function (index, data, event) {
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-        self.toContextMenu(data, event, "#ScheduleInfoContextMenuDialog");
-
-        self.clearSelectedScheduleInfoes();
-
-        self.selectScheduleInfo(index);
-    }
-
-    self.ScheduleInfoDoubleClick = function (data, event) {
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-
-        self.TransferScheduleInfoToScheduleBacket(data, event, 0);
-    }
-
-    //Drag обработчики #DragEventHandlers
-    self.currentScheduleDrag = ko.observable();
-    self.currentScheduleInfoDrag = ko.observable();
-
-    self.ScheduleStartDrag = function (data, event) {
-
-    }
-
-    //Начало перетаскивания сведения к расписанию
-    self.ScheduleInfoStartDrag=function(index,data,event) {
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-
-        self.clearSelectedScheduleInfoes();
-
-        //Загрузка расписания для преподавателя
-
-        self.selectScheduleInfo(index);
-
-        self.loadScheduleByAll();
-
-        self.ScheduleInfoArray()[index].IsDragged(true);
-        self.ScheduleInfoArray()[index].Display.CssClass("onScheduleInfoDrag");
-    };
-   
-
-    self.ScheduleInfoEndDrag = function (index, data, event) {
-        self.ScheduleInfoArray()[index].IsDragged(false);
-        if (self.ScheduleInfoArray()[index].IsSelected()) {
-            self.ScheduleInfoArray()[index].Display.CssClass("onScheduleInfoClick");
-        } else {
-            self.ScheduleInfoArray()[index].Display.CssClass("onScheduleInfoUndrag");
-        }
-    }
-
-    //Drop обработчики #DropEventHandlers
-    self.lastScheduleDropped = ko.observable();
-    self.lastScheduleInfoDropped = ko.observable();
-
-    //Drop Для ScheduleBacket
-    self.ScheduleBacketDrop = function (index, data, event) {
-
-        self.UpdateCurrentScheduleBacket(self.toRealIndex(index));
-
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-
-
-        self.ShowSchedulePlanMenu(data, event);
-
-
-        self.ScheduleArray()[self.toRealIndex(index)].IsDropped(false);
-        if (!self.ScheduleArray()[self.toRealIndex(index)].IsSelected()) {
-            self.ScheduleArray()[self.toRealIndex(index)].CssClass("onScheduleBacketDropUnselect");
-        } else {
-            self.ScheduleArray()[self.toRealIndex(index)].CssClass("onScheduleBacketClick");
-        }
-    }
-    self.ScheduleBacketOverDrop = function (index, data, event) {
-
-        self.clearSelectedScheduleBackets();
-
-        self.selectScheduleBacket(index);
-
-        self.ScheduleArray()[self.toRealIndex(index)].IsDropped(true);
-        self.ScheduleArray()[self.toRealIndex(index)].CssClass("onScheduleBacketDropSelect");
-    }
-
-    self.ScheduleBacketOutDrop = function (index, data, event) {
-
-        self.ScheduleArray()[self.toRealIndex(index)].IsDropped(false);
-        if (!self.ScheduleArray()[self.toRealIndex(index)].IsSelected()) {
-            self.ScheduleArray()[self.toRealIndex(index)].CssClass("onScheduleBacketDropUnselect");
-        } else {
-            self.ScheduleArray()[self.toRealIndex(index)].CssClass("onScheduleBacketClick");
-        }
-
-    }
-
-    //Drop Для ScheduleTicket
-    self.ScheduleTicketDrop = function (parentIndex, index, data, event) {
-
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-
-        self.ShowSchedulePlanMenu(data, event);
-
-        self.ScheduleArray()[self.toRealIndex(parentIndex)].Tickets()[index].IsDropped(false);
-        if (!self.ScheduleArray()[self.toRealIndex(parentIndex)].Tickets()[index].IsSelected()) {
-            self.ScheduleArray()[self.toRealIndex(parentIndex)].Tickets()[index].CssClass("onScheduleTicketDropUnselect");
-        } else {
-            self.ScheduleArray()[self.toRealIndex(parentIndex)].Tickets()[index].CssClass("onScheduleTicketClick");
-        }
-
-    }
-
-    self.ScheduleTicketOverDrop = function (parentIndex, index, data, event) {
-
-        self.clearSelectedScheduleTickets();
-
-        self.selectScheduleTicket(parentIndex, index);
-
-        self.ScheduleArray()[self.toRealIndex(parentIndex)].Tickets()[index].IsDropped(true);
-        self.ScheduleArray()[self.toRealIndex(parentIndex)].Tickets()[index].CssClass("onScheduleTicketDropSelect");
-    }
-
-    self.ScheduleTicketOutDrop = function (parentIndex, index, data, event) {
-
-        self.ScheduleArray()[self.toRealIndex(parentIndex)].Tickets()[index].IsDropped(false);
-
-        if (!self.ScheduleArray()[self.toRealIndex(parentIndex)].Tickets()[index].IsSelected()) {
-            self.ScheduleArray()[self.toRealIndex(parentIndex)].Tickets()[index].CssClass("onScheduleTicketDropUnselect");
-        } else {
-            self.ScheduleArray()[self.toRealIndex(parentIndex)].Tickets()[index].CssClass("onScheduleTicketClick");
-        }
-    }
-
-
-    //Обработчики кнопок в header меню #HeaderMenuButtons
-
-    self.ScheduleInfoButton = function (data, event) {
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-
-        self.currentScheduleInfoSelectForm(new ScheduleInfoSelectForm(self.currentGroups(),self.currentStudyYear(),self.currentSemester()));
-        self.currentScheduleInfoSelectForm().openDialog(true);
-    };
-    
-    //Обработка нажатия кнопки 'Запланировать' в Header menu
-    self.SchedulePlanButton=function(data,event) {
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-
-        self.ShowSchedulePlanMenu(data,event);
-    };
-
-    self.ScheduleDeleteButton=function(data,event) {
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-        self.DeleteScheduleTicket();
-    };
-
-    self.ScheduleChangeButton=function(data,event) {
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-    };
-
-    self.AuditoriumChangeButton = function (data, event) {
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-        self.ShowChangeAuditoriumsMenu(data, event);
-    }
-
-    self.FreeAuditoriumsButton = function (data, event) {
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-        self.ShowFreeAuditoriumsMenu(data, event);
-    }
-
-    self.PrintSettingButton = function (data, event) {
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-        self.ShowPrintSettingMenu();
-    }
-
-    self.PrintScheduleButton = function (data, event) {
- 
-      
-        var ScheduleModel = {
-            lecturerid: printLecturerId,
-            auditoriumid: printAuditoriumId,
-            facultyid: self.currentFaculties().Id,
-            courseids: courseIds,
-            groupids: printGroupIds,
-            specialityids: specialityIds,
-            studyyearid: printStudyYearId,
-            semesterid: printSemesterId,
-            timetableid: printTimetableId,
-            sequence: printSequence,
-            starttime: self.currentScheduleStartDate(),
-            endtime: self.currentScheduleEndDate()
-        };
-
-        var printBuildingId = 0;
-
-        if(self.currentBuilding() !== undefined)
-            printBuildingId = self.currentBuilding().Id;
-
-        var TimeModel = {
-            buildingid: printBuildingId
-        };
 
        
-
-        $.ajax({
-            url: "PrintSchedule/Index",
-            type: 'POST',
-            contentType: 'application/json',
-            dataType: 'html',
-            data: JSON.stringify({ s: ScheduleModel, t: TimeModel, h: self.timeTableTitle(), fs: self.fontSize(), mode: "forTable" }),
-            success: function (responseText, textStatus, XMLHttpRequest) {
-                var OpenWindow = window.open('', '_blank', 'width=1100,height=500,resizable=1');
-                $(OpenWindow.document.body).ready(function () {
-                    $(OpenWindow.document.body).append(responseText);
-                });
-            },
-            error: function () {
-                
-            }
-        });      
     }
-
-    self.PrintScheduleForAuditoriumButton = function (data, event) {
-
-
-        var ScheduleModel = {
-            lecturerid: printLecturerId,
-            auditoriumid: printAuditoriumId,
-            facultyid: self.currentFaculties().Id,
-            courseids: courseIds,
-            groupids: printGroupIds,
-            specialityids: specialityIds,
-            studyyearid: printStudyYearId,
-            semesterid: printSemesterId,
-            timetableid: printTimetableId,
-            sequence: printSequence,
-            starttime: self.currentScheduleStartDate(),
-            endtime: self.currentScheduleEndDate()
-        };
-
-        var printBuildingId = 0;
-
-        if (self.currentBuilding() !== undefined)
-            printBuildingId = self.currentBuilding().Id;
-
-        var TimeModel = {
-            buildingid: printBuildingId
-        };
-
-        var tHeader = "аудитория: ";
-        tHeader += self.currentAuditorium().Number;
-
-        $.ajax({
-            url: "PrintSchedule/Index",
-            type: 'POST',
-            contentType: 'application/json',
-            dataType: 'html',
-            data: JSON.stringify({ s: ScheduleModel, t: TimeModel, h: tHeader, fs: self.fontSize(), mode: "forAuditorium" }),
-            success: function (responseText, textStatus, XMLHttpRequest) {
-                var OpenWindow = window.open('', '_blank', 'width=1100,height=500,resizable=1');
-                $(OpenWindow.document.body).ready(function () {
-                    $(OpenWindow.document.body).append(responseText);
-                });
-            },
-            error: function () {
-
-            }
-        });
-    }
-
-    self.PrintScheduleForLecturerButton = function (data, event) {
-
-
-        var ScheduleModel = {
-            lecturerid: printLecturerId,
-            auditoriumid: printAuditoriumId,
-            facultyid: self.currentFaculties().Id,
-            courseids: courseIds,
-            groupids: printGroupIds,
-            specialityids: specialityIds,
-            studyyearid: printStudyYearId,
-            semesterid: printSemesterId,
-            timetableid: printTimetableId,
-            sequence: printSequence,
-            starttime: self.currentScheduleStartDate(),
-            endtime: self.currentScheduleEndDate()
-        };
-
-        var printBuildingId = 0;
-
-        if (self.currentBuilding() !== undefined)
-            printBuildingId = self.currentBuilding().Id;
-
-        var TimeModel = {
-            buildingid: printBuildingId
-        };
-
-        var tHeader = "преподаватель: ";
-        tHeader += self.currentScheduleInfo().Display.Lecturer();
-
-        $.ajax({
-            url: "PrintSchedule/Index",
-            type: 'POST',
-            contentType: 'application/json',
-            dataType: 'html',
-            data: JSON.stringify({ s: ScheduleModel, t: TimeModel, h: tHeader, fs: self.fontSize(), mode: "forLecturer" }),
-            success: function (responseText, textStatus, XMLHttpRequest) {
-                var OpenWindow = window.open('', '_blank', 'width=1100,height=500,resizable=1');
-                $(OpenWindow.document.body).ready(function () {
-                    $(OpenWindow.document.body).append(responseText);
-                });
-            },
-            error: function () {
-
-            }
-        });
-    }
-
-
-    self.PrintScheduleForGroupsButton = function (data, event) {
-        var ScheduleModel = {
-            lecturerid: printLecturerId,
-            auditoriumid: printAuditoriumId,
-            facultyid: self.currentFaculties().Id,
-            courseids: courseIds,
-            groupids: printGroupIds,
-            specialityids: specialityIds,
-            studyyearid: printStudyYearId,
-            semesterid: printSemesterId,
-            timetableid: printTimetableId,
-            sequence: printSequence,
-            starttime: self.currentScheduleStartDate(),
-            endtime: self.currentScheduleEndDate()
-        };
-
-        var printBuildingId = 0;
-
-        if (self.currentBuilding() !== undefined)
-            printBuildingId = self.currentBuilding().Id;
-
-        var TimeModel = {
-            buildingid: printBuildingId
-        };
-
-
-        var tHeader = "";
-        tHeader += self.currentFaculties().Name + " группы: ";
-        for (var i = 0; i < self.currentGroups().length; ++i) {
-            tHeader += self.currentGroups()[i].Code;
-        }
-
-        $.ajax({
-            url: "PrintSchedule/IndexForGroups",
-            type: 'POST',
-            contentType: 'application/json',
-            dataType: 'html',
-            data: JSON.stringify({ s: ScheduleModel, t: TimeModel, h: tHeader, fs: self.fontSize(), mode: "forGroups" }),
-            success: function (responseText, textStatus, XMLHttpRequest) {
-                var OpenWindow = window.open('', '_blank', 'width=1100,height=500,resizable=1');
-                $(OpenWindow.document.body).ready(function () {
-                    $(OpenWindow.document.body).append(responseText);
-                });
-            },
-            error: function () {
-
-            }
-        });
-    }
-
-
-    self.PrintScheduleForCoursesButton = function (data, event) {
-        var ScheduleModel = {
-            lecturerid: printLecturerId,
-            auditoriumid: printAuditoriumId,
-            facultyid: self.currentFaculties().Id,
-            courseids: courseIds,
-            groupids: printGroupIds,
-            specialityids: specialityIds,
-            studyyearid: printStudyYearId,
-            semesterid: printSemesterId,
-            timetableid: printTimetableId,
-            sequence: printSequence,
-            starttime: self.currentScheduleStartDate(),
-            endtime: self.currentScheduleEndDate()
-        };
-
-        var printBuildingId = 0;
-
-        if (self.currentBuilding() !== undefined)
-            printBuildingId = self.currentBuilding().Id;
-
-        var TimeModel = {
-            buildingid: printBuildingId
-        };
-
-        var tHeader = "";
-        tHeader += self.currentFaculties().Name + " ";
-
-        for (var i = 0; i < self.currentCourses().length; ++i) {
-            tHeader += self.currentCourses()[i].Name + ", ";
-        }
-
-        $.ajax({
-            url: "PrintSchedule/IndexForGroups",
-            type: 'POST',
-            contentType: 'application/json',
-            dataType: 'html',
-            data: JSON.stringify({ s: ScheduleModel, t: TimeModel, h: tHeader, fs: self.fontSize(), mode: "forCourses" }),
-            success: function (responseText, textStatus, XMLHttpRequest) {
-                var OpenWindow = window.open('', '_blank', 'width=1100,height=500,resizable=1');
-                $(OpenWindow.document.body).ready(function () {
-                    $(OpenWindow.document.body).append(responseText);
-                });
-            },
-            error: function () {
-
-            }
-        });
-    }
-
-    self.PrintScheduleForSpecialitiesButton = function (data, event) {
-        var ScheduleModel = {
-            lecturerid: printLecturerId,
-            auditoriumid: printAuditoriumId,
-            facultyid: printFacultyId,
-            courseids: printCourseIds,
-            groupids: printGroupIds,
-            specialityids: specialityIds,
-            studyyearid: printStudyYearId,
-            semesterid: printSemesterId,
-            timetableid: printTimetableId,
-            sequence: printSequence,
-            starttime: self.currentScheduleStartDate(),
-            endtime: self.currentScheduleEndDate()
-        };
-
-        var printBuildingId = 0;
-
-        if (self.currentBuilding() !== undefined)
-            printBuildingId = self.currentBuilding().Id;
-
-        var TimeModel = {
-            buildingid: printBuildingId
-        };
-
-        var tHeader = "";
-        tHeader += self.currentFaculties().Name + " специальности: ";
-        for (var i = 0; i < self.currentSpecialities().length; ++i) {
-            tHeader += self.currentSpecialities()[i].Name;
-        }
-
-        $.ajax({
-            url: "PrintSchedule/IndexForGroups",
-            type: 'POST',
-            contentType: 'application/json',
-            dataType: 'html',
-            data: JSON.stringify({ s: ScheduleModel, t: TimeModel, h: tHeader, fs: self.fontSize(), mode: "forSpecialities" }),
-            success: function (responseText, textStatus, XMLHttpRequest) {
-                var OpenWindow = window.open('', '_blank', 'width=1100,height=500,resizable=1');
-                $(OpenWindow.document.body).ready(function () {
-                    $(OpenWindow.document.body).append(responseText);
-                });
-            },
-            error: function () {
-
-            }
-        });
-    }
-
-    //Обработчики кнопок всплывающих форм #PopUpFormButtonHandlers
-    //Кнопки на форме добавления занятия #SchedulePlanFormButtons
-
-    self.SchedulePlanFormOkButton = function (data, event) {
-        console.log("Ok");
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-        self.TransferScheduleInfoToScheduleBacket(data, event, 1);
-    }
-
-    self.SchedulePlanFormCancelButton = function (data, event) {
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-        console.log("Cancel");
-        $('#adddialog').modal('hide');
-    }
-
-    //Кнопки на форме сообщений валидации
-    self.validateFormOkButton = function (data, event) {
-        console.log("Ok");
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-        $('#validatedialog').modal('hide');
-        for(var i = 2; i <= 9; ++i)
-            $("#validatemessage" + i).addClass("hide");
-    }
-
-    self.validateFormCancelButton = function (data, event) {
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-        console.log("Cancel");
-        $('#validatedialog').modal('hide');
-    }
-
-    //Кнопки на форме списка свободных аудиторий
-    self.FreeAuditoriumFormOkButton = function (data, event) {
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-        
-        console.log("AOk");
-        $("#auditoriumdialog").modal('hide');
-    }
-
-    self.FreeAuditoriumFormCancelButton = function (data, event) {
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-        console.log("ACancel");
-        $("#auditoriumdialog").modal('hide');
-    }
-
-    //Кнопки на форме замены аудитории
-    self.ChangeAuditoriumFormOkButton = function (data, event) {
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-
-        //Поменять аудиторию
-        if (self.currentChangeAuditorium() !== undefined) {
-            for (var i = 0; i < self.ScheduleTicketSelectedArray().length; ++i) {
-                if (self.currentAuditorium() !== undefined) {
-                    self.ScheduleArray()[self.ScheduleTicketSelectedArray()[i].first].Tickets()[self.ScheduleTicketSelectedArray()[i].second].Display.Auditorium(self.currentAuditorium().Number);
-                    self.ScheduleArray()[self.ScheduleTicketSelectedArray()[i].first].Tickets()[self.ScheduleTicketSelectedArray()[i].second].Data.AuditoriumId(self.currentAuditorium().Id);
-                    self.UpdateSchedule(self.ScheduleArray()[self.ScheduleTicketSelectedArray()[i].first].Tickets()[self.ScheduleTicketSelectedArray()[i].second]);
-                }
-            }
-            $('#changeauditoriumdialog').modal('hide');
-        } else {
-            alert("Аудитория не выбрана!");
-        }
-    }
-
-    self.PrintSettingCancelButton = function (data, event) {
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-        $('#printsettingdialog').modal('hide');
-    }
-
-    self.ChangeAuditoriumFormCancelButton = function (data, event) {
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-        console.log("CACancel");
-        $('#changeauditoriumdialog').modal('hide');
-    }
-
-    //Кнопки на форме добавления часов
-    self.newScheduleInfoMaxHours = ko.observable();
-
-    self.newScheduleInfoMaxHours.subscribe(function (newValue) {
-        //self.AddHoursValidation();
-    });
-
-
-    self.AddHoursFormOkButton = function (data, event) {
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-  
-        if (self.newScheduleInfoMaxHours() !== undefined) {
-            for (var i = 0; i < self.ScheduleInfoSelectedArray().length; ++i) {
-                //###
-                self.ScheduleInfoArray()[self.ScheduleInfoSelectedArray()[i]].Display.maxHours(self.newScheduleInfoMaxHours());
-                //console.log("1111111111: " + self.ScheduleInfoArray()[self.ScheduleInfoSelectedArray()[i]].Display.maxHours());
-                self.UpdateScheduleInfo(self.ScheduleInfoArray()[self.ScheduleInfoSelectedArray()[i]]);
-            }
-            //self.SchedulePlanValidation("to");
-            $("#addhoursdialog").modal('hide');
-        } 
-    }
-
-    self.AddHoursFormCancelButton = function (data, event) {
-        self.hideAllContextMenu();
-        self.hideAllDownDropMenu();
-        console.log("Add Hours Cancel Button");
-        $("#addhoursdialog").modal('hide');
-    }
-   
-
-    //Кнопки на форме контекстного меню #ScheduleContextMenuFormButtons
-    self.ScheduleInfoContextMenuElementClick_Plan = function (data, event) {
-        // self.hideContextMenu("#ScheduleInfoContextMenuDialog");
-        self.hideAllDownDropMenu();
-        self.hideAllContextMenu();
-
-        self.ShowSchedulePlanMenu(data, event);
-    }
-
-    self.ScheduleInfoContextMenuElementClick_AddHours = function (data, event) {
-        // self.hideContextMenu("#ScheduleInfoContextMenuDialog");
-        self.hideAllDownDropMenu();
-        self.hideAllContextMenu();
-        self.ShowAddHoursMenu(data, event);
-    }
-
-    self.ScheduleContextMenuElementClick_DeleteSchedule = function (data, event) {
-        //self.hideContextMenu("#ScheduleContextMenuDialog");
-        self.hideAllDownDropMenu();
-        self.hideAllContextMenu();
-        self.DeleteScheduleTicket();
-    }
-
-    self.ScheduleContextMenuElementClick_ChangeSchedule=function(data,event) {
-        //self.hideContextMenu("#ScheduleContextMenuDialog");
-        self.ShowChangeScheduleMenu(data,event);
-        self.hideAllDownDropMenu();
-        self.hideAllContextMenu();
-    };
-
-    self.ScheduleContextMenuElementClick_ChangeAuditorium=function(data,event) {
-        // self.hideContextMenu("#ScheduleContextMenuDialog");
-        self.ShowChangeAuditoriumsMenu(data,event);
-        self.hideAllDownDropMenu();
-        self.hideAllContextMenu();
-    };
-
-
-    self.ScheduleBacketContextMenuElementClick_PlanSchedule=function(data,event) {
-        self.hideAllDownDropMenu();
-        self.hideAllContextMenu();
-        console.log("ABABCABA");
-        self.currentScheduleAddForm(new ScheduleAddForm(self.auditoriums(),0,self.currentScheduleInfo(), self.daysOfweek(),0, self.dayTimes(),0, self.weekTypes(),0, self.currentScheduleStartDate(), self.currentScheduleEndDate(), false, self.subgroups(), 0));
-        self.currentScheduleAddForm().openDialog(true);
-    };
-
-    self.ScheduleBacketContextMenuElementClick_Calendar=function(data,event) {
-        self.hideAllDownDropMenu();
-        self.hideAllContextMenu();
-        
-        
-        
-
-        //self.toContextMenu(data, event, "#ScheduleBacketContextMenuCalendar");
-        //$(".ScheduleBacket").popover('destroy');
-        //var elem = $('.calendarPopover').html();
-       // $('.ScheduleBacket').popover({ animation: true, content: elem, html: true, placement: "bottom", delay: { show: 1000 } }); //({ delay: { show: 1000, hide: 0 } });
-
-
-        console.log(self.currentDayTimes());
-        
-
-        if (self.currentDayOfweek() !== undefined && self.currentDayTimes()[0] !== undefined)
-            self.currentCalendar( new Calendar(self.currentDayOfweek().Id, self.currentDayTimes()[0].Id, self.currentWeekType().Id, self.currentLecturer(), self.currentAuditorium().Id, groupIds, self.currentSubGroup()));
-        console.log(self.currentCalendar().weeks().length);
-        
-        $('#calendardialog').modal('show');
-    };
-
-    self.ScheduleBacketContextMenuElementClick_FreeAuditoriums=function(data,event) {
-        //self.hideContextMenu("#ScheduleBacketContextMenuDialog");
-        self.ShowFreeAuditoriumsMenu(data,event);
-        self.hideAllDownDropMenu();
-        self.hideAllContextMenu();
-    };
-
-    self.getColumn=function(value) {
-        return value%7;
-    };
-
-    self.ScheduleInfoContextMenuCssState = function (index, classCss) {
-        self.ScheduleInfoContextMenuCss[index](classCss);
-    }
-
-    self.ScheduleContextMenuCssState = function (index, classCss) {
-        self.ScheduleContextMenuCss[index](classCss);
-    }
-
-    self.ScheduleBacketContextMenuCssState = function (index, classCss) {
-        self.ScheduleBacketContextMenuCss[index](classCss);
-    }
-
-    self.ScheduleInfoCssState = function (index, classCss) {
-        if (!(self.ScheduleInfoArray()[index].IsSelected() || self.ScheduleInfoArray()[index].IsDragged())) {
-            self.ScheduleInfoArray()[index].Display.CssClass(classCss);
-        }
-    }
-
-    self.ScheduleBacketCssState = function (index, classCss) {
-        if (!(self.ScheduleArray()[self.toRealIndex(index)].IsDropped() || self.ScheduleArray()[self.toRealIndex(index)].IsSelected())) {
-            self.ScheduleArray()[self.toRealIndex(index)].CssClass(classCss);
-        }
-    }
-
-    self.ScheduleTicketCssState = function (parentIndex, index, classCss) {
-        if (!self.ScheduleArray()[self.toRealIndex(parentIndex)].Tickets()[index].IsSelected()) {
-            self.ScheduleArray()[self.toRealIndex(parentIndex)].Tickets()[index].CssClass(classCss);
-        }
-    }
-
-    var groupIds = "";
-    var groupNames = "";
-    var specialityIds = "";
-    var courseIds = "";
-
-    self.datainit = function () {
-        //Загрузка зданий
-        dModel.loadData({
-            address: "building/getall",
-            obj: self.buildings,
-            onsuccess: function () {
-
-                //Загрузка звонков
-                if (self.buildings()[0] !== undefined) {
-                    //self.fillScheduleTable2([]);
-                    self.loadTimes(self.buildings()[0].Id);
-                }
-            }
-        });
-
-        //Загрузка годов
-        dModel.loadData({
-            address: "studyyear/getall",
-            obj: self.studyyears,
-            onsuccess: function () {
-                //TODO
-                self.currentStudyYear(self.studyyears()[11]);
-            }
-        });
-
-        
-     
-        //Загрузка типов предметов
-        dModel.loadData({
-            address: "tutorialtype/getall",
-            obj: self.tutorialtypes,
-            onsuccess: function () {
-            }
-        });
-
-        //Загрузка подразделений
-        dModel.loadData({
-            address: "branch/getall",
-            obj: self.branches,
-            onsuccess: function () {
-            }
-        });
-
-        //Загрузка курсов
-        dModel.loadData({
-            address: "course/getall",
-            obj: self.courses,
-            onsuccess: function () {
-            }
-        });
-
-        //Загрузка типов недели
-        dModel.loadData({
-            address: "weektype/getall",
-            obj: self.weekTypes,
-            onsuccess: function () {
-            }
-        });
-
-        
-    }
-
-    self.loadTimes = function (buildingId) {
-        dModel.loadData({
-            address: "time/getall",
-            obj: self.dayTimes,
-            params: {
-                buildingId: buildingId
-            },
-            onsuccess: function () {
-                //self.fillScheduleTable();
-            }
-        });
-    }
-
-
-    //Загрузка типов аудиторий
-    self.loadAuditoriumTypes = function () {
-        dModel.loadData({
-            address: "auditoriumtype/getall",
-            obj: self.auditoriumTypes,
-            onsuccess: function () {
-            }
-        });
-    }
-
-    //Загрузить свободные аудитории
-    self.loadFreeAuditoriums = function (buildingId, weekTypeId, day, timeId, tutorialTypeId, auditoriumTypeId, startDate, endDate) {
-        if (buildingId !== undefined && weekTypeId !== undefined && day !== undefined && timeId !== undefined) {
-            dModel.loadData({
-                address: "auditorium/GetFree",
-                obj: self.auditoriums,
-                params: {
-                    buildingId: buildingId,
-                    weekTypeId: weekTypeId,
-                    day: day,
-                    timeId: timeId,
-                    tutorialtypeid: tutorialTypeId,
-                    auditoriumtypeid: auditoriumTypeId,
-                    starttime: startDate,
-                    endtime: endDate,
-                },
-                onsuccess: function () {
-                }
-            });
-        }
-    }
-
-    //Загрузить факультеты
-    self.loadFaculties = function (branchId) {
-        dModel.loadData({
-            address: "faculty/getall",
-            obj: self.faculties,
-            params: {
-                branchid: branchId,
-            },
-            onsuccess: function () {
-            }
-        });
-    }
-
-    //Загрузить специальности
-    self.loadSpecialities = function (facultyId) {
-        dModel.loadData({
-            address: "speciality/getall",
-            params: {
-                facultyid: facultyId,
-            },
-            obj: self.specialities,
-            onsuccess: function () {
-                //console.log(self.specialities());
-            }
-        });
-    }
-
-    //Загрузить группы
-    self.loadGroups = function (facultyId, courseIds, specialityIds) {
-        dModel.loadData({
-            address: "group/GetAll",
-            params: {
-                facultyid: facultyId,
-                courseids: courseIds,
-                specialityids: specialityIds
-            },
-            obj: self.groups,
-            onsuccess: function () {
-                //console.log(self.groups());
-            }
-        });
-    }
-
-    //Загрузка сведений к расисанию для группы
-    self.loadScheduleInfoes = function (facultyId, courseIds, groupIds, tutorialTypeId, studyYearId, semesterId) {
-        dModel.loadData({
-            address: "scheduleinfo/GetByGroups",
-            params: {
-                facultyid: facultyId,
-                courseids: courseIds,
-                groupids: groupIds,
-                tutorialtypeid: tutorialTypeId,
-                studyyearid: studyYearId,
-                semesterid: semesterId
-            },
-            onsuccess: function (data) {
-                console.log("self.loadScheduleInfoes");
-                self.fillScheduleInfoTable(data);
-            }
-        });
-    }
-    
-
-    self.loadScheduleByAll = function () {
-        
-        var lecturerId = self.currentLecturer();
-
-        var auditoriumId;
-        if (self.currentAuditorium() !== undefined)
-            auditoriumId = self.currentAuditorium().Id;
-        
-        var groupsIds = self.currentGroupsIds();
-        if (groupsIds == undefined) groupsIds = groupIds;
-
-        var weekTypeId;
-        if(self.currentWeekType()!==undefined) {
-            weekTypeId=self.currentWeekType().Id;
-        }
-        
-        var subGroup=self.currentSubGroup();
-        var startTime=self.currentScheduleStartDate();
-        var endTime=self.currentScheduleEndDate();
-
-        if (lecturerId == undefined) lecturerId = null;
-        if (auditoriumId == undefined) auditoriumId = null;
-        if (weekTypeId == undefined) weekTypeId = null;
-        if (lecturerId == undefined) lecturerId = null;
-        if (startTime == undefined) startTime = "";
-        if (endTime == undefined) endTime = "";
-
-      
-        dModel.loadData({
-            address:"schedule/GetScheduleByAll",
-            params:{
-                lecturerId: lecturerId,
-                auditoriumId: auditoriumId,
-                groupIds:groupIds,
-                weekTypeId:weekTypeId,
-                subGroup:subGroup,
-                startTime:startTime,
-                endTime:endTime
-            },
-            onsuccess:function(data) {
-                self.fillScheduleTable2(data);
-            }
-        });
-    };
-
-    //Загрузка подсказки
-    self.loadHint = function (facultyId, buildingId, lecturerId, courseIds, groupIds, studyYearId, semesterId, timetableId, weekTypeId, tutorialTypeId, auditoriumTypeId, startDate, endDate) {
-        dModel.loadData({
-            address: "schedulehelper/GetAll",
-            params: {
-                facultyid: facultyId,
-                buildingid: buildingId,
-                lecturerid: lecturerId,
-                courseids: courseIds,
-                groupids: groupIds,
-                studyyearid: studyYearId,
-                semesterid: semesterId,
-                timetableid: timetableId,
-                weektypeid: weekTypeId,
-                tutorialtypeid: tutorialTypeId,
-                auditoriumtypeid: auditoriumTypeId,
-                startdate: startDate,
-                enddate: endDate
-            },
-            obj: self.hints,
-            onsuccess: function () {
-
-                if (self.hints()[0] != undefined) {
-                    //День
-                    self.currentDayOfweek(self.daysOfweek()[self.hints()[0].Day - 1]);
-            
-                    //Время
-                    self.currentDayTimes([self.hints()[0].Period]);
-  
-                    //Аудитория
-                    self.currentAuditorium(self.hints()[0].Auditorium);
-                }
-            }
-        });
-    }
-
-    //Сохранение клетки расписания
-    self.AddSchedule = function (Schedule) {
-        var subGroup = Schedule.Display.subGroup();
-        if(subGroup=="Все")
-            subGroup="";
-
-        dModel.sendData({
-            address: "schedule/add",
-            params: {
-                'AuditoriumId': Schedule.Data.AuditoriumId(),
-                'ScheduleInfoId': Schedule.Data.ScheduleInfoId(),
-                'DayOfWeek': Schedule.Data.DayOfWeek(),
-                'PeriodId': Schedule.Data.PeriodId(),
-                'WeekTypeId': Schedule.Data.WeekTypeId(),
-                'StartDate': Schedule.Data.StartDate(),
-                'EndDate': Schedule.Data.EndDate(),
-                'AutoDelete': Schedule.Data.AutoDelete(),
-                'SubGroup' : subGroup
-            },
-            onsuccess: function () {
-                self.loadScheduleByAll();
-                if (self.currentFaculties() !== undefined && self.currentSiTutorialType() !== undefined && self.currentStudyYear() !== undefined && self.currentSemester() !== undefined) {
-                    self.loadScheduleInfoes(self.currentFaculties().Id, courseIds, groupIds, self.currentSiTutorialType().Id, self.currentStudyYear().Id, self.currentSemester().Id);
-                }
-            }
-        });
-    }
-
-    //Удаление клетки расписания
-    self.DelSchedule = function (Schedule) {
-        dModel.sendData({
-            address: "schedule/delete",
-            params: {
-                'Id': Schedule.Data.ScheduleId()
-            },
-            onsuccess: function () {
-                self.loadScheduleByAll();
-           
-                if (self.currentFaculties() !== undefined && self.currentSiTutorialType() !== undefined && self.currentStudyYear() !== undefined && self.currentSemester() !== undefined) {
-                    self.loadScheduleInfoes(self.currentFaculties().Id, courseIds, groupIds, self.currentSiTutorialType().Id, self.currentStudyYear().Id, self.currentSemester().Id);
-                }
-            }
-        });
-    }
-
-    //Обновление клетки расписания
-    self.UpdateSchedule = function (Schedule) {
-        var subGroup = Schedule.Display.subGroup();
-        if (subGroup == "Все")
-            subGroup = "";
-        
-        dModel.sendData({
-            address: "schedule/update",
-            params: {
-                'ScheduleId': Schedule.Data.ScheduleId(),
-                'AuditoriumId': Schedule.Data.AuditoriumId(),
-                'ScheduleInfoId': Schedule.Data.ScheduleInfoId(),
-                'DayOfWeek': Schedule.Data.DayOfWeek(),
-                'PeriodId': Schedule.Data.PeriodId(),
-                'WeekTypeId': Schedule.Data.WeekTypeId(),
-                'StartDate': Schedule.Data.StartDate(),
-                'EndDate': Schedule.Data.EndDate(),
-                'AutoDelete': Schedule.Data.AutoDelete(),
-                'SubGroup': subGroup
-            },
-            onsuccess: function () {
-
-                self.loadScheduleByAll();
-            }
-        });
-    }
-
-    //Валидация занятия
-    self.ValidateSchedule = function (Schedule, innerFunction, scheduleTicket) {
-
-        console.log(innerFunction);
-
-        var startDate = Schedule.Data.StartDate();
-        var endDate = Schedule.Data.EndDate();
-        if (startDate == undefined)
-            startDate = "";
-        if (endDate == undefined)
-            endDate = "";
-
-        dModel.loadData({
-            address: "schedule/Validate",
-            params: {
-                AuditoriumId: Schedule.Data.AuditoriumId(),
-                ScheduleInfoId: Schedule.Data.ScheduleInfoId(),
-                DayOfWeek: Schedule.Data.DayOfWeek(),
-                PeriodId: Schedule.Data.PeriodId(),
-                WeekTypeId: Schedule.Data.WeekTypeId(),
-                StartDate: startDate,
-                EndDate: endDate
-            },
-            onsuccess: function (data) {
-                console.log(data);
-                console.log("***");
-                if (data !== 1) {
-                    console.log("#validatemessage" + data);
-                    $('#validatedialog').modal('show');
-                    $("#validatemessage" + data).removeClass("hide");
-                } else {
-                    innerFunction(scheduleTicket);
-                    $('#adddialog').modal('hide');
-                    console.log("ok111");
-                }
-            }
-        });
-    }
-
-
-    //Обновление сведения к расписанию
-    self.UpdateScheduleInfo = function (ScheduleInfo) {
-        dModel.sendData({
-            address: "scheduleinfo/update",
-            params: {
-                'ScheduleInfoId': ScheduleInfo.Data.ScheduleInfoId(),
-                'HoursPerWeek': ScheduleInfo.Display.maxHours()
-            },
-            onsuccess: function () {
-                if (self.currentFaculties() !== undefined && self.currentSiTutorialType() !== undefined && self.currentStudyYear() !== undefined && self.currentSemester() !== undefined) {
-                    self.loadScheduleInfoes(self.currentFaculties().Id, courseIds, groupIds, self.currentSiTutorialType().Id, self.currentStudyYear().Id, self.currentSemester().Id);
-                }
-            }
-        });
-    }
-
-
-    //Действия при выборе аудитории
-    self.currentAuditorium.subscribe(function (newValue) {
-        //self.loadScheduleByAll("auditorium,lecturer,group");
-    });
-
-    //Действия при выборе подразделения
-    self.currentBranches.subscribe(function (newValue) {
-        if (newValue !== undefined) {
-            console.log("BranchId: " + newValue.Id);
-            self.loadFaculties(newValue.Id);
-            //self.currentGroups("");
-            self.groups("");
-        }
-
-    });
-
-    //Действия при выборе факультета
-    self.currentFaculties.subscribe(function (newValue) {
-        if (newValue !== undefined) {
-            console.log("FacultyId: " + newValue.Id);
-            self.loadSpecialities(newValue.Id);
-            //self.currentGroups("");
-            self.groups("");
-
-            if(self.currentBuilding() !== undefined)
-              self.fillTimeTableTitle(newValue.Name, self.currentBuilding().Name, groupNames);
-        }
-    });
-
-    
-    //Действия при выборе специальности
-    self.currentSpecialities.subscribe(function (newValue) {
-        if (newValue !== undefined) {
-            if (self.currentFaculties() !== undefined) {
-                    specialityIds = "";
-                    for (var i = 0; i < newValue.length; ++i)
-                        specialityIds += newValue[i].Id + ", ";
-                    //Загрузить группы
-                    self.loadGroups(self.currentFaculties().Id, courseIds, specialityIds);
-            }
-        }
-    });
-
-    //Действия при выборе курса
-    self.currentCourses.subscribe(function (newValue) {
-        if (newValue !== undefined) {
-            if (self.currentFaculties() !== undefined) {
-                    courseIds = "";
-                    for (var i = 0; i < newValue.length; ++i)
-                        courseIds += newValue[i].Id + ", ";
-                    //Загрузить группы
-                    self.loadGroups(self.currentFaculties().Id, courseIds, specialityIds);
-            }
-        }  
-    });
-
-    //Действия при выборе здания
-    self.currentBuilding.subscribe(function (newValue) {
-        if (newValue !== undefined) {
-
-            if (self.currentFaculties() !== undefined)
-                self.fillTimeTableTitle(self.currentFaculties().Name, newValue.Name, groupNames);
-
-            //Загрузить звонки
-            self.loadTimes(newValue.Id);
-            //Загрузить аудитории (либо все либо только свободные)
-            if (self.currentWeekType() !== undefined && self.currentDayOfweek() !== undefined && self.currentDayTimes()[0] !== undefined && self.currentSiTutorialType() !== undefined && self.currentAuditoriumType() !== undefined) {
-                self.loadFreeAuditoriums(newValue.Id, self.currentWeekType().Id,
-                self.currentDayOfweek().Id, self.currentDayTimes()[0].Id, self.currentSiTutorialType().Id, self.currentAuditoriumType().Id, self.currentScheduleStartDate(), self.currentScheduleEndDate());
-            } else {
-                if (self.currentAuditoriumType() !== undefined) {
-                    dModel.loadData({
-                        address: "auditorium/GetByBuilding",
-                        params: {
-                            buildingid: newValue.Id,
-                            auditoriumtypeid: self.currentAuditoriumType().Id
-                        },
-                        obj: self.auditoriums,
-                        onsuccess: function () {
-                            //console.log(self.auditoriums());
-                        }
-                    });
-                }
-            }
-            }
-    });
-
-
-    //Очистка состояния таблицы расписания
-    self.clearTimetableState = function () {
-        self.clearSelectedScheduleTickets();
-        self.clearSelectedScheduleBackets();
-        self.clearSelectedScheduleInfoes();
-
-        self.currentDayOfweek("");
-        self.currentDayTimes([]);
-    }
-
-    
-    //Действия при выборе группы
-    self.currentGroups.subscribe(function (newValue) {
-        $("#add").removeClass("enabled");
-        $("#add").addClass("disabled");
-
-        if (newValue !== undefined) {
-
-           
-
-            if (self.currentFaculties() !== undefined) {
-                groupIds = "";
-                groupNames = "";
-                for (var i = 0; i < newValue.length; ++i) {
-                    groupIds += newValue[i].Id + ", ";
-                    groupNames += newValue[i].Code + ", ";
-                }
-
-
-                //Очистка состояния таблицы расписания
-                self.clearTimetableState();
-
-                //Заполнить заголовок таблицы
-                if (self.currentBuilding() !== undefined)
-                    self.fillTimeTableTitle(self.currentFaculties().Name, self.currentBuilding().Name, groupNames);
-
-                //Загрузить сведения к расписанию
-                if (self.currentStudyYear() !== undefined && self.currentSemester() !== undefined && self.currentSiTutorialType() !== undefined) {
-                    self.loadScheduleInfoes(self.currentFaculties().Id, courseIds, groupIds, self.currentSiTutorialType().Id, self.currentStudyYear().Id, self.currentSemester().Id);
-                }
-                //Загрузить расписание
-                self.loadScheduleByAll();
-            }
-        }
-    });
-
-
-    self.currentAuditoriumType.subscribe(function (newValue) {
-        if (newValue !== undefined) {
-            if (self.currentBuilding() !== undefined && self.currentWeekType() !== undefined && self.currentDayOfweek() !== undefined && self.currentDayTimes()[0] !== undefined && self.currentSiTutorialType() !== undefined) {
-                self.loadFreeAuditoriums(self.currentBuilding().Id, self.currentWeekType().Id,
-                self.currentDayOfweek().Id, self.currentDayTimes()[0].Id, self.currentSiTutorialType().Id, newValue.Id, self.currentScheduleStartDate(), self.currentScheduleEndDate());
-            } else {
-                if (self.currentBuilding() !== undefined) {
-                    dModel.loadData({
-                        address: "auditorium/GetByBuilding",
-                        params: {
-                            buildingid: self.currentBuilding().Id,
-                            auditoriumtypeid: self.currentAuditoriumType().Id
-                        },
-                        obj: self.auditoriums,
-                        onsuccess: function () {
-                            //console.log(self.auditoriums());
-                        }
-                    });
-                }
-            }
-        }
-    });
-
-    //Действия при выборе учебного года
-    self.currentStudyYear.subscribe(function (newValue) {
-        if (newValue !== undefined) {
-            self.loadScheduleByAll();
-
-            if (self.currentFaculties() !== undefined && self.currentSemester() !== undefined && self.currentTimetable() !== undefined) {
-                if (self.currentSiTutorialType() !== undefined) {
-                    self.loadScheduleInfoes(self.currentFaculties().Id, courseIds, groupIds, self.currentSiTutorialType().Id, newValue.Id, self.currentSemester().Id); 
-                }
-            }
-        }
-    });
-
-    //Действия при выборе семестра
-    self.currentSemester.subscribe(function (newValue) {
-        if (newValue !== undefined) {
-            self.loadScheduleByAll();
-
-            if (self.currentFaculties() !== undefined && self.currentStudyYear() !== undefined && self.currentTimetable() !== undefined) {
-                if (self.currentSiTutorialType() !== undefined) {
-                    self.loadScheduleInfoes(self.currentFaculties().Id, courseIds, groupIds, self.currentSiTutorialType().Id, self.currentStudyYear().Id, newValue.Id);
-                }
-            }
-        }
-    });
-
-    //Действия при изменении типа предмета для сведений к расписанию
-    self.currentSiTutorialType.subscribe(function (newValue) {
-        if (newValue !== undefined) {
-            if (self.currentFaculties() !== undefined && self.currentStudyYear() !== undefined && self.currentSemester() !== undefined) {
-                self.loadScheduleInfoes(self.currentFaculties().Id, courseIds, groupIds, newValue.Id, self.currentStudyYear().Id, self.currentSemester().Id);
-            }
-        }
-    });
-    
 };
 
 
@@ -3256,8 +2708,6 @@ $(function () {
     dModel = new dataModel();
 
     viewModel.init();
-    viewModel.datainit();
-   
 
     // Activates knockout.js
     ko.applyBindings(viewModel);

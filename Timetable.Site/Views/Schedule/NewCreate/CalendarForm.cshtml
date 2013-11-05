@@ -1,0 +1,81 @@
+﻿<!-- Calendar form -->
+<style>
+    .preselectedCalendarSchedule {background-color:lightsteelblue;}
+    .unselectedCalendarSchedule {background-color:snow;}
+    .clickedCalendarSchedule {background-color:palevioletred;}
+</style>
+
+ <!-- ko if: $root.currentScheduleSelectForm() !== undefined -->
+<!-- ko if: $root.currentScheduleSelectForm().currentCalendarForm() !== undefined -->
+<!-- ko if: $root.currentScheduleSelectForm().currentCalendarForm().scheduleContextMenuForm() !== undefined -->
+<div id="scheduleContextMenu" class="dropdown clearfix hide" style="z-index:100500;">
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
+        <li><a tabindex="-1" href="#" data-bind="event:{click:$root.currentScheduleSelectForm().currentCalendarForm().scheduleContextMenuForm().updateScheduleClick.bind($data,true) }">Изменить</a></li>
+        <li><a tabindex="-1" href="#" data-bind="event:{click:$root.currentScheduleSelectForm().currentCalendarForm().scheduleContextMenuForm().deleteScheduleClick.bind($data,true) }">Удалить</a></li>
+    </ul>
+</div>
+<!-- /ko -->  
+<!-- /ko -->  
+<!-- /ko -->  
+
+  <!-- ko if: $root.currentScheduleSelectForm() !== undefined -->
+  <!-- ko if: $root.currentScheduleSelectForm().currentCalendarForm() !== undefined -->
+<div class="modal hide fade" id ="calendardialog" data-bind=" draggable: {handle: '.modal-header', start: $root.currentScheduleSelectForm().currentCalendarForm().startDrag.bind($data,true)}" style="cursor:move; width:640px; overflow-x:hidden;">
+    <div class="modal-header" style="overflow-x:hidden;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h5>Календарь</h5>
+        <!--<h5 data-bind="text:$root.currentDayOfweek().Name + ' ' + $root.currentDayTimes()[0].StartEnd"></h5>-->
+    </div>
+
+    <div class="modal-body" style="">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr data-bind="foreach: $root.currentScheduleSelectForm().currentCalendarForm().weeks">
+                    <th><strong data-bind="text: $root.currentScheduleSelectForm().currentCalendarForm().weeks()[$index()].StartDateFormat + ' - ' + $root.currentScheduleSelectForm().currentCalendarForm().weeks()[$index()].EndDateFormat "> </strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-bind="foreach: $root.currentScheduleSelectForm().currentCalendarForm().weeks, event: {mouseout: $root.currentScheduleSelectForm().currentCalendarForm().mouseOutForm.bind($data,true)}">
+                    <!-- ko if: $root.currentScheduleSelectForm().currentCalendarForm().calendarSchedules()[$index()] !== undefined -->
+                    <td data-bind="foreach: $root.currentScheduleSelectForm().currentCalendarForm().calendarSchedules()[$index()]">
+                        <div class="Schedule" data-bind="css: {
+                                        clickedCalendarSchedule: $root.currentScheduleSelectForm().currentCalendarForm().clickedSchedule().Id == $root.currentScheduleSelectForm().currentCalendarForm().calendarSchedules()[$parentContext.$index()]()[$index()].Id, 
+                                        preselectedCalendarSchedule: $root.currentScheduleSelectForm().currentCalendarForm().preselectedSchedule().Id == $root.currentScheduleSelectForm().currentCalendarForm().calendarSchedules()[$parentContext.$index()]()[$index()].Id, 
+                                        unselectedCalendarSchedule: $root.currentScheduleSelectForm().currentCalendarForm().preselectedSchedule().Id != $root.currentScheduleSelectForm().currentCalendarForm().calendarSchedules()[$parentContext.$index()]()[$index()].Id && $root.currentScheduleSelectForm().currentCalendarForm().clickedSchedule().Id != $root.currentScheduleSelectForm().currentCalendarForm().calendarSchedules()[$parentContext.$index()]()[$index()].Id },
+                            event:{
+                                contextmenu: $root.currentScheduleSelectForm().currentCalendarForm().clickOnScheduleRight.bind($data, $parentContext.$index(), $index(), true), 
+                                click: $root.currentScheduleSelectForm().currentCalendarForm().clickOnScheduleLeft.bind($data, $parentContext.$index(), $index(), true),
+                                mouseover: $root.currentScheduleSelectForm().currentCalendarForm().mouseover.bind($data, $parentContext.$index(), $index(), true)}"  style="cursor:pointer; width:176px; height:62px; margin:2px; border:solid 1px; border-color:grey;">
+                            <div style="float:right; right:0px; top:0px; margin-right: 2px;">    
+                                <strong data-bind="text: '#' + $root.currentScheduleSelectForm().currentCalendarForm().calendarSchedules()[$parentContext.$index()]()[$index()].AuditoriumNumber"></strong>
+                            </div>
+                            <div style="float:left; color:green; left:0px; top:0px; margin-left: 5px;">
+                                <strong data-bind="text: $root.currentScheduleSelectForm().currentCalendarForm().calendarSchedules()[$parentContext.$index()]()[$index()].WeekTypeName">&nbsp;&nbsp;</strong>
+                            </div>
+
+                            <span  data-bind="text: $root.currentScheduleSelectForm().currentCalendarForm().calendarSchedules()[$parentContext.$index()]()[$index()].LecturerName"></span>
+                            <span  data-bind="text: $root.currentScheduleSelectForm().currentCalendarForm().calendarSchedules()[$parentContext.$index()]()[$index()].TutorialName"></span>
+                            <span  data-bind="text: $root.currentScheduleSelectForm().currentCalendarForm().calendarSchedules()[$parentContext.$index()]()[$index()].TutorialTypeName"></span>
+                            <span  data-bind="text: $root.currentScheduleSelectForm().currentCalendarForm().calendarSchedules()[$parentContext.$index()]()[$index()].GroupNames"></span>
+                        
+                            <!-- ko if: $root.currentScheduleSelectForm().currentCalendarForm().calendarSchedules()[$parentContext.$index()]()[$index()].SubGroup !== undefined && $root.currentScheduleSelectForm().currentCalendarForm().calendarSchedules()[$parentContext.$index()]()[$index()].SubGroup !== null -->
+                            <span  data-bind="text: $root.currentScheduleSelectForm().currentCalendarForm().calendarSchedules()[$parentContext.$index()]()[$index()].SubGroup"></span>
+                            <!-- /ko -->
+                        </div> 
+                    </td>
+                    <!-- /ko -->
+                </tr>
+               
+            </tbody>
+        </table> 
+    </div>
+    <div class="modal-footer" style="overflow-x:hidden;">
+        <div class="btn-group" style="left:150px; width:100px;">
+            <a class="btn" href="#" data-bind="event:{click: $root.currentScheduleSelectForm().currentCalendarForm().toPrevWeek.bind($data, true)}">На неделю назад</a>
+            <a class="btn" href="#" data-bind="event:{click: $root.currentScheduleSelectForm().currentCalendarForm().toNextWeek.bind($data, true)}">На неделю вперед</a>
+            <!--<input  style="width:150px; height:30px;" type="date" id="currentWeek" data-bind="value:$root.currentScheduleSelectForm().currentCalendarForm().currentWeek(), valueUpdate: 'blur'" />-->
+        </div>
+    </div>
+</div>
+ <!-- /ko -->
+<!-- /ko -->  

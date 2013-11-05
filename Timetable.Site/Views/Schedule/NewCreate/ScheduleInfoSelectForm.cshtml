@@ -1,7 +1,7 @@
 ﻿<style>
-    .preselectedScheduleInfo {background-color:green;}
+    .preselectedScheduleInfo {background-color:#D6E0FF;}
     .unselectedScheduleInfo {background-color:snow;}
-    .clickedScheduleInfo {background-color:palegreen}
+    .clickedScheduleInfo {background-color:#8FABFF;}
 </style>
 
 <!-- ScheduleInfo Context Menu Form -->
@@ -42,9 +42,9 @@
                       }, css: {
                            preselectedScheduleInfo: $index() == $root.currentScheduleInfoSelectForm().selectedScheduleInfoIndex(),
                            unselectedScheduleInfo: $index() != $root.currentScheduleInfoSelectForm().selectedScheduleInfoIndex() && $index() != $root.currentScheduleInfoSelectForm().currentScheduleInfoIndex(),
-                          clickedScheduleInfo: $index() == $root.currentScheduleInfoSelectForm().currentScheduleInfoIndex() }">
+                           clickedScheduleInfo: $index() == $root.currentScheduleInfoSelectForm().currentScheduleInfoIndex() }">
                 
-                <p style="text-align:left;  text-indent: 20px; ">
+                <p style="text-align:left;  text-indent: 20px;">
                     <strong data-bind="text: $root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].LecturerName"></strong> <br />
                     <strong data-bind="text: $root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].TutorialName"></strong>
                     <strong data-bind="text: $root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].CurrentHours  + '[' + $root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].HoursPerWeek + ']' + $root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].TutorialTypeName"></strong>

@@ -1,0 +1,21 @@
+﻿<!-- ko if: $root.currentScheduleInfoSelectForm() !== undefined -->
+<!-- ko if: $root.currentScheduleInfoSelectForm().currentScheduleInfoUpdateForm() !== undefined -->
+<div class="modal hide" id ="updsidialog" data-bind=" draggable: {handle: '.modal-header'}" style="cursor:move; width:400px; overflow-x:hidden; ">
+    <div class="modal-header" style="overflow-x:hidden;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h5>Редактирование сведения к расписанию</h5>
+    </div>
+    <div class="modal-body" style="overflow-x:hidden; overflow-y:hidden;">
+        <span>Планируемое количество часов</span>
+        <input data-bind="value: $root.currentScheduleInfoSelectForm().currentScheduleInfoUpdateForm().newHoursPerWeek, valueUpdate: 'afterkeydown'" style="width:100%"  /> <br />
+        <span>Преподаватель</span>
+        <input data-bind="value: $root.currentScheduleInfoSelectForm().currentScheduleInfoUpdateForm().newLecturer, valueUpdate: 'afterkeydown'" style="width:100%"  /> <br />
+    </div>
+    <div class="modal-footer" style="overflow-x:hidden;">
+        <input id="selectFlowOkButton" type="button" class="btn btn-primary" value="Изменить" data-bind="event:{click:$root.currentScheduleInfoSelectForm().currentScheduleInfoUpdateForm().updateButtonClick.bind($data,true)}" />
+        <a style="cursor:pointer;" data-bind="event:{click:$root.currentScheduleInfoSelectForm().currentScheduleInfoUpdateForm().cancelButtonClick.bind($data,true)}">Отмена</a>
+    </div>
+</div>
+<!-- /ko --> 
+<!-- /ko --> 
+

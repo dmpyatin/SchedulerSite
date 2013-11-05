@@ -1,0 +1,46 @@
+﻿
+<!-- Schedule Update Confirm Form -->
+<!-- ko if: $root.currentCalendar() !== undefined -->
+<!-- ko if: $root.currentCalendar().currentScheduleUpdateForm() !== undefined -->
+<!-- ko if: $root.currentCalendar().currentScheduleUpdateForm().currentConfirmForm() !== undefined -->
+<div class="modal hide" id ="updsconfdialog" data-bind=" draggable: {handle: '.modal-header'}" style="cursor:move; width:250px; overflow-x:hidden;">
+    <div class="modal-header" style="overflow-x:hidden;">
+        <button type="button" class="close" data-bind="event:{click: $root.currentCalendar().currentScheduleUpdateForm().currentConfirmForm().closeDialog.bind($data,true)}" aria-hidden="true">&times;</button>
+        <h5>Подтвердите действие</h5>
+    </div>
+    <div class="modal-body" style="overflow-x:hidden; overflow-y:hidden; max-height:130px;" >
+        <div class="alert">
+            <strong>Вы действительно хотите изменить информацию о занятии ?</strong>
+        </div>
+    </div>
+    <div class="modal-footer" style="overflow-x:hidden;">
+        <input id="selectOkButton" type="button" class="btn btn-primary" value="Да" data-bind="click: $root.currentCalendar().currentScheduleUpdateForm().currentConfirmForm().okButtonClick.bind($data,true)" />
+        <a style="cursor:pointer;" data-bind="click: $root.currentCalendar().currentScheduleUpdateForm().currentConfirmForm().cancelButtonClick.bind($data,true)">Нет</a>
+    </div>
+</div>
+<!-- /ko -->  
+<!-- /ko -->  
+<!-- /ko -->  
+
+<!-- Schedule Update Confirm Form -->
+<!-- ko if: $root.currentScheduleSelectForm() !== undefined -->
+<!-- ko if: $root.currentScheduleSelectForm().currentScheduleUpdateForm() !== undefined -->
+<!-- ko if: $root.currentScheduleSelectForm().currentScheduleUpdateForm().currentConfirmForm() !== undefined -->
+<div class="modal hide" id ="updsconfdialog" data-bind=" draggable: {handle: '.modal-header'}" style="cursor:move; width:250px; overflow-x:hidden;">
+    <div class="modal-header" style="overflow-x:hidden;">
+        <button type="button" class="close" data-bind="event:{click: $root.currentScheduleSelectForm().currentScheduleUpdateForm().currentConfirmForm().closeDialog.bind($data,true)}" aria-hidden="true">&times;</button>
+        <h5>Подтвердите действие</h5>
+    </div>
+    <div class="modal-body" style="overflow-x:hidden; overflow-y:hidden; max-height:130px;" >
+        <div class="alert">
+            <strong>Вы действительно хотите изменить информацию о занятии ?</strong>
+        </div>
+    </div>
+    <div class="modal-footer" style="overflow-x:hidden;">
+        <input id="selectOkButton" type="button" class="btn btn-primary" value="Да" data-bind="click: $root.currentScheduleSelectForm().currentScheduleUpdateForm().currentConfirmForm().okButtonClick.bind($data,true)" />
+        <a style="cursor:pointer;" data-bind="click: $root.currentScheduleSelectForm().currentScheduleUpdateForm().currentConfirmForm().cancelButtonClick.bind($data,true)">Нет</a>
+    </div>
+</div>
+<!-- /ko -->  
+<!-- /ko -->  
+<!-- /ko -->  

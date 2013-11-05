@@ -1,0 +1,326 @@
+﻿<style>
+    .preselectedBacket {background-color:#D6E0FF;}
+    .unselectedBacket {background-color:snow;}
+    .clickedBacket {background-color:#8FABFF;}
+    .blockedBacket {background-color:#FFDBE4; margin:0px;}
+
+    .preselectedSchedule {background-color:lightsteelblue;}
+    .unselectedSchedule {background-color:snow;}
+    .clickedSchedule {background-color:palevioletred;}
+    .blockedSchedule {background-color:#FFDBE4; margin:0px;}
+
+</style>
+
+<!-- Schedule Context Menu Form -->
+
+<!-- ko if: $root.currentScheduleSelectForm() !== undefined -->
+<!-- ko if: $root.currentScheduleSelectForm().scheduleContextMenuForm() !== undefined -->
+<div id="scheduleContextMenu" class="dropdown clearfix hide" style="z-index:100500; width:150px">
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
+        <li><a tabindex="-1" href="#" data-bind="event:{click:$root.currentScheduleSelectForm().scheduleContextMenuForm().updateScheduleClick.bind($data,true) }">Изменить</a></li>
+        <li><a tabindex="-1" href="#" data-bind="event:{click:$root.currentScheduleSelectForm().scheduleContextMenuForm().deleteScheduleClick.bind($data,true) }">Удалить</a></li>
+        <li><a tabindex="-1" href="#" data-bind="event:{click:$root.currentScheduleSelectForm().copySchedule.bind($data,true) }">Копировать</a></li>
+        <li><a tabindex="-1" href="#" data-bind="event:{click:$root.currentScheduleSelectForm().cutSchedule.bind($data,true) }">Вырезать</a></li>
+    </ul>
+</div>
+<!-- /ko -->  
+<!-- /ko -->  
+
+
+<!-- ScheduleBacket Context Menu Form -->
+
+<!-- ko if: $root.currentScheduleSelectForm() !== undefined -->
+<!-- ko if: $root.currentScheduleSelectForm().scheduleBacketContextMenuForm() !== undefined -->
+<div id="scheduleBacketContextMenu" class="dropdown clearfix hide" style="z-index:100500; width:150px;">
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
+        <li><a tabindex="-1" href="#" data-bind="event:{click:$root.currentScheduleSelectForm().scheduleBacketContextMenuForm().addScheduleClick.bind($data,true) }">Запланировать</a></li>
+        <li><a tabindex="-1" href="#" data-bind="event:{click:$root.currentScheduleSelectForm().scheduleBacketContextMenuForm().freeAuditoriumsClick.bind($data,true) }">Свободные аудитории</a></li>
+        <li><a tabindex="-1" href="#" data-bind="event:{click:$root.currentScheduleSelectForm().scheduleBacketContextMenuForm().calendarClick.bind($data,true) }">Календарь</a></li>
+        <!-- ko if: $root.currentScheduleSelectForm().copiedSchedule() !== undefined || $root.currentScheduleSelectForm().cutedSchedule() !== undefined -->
+        <li><a tabindex="-1" href="#" data-bind="event:{click:$root.currentScheduleSelectForm().pasteSchedule.bind($data,true) }">Вставить</a></li>
+        <!-- /ko --> 
+    </ul>
+</div>
+<!-- /ko -->  
+<!-- /ko -->  
+
+<!-- Schedule Select Modal Form -->
+<!-- ko if: $root.currentScheduleSelectForm() !== undefined -->
+<div class="modal hide" id ="ssdialog" style="cursor:move; width:1050px; overflow-x:hidden;" data-bind="draggable: {handle: '.modal-header', start: $root.currentScheduleSelectForm().startDrag.bind($data,true)}">
+    <div class="modal-header" style="overflow-x:hidden;">
+        <button type="button" class="close" data-bind="event:{click: $root.currentScheduleSelectForm().closeDialog.bind($data,true)}" aria-hidden="true">&times;</button>
+        <h5>Занятия</h5>
+        <div>
+            <table>
+              <tr>
+                <th>Здание</th>
+                <th>Тип недели</th>
+                <th>Подгруппа</th>
+                <th>Идут с</th>
+                <th>Идут по</th>
+              </tr>
+            <tr>
+                <td>
+                <select style="width:110px;"  data-placeholder="Выберите здание" class="span5" id="buildings1" data-bind="options: $root.currentScheduleSelectForm().buildings, optionsText: 'Name', value: $root.currentScheduleSelectForm().currentBuilding">
+                        <option></option>
+                </select>
+                </td>
+                <td>
+                <select style="width:110px;"  data-placeholder="Выберите тип недели" class="span5" id="weekTypes1" data-bind="options: $root.currentScheduleSelectForm().weekTypes, optionsText: 'Name', value: $root.currentScheduleSelectForm().currentWeekType">
+                        <option></option>
+                </select>
+                </td>
+                <td>
+                <select style="width:110px;"  data-placeholder="Выберите подгруппу" class="span5" id="subGroups1" data-bind="options: $root.currentScheduleSelectForm().subGroups, value: $root.currentScheduleSelectForm().currentSubGroup">
+                        <option></option>
+                </select>
+                </td>
+                <td>
+                <input style="width:150px; height:30px;" type="date" id="startDate" data-bind="value:$root.currentScheduleSelectForm().startTime, valueUpdate: 'blur'"/> 
+                </td>
+                <td>
+                <input  style="width:150px; height:30px;" type="date" id="endDate" data-bind="value:$root.currentScheduleSelectForm().endDate, valueUpdate: 'blur'" />
+                </td>
+               </tr>
+          </table>
+        </div>
+    </div>
+    <div class="modal-body" style="height:500px;">
+       <table class="table table-bordered table-striped">
+            <thead>
+
+              <tr data-bind="foreach: $root.currentScheduleSelectForm().days">
+                <!-- ko if: $index() == 0 -->
+                <th><strong>Время</strong></th>
+                <!-- /ko --> 
+                <!-- ko if: $index() !== 0 -->
+                <th><strong data-bind="text: $root.currentScheduleSelectForm().days()[$index()].Name"></strong></th>
+                <!-- /ko --> 
+              </tr>
+            </thead>
+            <tbody data-bind="foreach:$root.currentScheduleSelectForm().times, event:{mouseout: $root.currentScheduleSelectForm().mouseOutBacket.bind($data,true)}" style="cursor:pointer;">   
+                 <tr data-bind="foreach: $root.currentScheduleSelectForm().days">
+                     <!-- ko if: $index() == 0 -->
+                     <td style=""><strong data-bind="text:$root.currentScheduleSelectForm().times()[$parentContext.$index()].StartEnd + ' ' + $root.currentScheduleSelectForm().times()[$parentContext.$index()].Id"></strong></td>
+                     <!-- /ko --> 
+                     <!-- ko if: $index() !== 0 -->
+                     <td style="min-width:165px; height:155px; padding:0px;">
+                          <div data-bind="css:{blockedBacket: $root.currentScheduleSelectForm().blockedRows()[$parentContext.$index()], 
+                                              preselectedBacket: $root.currentScheduleSelectForm().preselectedBacketIndexes().row == $parentContext.$index() && 
+                                                                 $root.currentScheduleSelectForm().preselectedBacketIndexes().col == $index() &&
+                                                                 $root.currentScheduleSelectForm().preselectedBacketIndexes().wt == 0 &&
+                                                                 !$root.currentScheduleSelectForm().blockedRows()[$parentContext.$index()],
+                                              clickedBacket: !$root.currentScheduleSelectForm().blockedRows()[$parentContext.$index()] &&
+                                                              $root.currentScheduleSelectForm().clickedBacketIndexes().row == $parentContext.$index() && 
+                                                              $root.currentScheduleSelectForm().clickedBacketIndexes().col == $index() &&
+                                                              $root.currentScheduleSelectForm().clickedBacketIndexes().wt == 0},
+
+                                              event:{mouseover: $root.currentScheduleSelectForm().preselectBacket.bind($data,true,$parentContext.$index(), $index(), 0),
+                                                     click: $root.currentScheduleSelectForm().clickBacketLeft.bind($data, true, $parentContext.$index(), $index(), 0),
+                                                     contextmenu: $root.currentScheduleSelectForm().clickBacketRight.bind($data, true, $parentContext.$index(), $index(), 0)},
+                                               droppable: {drop: $root.currentScheduleSelectForm().dropBacket.bind($data, true, $parentContext.$index(), $index(), 0),  
+	                                                       accept: '.Schedule',  
+	                                                       over: $root.currentScheduleSelectForm().overBacket.bind($data, true, $parentContext.$index(), $index(), 0), 
+	                                                       out: $root.currentScheduleSelectForm().outBacket.bind($data, true)}" style="margin:0px; height:33%;">
+
+                                         <span class ="indexes hide" data-bind="text:$parentContext.$index() + ' ' + $index() + ' 0' "></span>
+
+                                        <!-- ko if: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()] !== undefined -->
+                                        <!-- ko if: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()] !== undefined -->
+                                        <!-- ko if: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]() !== undefined -->
+                                        <!-- ko if: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[0]() !== undefined -->
+                                       
+                                        <div class="Schedule" data-bind="css:{blockedSchedule: $root.currentScheduleSelectForm().blockedRows()[$parentContext.$index()],
+                                                                              clickedSchedule: $root.currentScheduleSelectForm().clickedSchedule() == $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[0]() &&
+                                                                                               !$root.currentScheduleSelectForm().blockedRows()[$parentContext.$index()],
+                                                                              preselectedSchedule: $root.currentScheduleSelectForm().preselectedSchedule() == $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[0]() &&
+                                                                                                   !$root.currentScheduleSelectForm().blockedRows()[$parentContext.$index()],
+                                                                              unselectedSchedule:  !$root.currentScheduleSelectForm().blockedRows()[$parentContext.$index()] &&
+                                                                                                    $root.currentScheduleSelectForm().preselectedSchedule() != $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[0]() &&
+                                                                                                    $root.currentScheduleSelectForm().clickedSchedule() != $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[0]()},
+                                                                         event:{mouseover: $root.currentScheduleSelectForm().preselectSchedule.bind($data,true,$parentContext.$index(), $index(), 0),
+                                                                                click: $root.currentScheduleSelectForm().clickScheduleLeft.bind($data, true, $parentContext.$index(), $index(), 0),
+                                                                                contextmenu: $root.currentScheduleSelectForm().clickScheduleRight.bind($data, true, $parentContext.$index(), $index(), 0),
+                                                                                mouseout: $root.currentScheduleSelectForm().mouseOutSchedule.bind($data,true)},
+                                                                         draggable: { 
+                                                                                helper:'clone',
+                                                                                opacity: 0.7,
+                                                                                start: $root.currentScheduleSelectForm().startDragSchedule.bind($data, true, $parentContext.$index(), $index(), 0),
+                                                                                stop: $root.currentScheduleSelectForm().stopDragSchedule.bind($data, true, $parentContext.$index(), $index())}" style="width:165px; height: 65px; border:solid 1px; border-color:lightgrey;">
+                                                
+                                                <div style="float:right; right:0px; top:0px; margin-right: 2px;">    
+                                                    <strong data-bind="text: '#' + $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[0]().AuditoriumNumber"></strong>
+                                                </div>
+                                                <div style="float:left; color:green; left:0px; top:0px; margin-left: 5px;">
+                                                    <strong data-bind="text: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[0]().WeekTypeName">&nbsp;&nbsp;</strong>
+                                                </div>
+
+                                                <span  data-bind="text: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[0]().LecturerName"></span>
+                                                <span  data-bind="text: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[0]().TutorialName"></span>
+                                                <span  data-bind="text: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[0]().TutorialTypeName"></span>
+                                                <span  data-bind="text: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[0]().GroupNames"></span>
+                                                
+                                                 <!-- ko if: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[0]().SubGroup !== undefined && 
+                                                             $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[0]().SubGroup !== null -->
+                                                <span  data-bind="text: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[0]().SubGroup"></span>
+                                                <!-- /ko --> 
+                                        </div> 
+                                        <!-- /ko --> 
+                                        <!-- /ko --> 
+                                        <!-- /ko --> 
+                               
+                                        <!-- /ko -->
+                         </div>
+                          <div data-bind="css:{blockedBacket: $root.currentScheduleSelectForm().blockedRows()[$parentContext.$index()], 
+                                              preselectedBacket: $root.currentScheduleSelectForm().preselectedBacketIndexes().row == $parentContext.$index() && 
+                                                                 $root.currentScheduleSelectForm().preselectedBacketIndexes().col == $index() &&
+                                                                 $root.currentScheduleSelectForm().preselectedBacketIndexes().wt == 1 &&
+                                                                 !$root.currentScheduleSelectForm().blockedRows()[$parentContext.$index()],
+                                              clickedBacket: !$root.currentScheduleSelectForm().blockedRows()[$parentContext.$index()] &&
+                                                              $root.currentScheduleSelectForm().clickedBacketIndexes().row == $parentContext.$index() && 
+                                                              $root.currentScheduleSelectForm().clickedBacketIndexes().col == $index() &&
+                                                              $root.currentScheduleSelectForm().clickedBacketIndexes().wt == 1},
+
+                                              event:{mouseover: $root.currentScheduleSelectForm().preselectBacket.bind($data,true,$parentContext.$index(), $index(), 1),
+                                                     click: $root.currentScheduleSelectForm().clickBacketLeft.bind($data, true, $parentContext.$index(), $index(), 1),
+                                                     contextmenu: $root.currentScheduleSelectForm().clickBacketRight.bind($data, true, $parentContext.$index(), $index(), 1)},
+                                               droppable: {drop: $root.currentScheduleSelectForm().dropBacket.bind($data, true, $parentContext.$index(), $index(), 1),  
+	                                                       accept: '.Schedule',  
+	                                                       over: $root.currentScheduleSelectForm().overBacket.bind($data, true, $parentContext.$index(), $index(), 1), 
+	                                                       out: $root.currentScheduleSelectForm().outBacket.bind($data, true)}" style="margin:0px; height:33%;">
+
+                                         <span class ="indexes hide" data-bind="text:$parentContext.$index() + ' ' + $index() + ' 1' "></span>
+
+                                        <!-- ko if: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()] !== undefined -->
+                                        <!-- ko if: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()] !== undefined -->
+                                        <!-- ko if: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]() !== undefined -->
+                                        <!-- ko if: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[1]() !== undefined -->
+                                        
+                                        <div class="Schedule" data-bind="css:{blockedSchedule: $root.currentScheduleSelectForm().blockedRows()[$parentContext.$index()],
+                                                                              clickedSchedule: $root.currentScheduleSelectForm().clickedSchedule() == $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[1]() &&
+                                                                                               !$root.currentScheduleSelectForm().blockedRows()[$parentContext.$index()],
+                                                                              preselectedSchedule: $root.currentScheduleSelectForm().preselectedSchedule() == $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[1]() &&
+                                                                                                   !$root.currentScheduleSelectForm().blockedRows()[$parentContext.$index()],
+                                                                              unselectedSchedule:  !$root.currentScheduleSelectForm().blockedRows()[$parentContext.$index()] &&
+                                                                                                    $root.currentScheduleSelectForm().preselectedSchedule() != $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[1]() &&
+                                                                                                    $root.currentScheduleSelectForm().clickedSchedule() != $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[1]()},
+                                                                         event:{mouseover: $root.currentScheduleSelectForm().preselectSchedule.bind($data,true,$parentContext.$index(), $index(), 1),
+                                                                                click: $root.currentScheduleSelectForm().clickScheduleLeft.bind($data, true, $parentContext.$index(), $index(), 1),
+                                                                                contextmenu: $root.currentScheduleSelectForm().clickScheduleRight.bind($data, true, $parentContext.$index(), $index(), 1),
+                                                                                mouseout: $root.currentScheduleSelectForm().mouseOutSchedule.bind($data,true)},
+                                                                         draggable: { 
+                                                                                helper:'clone',
+                                                                                opacity: 0.7,
+                                                                                start: $root.currentScheduleSelectForm().startDragSchedule.bind($data, true, $parentContext.$index(), $index(), 1),
+                                                                                stop: $root.currentScheduleSelectForm().stopDragSchedule.bind($data, true, $parentContext.$index(), $index())}" style="width:165px; height: 65px; border:solid 1px; border-color:lightgrey;">
+                                                
+                                                <div style="float:right; right:0px; top:0px; margin-right: 2px;">    
+                                                    <strong data-bind="text: '#' + $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[1]().AuditoriumNumber"></strong>
+                                                </div>
+                                                <div style="float:left; color:green; left:0px; top:0px; margin-left: 5px;">
+                                                    <strong data-bind="text: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[1]().WeekTypeName">&nbsp;&nbsp;</strong>
+                                                </div>
+
+                                                <span  data-bind="text: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[1]().LecturerName"></span>
+                                                <span  data-bind="text: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[1]().TutorialName"></span>
+                                                <span  data-bind="text: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[1]().TutorialTypeName"></span>
+                                                <span  data-bind="text: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[1]().GroupNames"></span>
+                                                
+                                                 <!-- ko if: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[1]().SubGroup !== undefined && 
+                                                             $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[1]().SubGroup !== null -->
+                                                <span  data-bind="text: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[1]().SubGroup"></span>
+                                                <!-- /ko --> 
+                                        </div> 
+                                        <!-- /ko --> 
+                                        <!-- /ko --> 
+                                        <!-- /ko --> 
+                                        <!-- /ko --> 
+                                        
+                         </div>
+
+                         <div data-bind="css:{blockedBacket: $root.currentScheduleSelectForm().blockedRows()[$parentContext.$index()], 
+                                              preselectedBacket: $root.currentScheduleSelectForm().preselectedBacketIndexes().row == $parentContext.$index() && 
+                                                                 $root.currentScheduleSelectForm().preselectedBacketIndexes().col == $index() &&
+                                                                 $root.currentScheduleSelectForm().preselectedBacketIndexes().wt == 2 &&
+                                                                 !$root.currentScheduleSelectForm().blockedRows()[$parentContext.$index()],
+                                              clickedBacket: !$root.currentScheduleSelectForm().blockedRows()[$parentContext.$index()] &&
+                                                              $root.currentScheduleSelectForm().clickedBacketIndexes().row == $parentContext.$index() && 
+                                                              $root.currentScheduleSelectForm().clickedBacketIndexes().col == $index() &&
+                                                              $root.currentScheduleSelectForm().clickedBacketIndexes().wt == 2},
+
+                                              event:{mouseover: $root.currentScheduleSelectForm().preselectBacket.bind($data,true,$parentContext.$index(), $index(), 2),
+                                                     click: $root.currentScheduleSelectForm().clickBacketLeft.bind($data, true, $parentContext.$index(), $index(), 2),
+                                                     contextmenu: $root.currentScheduleSelectForm().clickBacketRight.bind($data, true, $parentContext.$index(), $index(), 2)},
+                                               droppable: {drop: $root.currentScheduleSelectForm().dropBacket.bind($data, true, $parentContext.$index(), $index(), 2),  
+	                                                       accept: '.Schedule',  
+	                                                       over: $root.currentScheduleSelectForm().overBacket.bind($data, true, $parentContext.$index(), $index(), 2), 
+	                                                       out: $root.currentScheduleSelectForm().outBacket.bind($data, true)}" style="margin:0px; height:33%;">
+
+                                         <span class ="indexes hide" data-bind="text:$parentContext.$index() + ' ' + $index() + ' 2' "></span>
+
+                                        <!-- ko if: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()] !== undefined -->
+                                        <!-- ko if: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()] !== undefined -->
+                                        <!-- ko if: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]() !== undefined -->
+                                        <!-- ko if: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[2]() !== undefined -->
+                                        
+                                        <div class="Schedule" data-bind="css:{blockedSchedule: $root.currentScheduleSelectForm().blockedRows()[$parentContext.$index()],
+                                                                              clickedSchedule: $root.currentScheduleSelectForm().clickedSchedule() == $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[2]() &&
+                                                                                               !$root.currentScheduleSelectForm().blockedRows()[$parentContext.$index()],
+                                                                              preselectedSchedule: $root.currentScheduleSelectForm().preselectedSchedule() == $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[2]() &&
+                                                                                                   !$root.currentScheduleSelectForm().blockedRows()[$parentContext.$index()],
+                                                                              unselectedSchedule:  !$root.currentScheduleSelectForm().blockedRows()[$parentContext.$index()] &&
+                                                                                                    $root.currentScheduleSelectForm().preselectedSchedule() != $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[2]() &&
+                                                                                                    $root.currentScheduleSelectForm().clickedSchedule() != $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[2]()},
+                                                                         event:{mouseover: $root.currentScheduleSelectForm().preselectSchedule.bind($data,true,$parentContext.$index(), $index(), 2),
+                                                                                click: $root.currentScheduleSelectForm().clickScheduleLeft.bind($data, true, $parentContext.$index(), $index(), 2),
+                                                                                contextmenu: $root.currentScheduleSelectForm().clickScheduleRight.bind($data, true, $parentContext.$index(), $index(), 2),
+                                                                                mouseout: $root.currentScheduleSelectForm().mouseOutSchedule.bind($data,true)},
+                                                                         draggable: { 
+                                                                                helper:'clone',
+                                                                                opacity: 0.7,
+                                                                                start: $root.currentScheduleSelectForm().startDragSchedule.bind($data, true, $parentContext.$index(), $index(), 2),
+                                                                                stop: $root.currentScheduleSelectForm().stopDragSchedule.bind($data, true, $parentContext.$index(), $index())}" style="width:165px; height: 65px; border:solid 1px; border-color:lightgrey;">
+                                                
+                                                <div style="float:right; right:0px; top:0px; margin-right: 2px;">    
+                                                    <strong data-bind="text: '#' + $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[2]().AuditoriumNumber"></strong>
+                                                </div>
+                                                <div style="float:left; color:green; left:0px; top:0px; margin-left: 5px;">
+                                                    <strong data-bind="text: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[2]().WeekTypeName">&nbsp;&nbsp;</strong>
+                                                </div>
+
+                                                <span  data-bind="text: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[2]().LecturerName"></span>
+                                                <span  data-bind="text: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[2]().TutorialName"></span>
+                                                <span  data-bind="text: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[2]().TutorialTypeName"></span>
+                                                <span  data-bind="text: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[2]().GroupNames"></span>
+                                                
+                                                 <!-- ko if: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[2]().SubGroup !== undefined && 
+                                                             $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[2]().SubGroup !== null -->
+                                                <span  data-bind="text: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[2]().SubGroup"></span>
+                                                <!-- /ko --> 
+                                        </div> 
+                                       
+                                        <!-- /ko --> 
+                                        <!-- /ko --> 
+                                        <!-- /ko --> 
+                                        <!-- /ko -->
+                         </div>
+                          
+
+                        
+                     </td>
+                     <!-- /ko --> 
+                 </tr>           
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer" style="overflow-x:hidden;">
+        <input id="selectOkButton" type="button" class="btn btn-primary" value="Продолжить" data-bind="click: $root.currentScheduleSelectForm().closeDialog.bind($data,true)" />
+    </div>
+</div>
+<!-- /ko -->  
+
+
+
+
+
+

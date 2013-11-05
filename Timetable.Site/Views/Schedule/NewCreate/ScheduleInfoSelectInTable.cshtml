@@ -1,0 +1,42 @@
+﻿<!-- ScheduleInfo Select Form -->
+<!-- ko if: $root.currentScheduleInfoSelectForm() !== undefined -->
+<div id ="sidialogintable" style="cursor:move; width:250px; overflow-x:hidden; overflow-y:hidden;">
+    <div>
+        <h5>Выберите сведение к расписанию</h5>
+         <div>
+            <select style="width:100%" class="span5" data-bind="options: $root.currentScheduleInfoSelectForm().tutorialTypes, optionsText: 'Name', value: $root.currentScheduleInfoSelectForm().currentTutorialType">
+                <option></option>
+            </select>
+        </div>
+    </div>
+    <div style="height:450px; padding-left:20px; overflow-y:hidden;">
+
+        <div data-bind="foreach: $root.currentScheduleInfoSelectForm().scheduleInfoes,
+                        event: {mouseout: $root.currentScheduleInfoSelectForm().mouseOutForm.bind($data,true)}" style="height:450px; overflow-y:scroll;">
+            <div class="scheduleInfo" style="padding-left:5px; cursor:pointer; border:solid 2px; border-color:darkgray;   height: 60px; width:200px;"
+                 data-bind=" event:{ click: $root.currentScheduleInfoSelectForm().clickLeftScheduleInfo.bind($data,true,$index()),
+                       contextmenu: $root.currentScheduleInfoSelectForm().clickRightScheduleInfo.bind($data,true,$index()), 
+                       dblclick:  $root.currentScheduleInfoSelectForm().doubleClickScheduleInfo.bind($data,true,$index()),
+                       mouseover: $root.currentScheduleInfoSelectForm().mouseOverScheduleInfo.bind($data,true,$index())
+                      }, css: {
+                           preselectedScheduleInfo: $index() == $root.currentScheduleInfoSelectForm().selectedScheduleInfoIndex(),
+                           unselectedScheduleInfo: $index() != $root.currentScheduleInfoSelectForm().selectedScheduleInfoIndex() && $index() != $root.currentScheduleInfoSelectForm().currentScheduleInfoIndex(),
+                           clickedScheduleInfo: $index() == $root.currentScheduleInfoSelectForm().currentScheduleInfoIndex() },
+                         draggable: { 
+                                     appendTo: 'body',
+                                     helper:'clone',
+                                     opacity: 0.7,
+                                     start: $root.currentScheduleInfoSelectForm().startDragScheduleInfo.bind($data, true, $index()),
+                                     stop: $root.currentScheduleInfoSelectForm().stopDragScheduleInfo.bind($data, true, $index())}">
+                
+                <p style="text-align:left;  text-indent: 20px;">
+                    <span data-bind="text: $root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].LecturerName"></span> <br />
+                    <span data-bind="text: $root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].TutorialName"></span>
+                    <span data-bind="text: $root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].CurrentHours  + '[' + $root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].HoursPerWeek + ']' + $root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].TutorialTypeName"></span>
+                    <span data-bind="text:$root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].GroupNames"></span> 
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /ko -->  

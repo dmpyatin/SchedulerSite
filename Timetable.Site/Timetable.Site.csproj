@@ -1378,6 +1378,17 @@
     </Content>
     <Content Include="Views\Schedule\NewCreate\ScheduleAdd.cshtml" />
     <Content Include="Views\Schedule\NewCreate\ScheduleInfoSelectForm.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\FlowSelectForm.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\UpdateScheduleInfoForm.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\ScheduleSelectForm.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\ScheduleUpdateForm.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\CalendarForm.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\UpdateScheduleConfirmForm.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\UpdateScheduleInfoConfirmForm.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\ScheduleDeleteConfirmForm.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\ScheduleSelectInTable.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\FlowSelectInTable.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\ScheduleInfoSelectInTable.cshtml" />
     <None Include="Views\Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,26 +1,31 @@
-﻿<div class="modal hide fade" id ="auditoriumdialog" style="width:400px; overflow-x:hidden;">
+﻿
+<!-- ko if: $root.currentScheduleSelectForm() !== undefined -->
+<!-- ko if: $root.currentScheduleSelectForm().freeAuditoriumsForm() !== undefined -->
+<div class="modal hide fade" id ="auditoriumdialog" data-bind="draggable: {handle: '.modal-header'}" style="width:400px; overflow-x:hidden;">
   <div class="modal-header" style="overflow-x:hidden;">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     <h5>Свободные аудитории</h5>
   </div>
   <div class="modal-body" style="overflow-x:hidden;">
-        <span>Здание</span>
+        <!--<span>Здание</span>
         <select style="width:100%"  data-placeholder="Выберите здание" class="span5" id="buildings1" data-bind="options: $root.buildings, optionsText: 'Name', value: $root.currentBuilding">
                 <option></option>
-        </select>
+        </select>-->
     
         <span>Тип аудитории</span>
-        <select style="width:100%;"  data-placeholder="Выберите тип аудитории" class="span5" id="auditoriumtype1" data-bind="options: $root.auditoriumTypes, optionsText: 'Name', value: $root.currentAuditoriumType">
+        <select style="width:100%;"  data-placeholder="Выберите тип аудитории" class="span5" id="auditoriumtype1" data-bind="options: $root.currentScheduleSelectForm().freeAuditoriumsForm().auditoriumTypes, optionsText: 'Name', value: $root.currentScheduleSelectForm().freeAuditoriumsForm().currentAuditoriumType">
                 <option></option>
         </select>
 
         <span>Свободны</span>
-        <select style="width:100%"  size="8" data-placeholder="Выберите аудиторию" class="span5" id="auditorium1" data-bind="options: $root.auditoriums, optionsText: 'Number', value: $root.currentAuditorium">
+        <select style="width:100%"  size="8" data-placeholder="Выберите аудиторию" class="span5" id="auditorium1" data-bind="options: $root.currentScheduleSelectForm().freeAuditoriumsForm().auditoriums, optionsText: 'Number', value: $root.currentScheduleSelectForm().freeAuditoriumsForm().currentAuditorium">
                 <option></option>
         </select>
   </div>
   <div class="modal-footer" style="overflow-x:hidden;">
-       <input type="button" class="btn btn-primary" value="Выбрать" data-bind="click: $root.FreeAuditoriumFormOkButton " />
-       <input type="button" class="btn " value="Отмена" data-bind="click: $root.FreeAuditoriumFormCancelButton " />
+       <input type="button" class="btn btn-primary" value="Выбрать" data-bind="click: $root.currentScheduleSelectForm().freeAuditoriumsForm().selectButtonClick.bind($data,true) " />
+       <a style="cursor:pointer;" data-bind="click: $root.currentScheduleSelectForm().freeAuditoriumsForm().cancelButtonClick.bind($data,true) " > Отмена </a>
   </div>
 </div>
+<!-- /ko -->  
+<!-- /ko -->  

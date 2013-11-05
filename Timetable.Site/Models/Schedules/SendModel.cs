@@ -23,6 +23,9 @@ namespace Timetable.Site.Models.Schedules
         [DataMember(Name = "PeriodId")]
         public int PeriodId;
 
+        [DataMember(Name = "BuildingId")]
+        public int BuildingId;
+
         [DataMember(Name = "WeekTypeName")]
         public string WeekTypeName;
 
@@ -104,7 +107,7 @@ namespace Timetable.Site.Models.Schedules
 
         public SendModel() { }
 
-        public SendModel(int Id, int ScheduleInfoId, int DayOfWeek, int PeriodId, string WeekTypeName, int WeekTypeId, string AuditoriumNumber,
+        public SendModel(int Id, int ScheduleInfoId, int DayOfWeek, int PeriodId, int BuildingId, string WeekTypeName, int WeekTypeId, string AuditoriumNumber,
                                 int AuditoriumId, string LecturerName, int LecturerId, string TutorialName,
                                 int TutorialId, string TutorialTypeName, int TutorialTypeId, string GroupNames,
                                 string GroupIds, bool IsForLecturer, bool IsForAuditorium, bool IsForGroup,
@@ -120,6 +123,7 @@ namespace Timetable.Site.Models.Schedules
             this.ScheduleInfoId = ScheduleInfoId;
             this.DayOfWeek = DayOfWeek;
             this.PeriodId = PeriodId;
+            this.BuildingId = BuildingId;
             this.WeekTypeName = WeekTypeName;
             this.WeekTypeId = WeekTypeId;
             this.AuditoriumNumber = AuditoriumNumber;
@@ -171,6 +175,8 @@ namespace Timetable.Site.Models.Schedules
                 this.PeriodId = t.Period.Id;
             }
 
+            
+
             this.WeekTypeId = 0;
             this.WeekTypeName = "";
             if (t.WeekType != null)
@@ -190,7 +196,10 @@ namespace Timetable.Site.Models.Schedules
                 this.AuditoriumNumber = t.Auditorium.Number;
 
                 if (t.Auditorium.Building != null)
+                {
                     this.BuildingFullName = t.Auditorium.Building.Name;
+                    this.BuildingId = t.Auditorium.Building.Id;
+                }
             }
 
             this.LecturerId = 0;
