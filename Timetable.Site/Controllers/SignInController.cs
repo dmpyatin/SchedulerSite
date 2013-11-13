@@ -82,7 +82,7 @@ namespace Timetable.Site.Controllers
             return View("Config/InfoForSchedule");
         }
 
-        //[Authorize]
+        [Authorize]
         public ActionResult Index()
         {
             return View("NewCreate/Index");

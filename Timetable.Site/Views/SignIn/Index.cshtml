@@ -5,10 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<script type='text/javascript' src="@Url.Content("~/Scripts/Site/data.model.js")"></script>
-<script type='text/javascript' src="@Url.Content("~/Scripts/knockout-2.1.0.js")"></script>
 <script type='text/javascript' src="@Url.Content("~/Scripts/Site/SignIn/signin.viewmodel.js")"></script>
-
 
 <style>
     .modal-backdrop {background: white;}
@@ -20,17 +17,17 @@
   </div>
   <div class="modal-body">
             <span>Имя</span> <br />
-            <input style="width:250px;" type="text"  placeholder="Введите имя" id="name" data-bind="value: $root.signName, valueUpdate: 'afterkeydown'"/>
+            <input style="width:250px; height:40px;" type="text" class=""  placeholder="Введите имя" id="name" data-bind="value: $root.signName, valueUpdate: 'afterkeydown'"/>
             <br />
             <span>Пароль</span> <br />
-            <input style="width:250px;" type="password"  placeholder="Введите пароль" id="password" data-bind="value: $root.signPassword, valueUpdate: 'afterkeydown'"/>
+            <input style="width:250px; height:40px;" type="password" class=""   placeholder="Введите пароль" id="password" data-bind="value: $root.signPassword, valueUpdate: 'afterkeydown'"/>
              <br />
             <div class="alert alert-error hide" style="width:200px;" id="signInError">
                 <span>Неправильное имя пользователя или пароль</span>
             </div>
 
             <span>Запомнить меня</span>
-            <input type="checkbox">
+            <input type="checkbox" data-bind="checked: $root.signRememberMe">
   </div>
   <div class="modal-footer">
       <input type="button" class="btn btn-primary" style="width:100px;" value="Войти" data-bind="click: $root.SignIn.bind($data, '@Request.QueryString["ReturnUrl"]')" />

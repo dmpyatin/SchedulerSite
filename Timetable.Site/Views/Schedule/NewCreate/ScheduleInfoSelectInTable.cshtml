@@ -1,14 +1,15 @@
 ﻿<!-- ScheduleInfo Select Form -->
 <!-- ko if: $root.currentScheduleInfoSelectForm() !== undefined -->
-<div id ="sidialogintable" style="cursor:move; width:250px; overflow-x:hidden; overflow-y:hidden;">
+<div id ="sidialogintable" style="width:250px; overflow-x:hidden; overflow-y:hidden;">
     <div>
-        <h5>Выберите сведение к расписанию</h5>
+         <span class="label">Выберите тип занятия</span>
          <div>
             <select style="width:100%" class="span5" data-bind="options: $root.currentScheduleInfoSelectForm().tutorialTypes, optionsText: 'Name', value: $root.currentScheduleInfoSelectForm().currentTutorialType">
                 <option></option>
             </select>
         </div>
     </div>
+    <span class="label">Выберите сведение к расписанию</span>
     <div style="height:450px; padding-left:20px; overflow-y:hidden;">
 
         <div data-bind="foreach: $root.currentScheduleInfoSelectForm().scheduleInfoes,
@@ -29,12 +30,22 @@
                                      start: $root.currentScheduleInfoSelectForm().startDragScheduleInfo.bind($data, true, $index()),
                                      stop: $root.currentScheduleInfoSelectForm().stopDragScheduleInfo.bind($data, true, $index())}">
                 
-                <p style="text-align:left;  text-indent: 20px;">
+                <p style="text-align:left; float:left; margin:0px;  text-indent: 20px;">
                     <span data-bind="text: $root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].LecturerName"></span> <br />
                     <span data-bind="text: $root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].TutorialName"></span>
-                    <span data-bind="text: $root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].CurrentHours  + '[' + $root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].HoursPerWeek + ']' + $root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].TutorialTypeName"></span>
+                    <span data-bind="text: $root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].TutorialTypeName"></span>
                     <span data-bind="text:$root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].GroupNames"></span> 
+
+                   
+                    <span class="badge badge-important" data-bind="text: $root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].CurrentHours  + '[' + $root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].HoursPerWeek + ']'"></span>
                 </p>
+
+                <!--
+                <div style="margin:0px; width:35px; height:15px; -webkit-border-radius:5px; -moz-border-radius:5px; -khtml-border-radius:5px; background-color:red; color:white; bottom:2px; right:2px; float:right;">
+                     <strong data-bind="text: $root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].CurrentHours  + '[' + $root.currentScheduleInfoSelectForm().scheduleInfoes()[$index()].HoursPerWeek + ']'"></strong>
+                </div>
+                -->
+               
             </div>
         </div>
     </div>

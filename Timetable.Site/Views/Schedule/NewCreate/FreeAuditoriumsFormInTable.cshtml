@@ -1,0 +1,24 @@
+﻿
+<!-- ko if: $root.currentScheduleSelectForm() !== undefined -->
+<!-- ko if: $root.currentScheduleSelectForm().freeAuditoriumsInTableForm() !== undefined -->
+<div style="width:250px; overflow-x:hidden;">
+
+  <div style="overflow-x:hidden; padding-left:5px;">
+        <!--<span>Здание</span>
+        <select style="width:100%"  data-placeholder="Выберите здание" class="span5" id="buildings1" data-bind="options: $root.buildings, optionsText: 'Name', value: $root.currentBuilding">
+                <option></option>
+        </select>-->
+    
+        <span class="label">Тип аудитории</span>
+        <select style="width:100%;"  data-placeholder="Выберите тип аудитории" class="span5" id="auditoriumtype1" data-bind="options: $root.currentScheduleSelectForm().freeAuditoriumsInTableForm().auditoriumTypes, optionsText: 'Name', value: $root.currentScheduleSelectForm().freeAuditoriumsInTableForm().currentAuditoriumType">
+                <option></option>
+        </select>
+
+        <span class="label">Свободны</span>
+        <select style="width:100%"  size="20" data-placeholder="Выберите аудиторию" class="span5" id="auditorium1" data-bind="options: $root.currentScheduleSelectForm().freeAuditoriumsInTableForm().auditoriums, optionsText: 'Number', value: $root.currentScheduleSelectForm().freeAuditoriumsInTableForm().currentAuditorium">
+                <option></option>
+        </select>
+  </div>
+</div>
+<!-- /ko -->  
+<!-- /ko -->  

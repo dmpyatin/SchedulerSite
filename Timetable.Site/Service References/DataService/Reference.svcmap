@@ -19,17 +19,17 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://193.232.254.196:6058/SchedulerHost/Services/DataService.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://193.232.254.196:6058/SchedulerHostOld/Services/DataService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="DataService.xsd" MetadataType="Schema" ID="10a9c86c-77d0-40a5-a5b0-3bac9837e7eb" SourceId="1" SourceUrl="http://193.232.254.196:6058/SchedulerHost/Services/DataService.svc?xsd=xsd2" />
-    <MetadataFile FileName="DataService1.xsd" MetadataType="Schema" ID="c86b180e-f9bd-48bb-84ea-e10e3871dc71" SourceId="1" SourceUrl="http://193.232.254.196:6058/SchedulerHost/Services/DataService.svc?xsd=xsd4" />
-    <MetadataFile FileName="DataService5.xsd" MetadataType="Schema" ID="e3f42c17-f773-442c-b76b-c8e08bb67417" SourceId="1" SourceUrl="http://193.232.254.196:6058/SchedulerHost/Services/DataService.svc?xsd=xsd5" />
-    <MetadataFile FileName="DataService2.xsd" MetadataType="Schema" ID="4dab3c90-461c-4d7d-b268-8950cf654328" SourceId="1" SourceUrl="http://193.232.254.196:6058/SchedulerHost/Services/DataService.svc?xsd=xsd3" />
-    <MetadataFile FileName="DataService.wsdl" MetadataType="Wsdl" ID="303054df-61dd-4732-a4bc-0fb6d06576e4" SourceId="1" SourceUrl="http://193.232.254.196:6058/SchedulerHost/Services/DataService.svc?wsdl" />
-    <MetadataFile FileName="DataService3.xsd" MetadataType="Schema" ID="16aeb585-0f5a-4217-8ec7-a77a593e4ab2" SourceId="1" SourceUrl="http://193.232.254.196:6058/SchedulerHost/Services/DataService.svc?xsd=xsd0" />
-    <MetadataFile FileName="DataService.disco" MetadataType="Disco" ID="ddbb5a9f-8416-4ba9-b95f-f966cebb4979" SourceId="1" SourceUrl="http://193.232.254.196:6058/SchedulerHost/Services/DataService.svc?disco" />
-    <MetadataFile FileName="DataService4.xsd" MetadataType="Schema" ID="c1fe9b47-28de-433f-8e66-c59344ac945c" SourceId="1" SourceUrl="http://193.232.254.196:6058/SchedulerHost/Services/DataService.svc?xsd=xsd1" />
+    <MetadataFile FileName="DataService6.xsd" MetadataType="Schema" ID="5e20938d-2ddb-4de8-b299-3c4d0477b7e0" SourceId="1" SourceUrl="http://193.232.254.196:6058/SchedulerHostOld/Services/DataService.svc?xsd=xsd0" />
+    <MetadataFile FileName="DataService61.xsd" MetadataType="Schema" ID="bf4795fe-ade9-4b17-bbac-e0ac4e444fd3" SourceId="1" SourceUrl="http://193.232.254.196:6058/SchedulerHostOld/Services/DataService.svc?xsd=xsd3" />
+    <MetadataFile FileName="DataService62.xsd" MetadataType="Schema" ID="36f7c425-b45b-41bd-aa30-7d3622eb168b" SourceId="1" SourceUrl="http://193.232.254.196:6058/SchedulerHostOld/Services/DataService.svc?xsd=xsd2" />
+    <MetadataFile FileName="DataService1.disco" MetadataType="Disco" ID="0e056742-0a1f-4703-a196-8f49751e3957" SourceId="1" SourceUrl="http://193.232.254.196:6058/SchedulerHostOld/Services/DataService.svc?disco" />
+    <MetadataFile FileName="DataService1.wsdl" MetadataType="Wsdl" ID="cf6db97b-0aae-488c-a020-606a93e17736" SourceId="1" SourceUrl="http://193.232.254.196:6058/SchedulerHostOld/Services/DataService.svc?wsdl" />
+    <MetadataFile FileName="DataService63.xsd" MetadataType="Schema" ID="67cdb1b2-c0ed-4539-8511-f7e25937a655" SourceId="1" SourceUrl="http://193.232.254.196:6058/SchedulerHostOld/Services/DataService.svc?xsd=xsd5" />
+    <MetadataFile FileName="DataService64.xsd" MetadataType="Schema" ID="f3b7bf76-1b4f-4a3e-aebf-0f725ffa77c9" SourceId="1" SourceUrl="http://193.232.254.196:6058/SchedulerHostOld/Services/DataService.svc?xsd=xsd4" />
+    <MetadataFile FileName="DataService65.xsd" MetadataType="Schema" ID="426421c4-ad20-4dbf-9fa3-5d9b6f621af6" SourceId="1" SourceUrl="http://193.232.254.196:6058/SchedulerHostOld/Services/DataService.svc?xsd=xsd1" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

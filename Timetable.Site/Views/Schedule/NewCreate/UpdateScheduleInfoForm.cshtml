@@ -6,9 +6,9 @@
         <h5>Редактирование сведения к расписанию</h5>
     </div>
     <div class="modal-body" style="overflow-x:hidden; overflow-y:hidden;">
-        <span>Планируемое количество часов</span>
-        <input data-bind="value: $root.currentScheduleInfoSelectForm().currentScheduleInfoUpdateForm().newHoursPerWeek, valueUpdate: 'afterkeydown'" style="width:100%"  /> <br />
-        <span>Преподаватель</span>
+        <strong>Планируемое количество часов</strong> <br />
+        <input data-bind="spinner: $root.currentScheduleInfoSelectForm().currentScheduleInfoUpdateForm().newHoursPerWeek, spinnerOptions: { min: 0, max:100 }" style="width:100%"  /> <br />
+        <strong>Преподаватель</strong>
         <input data-bind="value: $root.currentScheduleInfoSelectForm().currentScheduleInfoUpdateForm().newLecturer, valueUpdate: 'afterkeydown'" style="width:100%"  /> <br />
     </div>
     <div class="modal-footer" style="overflow-x:hidden;">

@@ -8,7 +8,7 @@
     </div>
     <div class="modal-body" style="overflow-x:hidden;">
         <div class="alert alert-error">
-            <div id="validatemessage2" class="hide">Выбранная позиция занята</div>
+            <div id="validatemessage2" class="hide">В выбранный Вами день, время и тип недели уже проводится другое занятие. <strong style="cursor:pointer;" data-bind="">Сделать замену занятия</strong> </div>
             <div id="validatemessage3" class="hide">Не выбран день недели</div>
             <div id="validatemessage4" class="hide">Не выбрана аудитория</div>
             <div id="validatemessage5" class="hide">Не выбрано время проведения занятия</div>
@@ -16,6 +16,7 @@
             <div id="validatemessage7" class="hide">Не выбран тип недели</div>
             <div id="validatemessage8" class="hide">Не указана дата начала занятия</div>
             <div id="validatemessage9" class="hide">Не указана дата окончания занятия</div>
+            <div id="validatemessage10" class="hide">Дата начала занятия больше даты окончания</div>
         </div>
     </div>
     <div class="modal-footer" style="overflow-x:hidden;">
@@ -24,3 +25,31 @@
 </div>
 <!-- /ko -->   
 <!-- /ko -->   
+
+<!-- Validate Form -->
+<!-- ko if: $root.currentScheduleSelectForm().currentScheduleUpdateForm() !== undefined -->
+<!-- ko if: $root.currentScheduleSelectForm().currentScheduleUpdateForm().validateScheduleForm() !== undefined -->
+<div class="modal hide" id ="validatedialog" data-bind=" draggable: {handle: '.modal-header'}" style="z-index:100500; cursor:move; width:400px; overflow-x:hidden;">
+    <div class="modal-header" style="overflow-x:hidden;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h5>Не получилось добавить занятие</h5>
+    </div>
+    <div class="modal-body" style="overflow-x:hidden;">
+        <div class="alert alert-error">
+            <div id="validatemessage2" class="hide">В выбранный Вами день, время и тип недели уже проводится другое занятие. <strong style="cursor:pointer;" data-bind="">Сделать замену занятия</strong> </div>
+            <div id="validatemessage3" class="hide">Не выбран день недели</div>
+            <div id="validatemessage4" class="hide">Не выбрана аудитория</div>
+            <div id="validatemessage5" class="hide">Не выбрано время проведения занятия</div>
+            <div id="validatemessage6" class="hide">Не выбрано сведение к расписанию</div>
+            <div id="validatemessage7" class="hide">Не выбран тип недели</div>
+            <div id="validatemessage8" class="hide">Не указана дата начала занятия</div>
+            <div id="validatemessage9" class="hide">Не указана дата окончания занятия</div>
+            <div id="validatemessage10" class="hide">Дата начала занятия больше даты окончания</div>
+        </div>
+    </div>
+    <div class="modal-footer" style="overflow-x:hidden;">
+        <input id="validateOkButton" type="button" class="btn btn-primary" value="Продолжить" data-bind="click: $root.currentScheduleSelectForm().currentScheduleUpdateForm().validateScheduleForm().closeDialog.bind($data,true)" />
+    </div>
+</div>
+<!-- /ko -->   
+<!-- /ko -->  

@@ -1,15 +1,19 @@
-﻿<div id="menu11" style="overflow-y:hidden; overflow-x:hidden;">
+﻿<div id="menu11" style="overflow-x:hidden;">
     <ul class="nav nav-tabs" style="margin-bottom:0px;">
         <li><a href="#flowTab" data-toggle="tab">Поток</a></li>
-        <li><a href="#auditoriumsTab" data-toggle="tab">Сведения к расп.</a></li>
+        <li><a href="#scheduleInfoesTab" data-toggle="tab">Сведения к расп.</a></li>
+        <li><a href="#auditoriumsTab" data-toggle="tab">Ауд.</a></li>
       </ul>
 
      <div class="tab-content">
         <div class="tab-pane active" id="flowTab">
            @Html.Partial("NewCreate/FlowSelectInTable")
         </div>
-        <div class="tab-pane" id="auditoriumsTab">
+        <div class="tab-pane" id="scheduleInfoesTab">
             @Html.Partial("NewCreate/ScheduleInfoSelectInTable")
+        </div>
+        <div class="tab-pane" id="auditoriumsTab">
+            @Html.Partial("NewCreate/FreeAuditoriumsFormInTable")
         </div>
     </div>
  </div>

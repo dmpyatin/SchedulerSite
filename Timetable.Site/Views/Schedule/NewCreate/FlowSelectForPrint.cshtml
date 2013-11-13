@@ -1,0 +1,32 @@
+﻿<!-- ko if: $root.currentPrintSettingForm() !== undefined -->
+<!-- ko if: $root.currentPrintSettingForm().currentFlowSelectForPrintForm() !== undefined -->
+<div id ="flowdialogintable" style=" width:250px; overflow-x:hidden; padding-left:5px;">
+    <div>
+            <span class="label">Выберите подразделение ВУЗа</span>
+            <select style="width:100%" class="span5" id="" data-bind="options: $root.currentPrintSettingForm().currentFlowSelectForPrintForm().branches, optionsText: 'Name', value: $root.currentPrintSettingForm().currentFlowSelectForPrintForm().currentBranch">
+                            <option></option>
+            </select>
+
+            <span class="label">Выберите факультет</span>
+            <select style="width:100%" class="span5" id="" data-bind="options: $root.currentPrintSettingForm().currentFlowSelectForPrintForm().faculties, optionsText: 'Name', value: $root.currentPrintSettingForm().currentFlowSelectForPrintForm().currentFaculty">
+                            <option></option>
+            </select>
+
+            <span class="label">Выберите курсы</span>
+            <select multiple style="width:100%" size="5" class="span5" id="" data-bind="options: $root.currentPrintSettingForm().currentFlowSelectForPrintForm().courses, optionsText: 'Name', selectedOptions: $root.currentPrintSettingForm().currentFlowSelectForPrintForm().currentCourses">
+                            <option></option>
+            </select>
+
+            <span class="label">Выберите специальности</span>
+            <select multiple style="width:100%" size="5" class="span5" id="" data-bind="options: $root.currentPrintSettingForm().currentFlowSelectForPrintForm().specialities, optionsText: 'Name', selectedOptions: $root.currentPrintSettingForm().currentFlowSelectForPrintForm().currentSpecialities">
+                            <option></option>
+            </select>
+
+            <span class="label">Выберите группы</span>
+            <select multiple style="width:100%" size="6" class="span5" id="" data-bind="options: $root.currentPrintSettingForm().currentFlowSelectForPrintForm().groups, optionsText: 'Code', selectedOptions: $root.currentPrintSettingForm().currentFlowSelectForPrintForm().currentGroups">
+                            <option></option>
+            </select>
+    </div>
+</div>
+<!-- /ko --> 
+<!-- /ko -->

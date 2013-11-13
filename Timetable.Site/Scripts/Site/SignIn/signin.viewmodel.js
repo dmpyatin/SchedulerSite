@@ -6,6 +6,7 @@ function signInViewModel() {
     self.validationState = ko.observable(false);
     self.signName = ko.observable();
     self.signPassword = ko.observable();
+    self.signRememberMe = ko.observable(false);
 
 
     self.init = function () {
@@ -25,7 +26,7 @@ function signInViewModel() {
         var SignInModel = {
             UserName: self.signName(),
             Password: self.signPassword(),
-            RememberMe: false,
+            RememberMe: self.signRememberMe(),
         };
 
         $.ajax({

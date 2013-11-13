@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="M7E8/No74TWrbtGD0k5+SR7afSc=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="9L8WbxBSbDdcHu7YcMc99WnlBD8=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="DataServiceEndpoint">
       <properties>
@@ -112,10 +112,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="DataServiceEndpoint" contract="DataService.IDataService" bindingType="basicHttpBinding" address="http://193.232.254.196:6058/SchedulerHost/Services/DataService.svc" bindingConfiguration="DataServiceEndpoint">
+    <endpoint name="DataServiceEndpoint" contract="DataService.IDataService" bindingType="basicHttpBinding" address="http://193.232.254.196:6058/SchedulerHostOld/Services/DataService.svc" bindingConfiguration="DataServiceEndpoint">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://193.232.254.196:6058/SchedulerHost/Services/DataService.svc</serializedValue>
+          <serializedValue>http://193.232.254.196:6058/SchedulerHostOld/Services/DataService.svc</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

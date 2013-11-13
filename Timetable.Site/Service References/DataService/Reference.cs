@@ -17,8 +17,6 @@ namespace Timetable.Site.DataService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="BaseEntity", Namespace="http://schemas.datacontract.org/2004/07/Timetable.Base.Entities", IsReference=true)]
     [System.SerializableAttribute()]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Timetable.Site.DataService.User))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Timetable.Site.DataService.UserRole))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Timetable.Site.DataService.Auditorium))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Timetable.Site.DataService.AuditoriumType))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Timetable.Site.DataService.Building))]
@@ -38,6 +36,8 @@ namespace Timetable.Site.DataService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Timetable.Site.DataService.StudyYear))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Timetable.Site.DataService.Tutorial))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Timetable.Site.DataService.TutorialType))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Timetable.Site.DataService.User))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Timetable.Site.DataService.UserRole))]
     public partial class BaseEntity : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
@@ -123,116 +123,6 @@ namespace Timetable.Site.DataService {
             System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
             if ((propertyChanged != null)) {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="User", Namespace="http://schemas.datacontract.org/2004/07/Timetable.Base.Entities.Personalization", IsReference=true)]
-    [System.SerializableAttribute()]
-    public partial class User : Timetable.Site.DataService.BaseEntity {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string LoginField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string PasswordField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Timetable.Site.DataService.UserRole RoleField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int RoleIdField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Login {
-            get {
-                return this.LoginField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.LoginField, value) != true)) {
-                    this.LoginField = value;
-                    this.RaisePropertyChanged("Login");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Password {
-            get {
-                return this.PasswordField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.PasswordField, value) != true)) {
-                    this.PasswordField = value;
-                    this.RaisePropertyChanged("Password");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public Timetable.Site.DataService.UserRole Role {
-            get {
-                return this.RoleField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.RoleField, value) != true)) {
-                    this.RoleField = value;
-                    this.RaisePropertyChanged("Role");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int RoleId {
-            get {
-                return this.RoleIdField;
-            }
-            set {
-                if ((this.RoleIdField.Equals(value) != true)) {
-                    this.RoleIdField = value;
-                    this.RaisePropertyChanged("RoleId");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="UserRole", Namespace="http://schemas.datacontract.org/2004/07/Timetable.Base.Entities.Personalization", IsReference=true)]
-    [System.SerializableAttribute()]
-    public partial class UserRole : Timetable.Site.DataService.BaseEntity {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string NameField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string TypeField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Name {
-            get {
-                return this.NameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.NameField, value) != true)) {
-                    this.NameField = value;
-                    this.RaisePropertyChanged("Name");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public string Type {
-            get {
-                return this.TypeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.TypeField, value) != true)) {
-                    this.TypeField = value;
-                    this.RaisePropertyChanged("Type");
-                }
             }
         }
     }
@@ -2109,6 +1999,116 @@ namespace Timetable.Site.DataService {
                 if ((object.ReferenceEquals(this.NameField, value) != true)) {
                     this.NameField = value;
                     this.RaisePropertyChanged("Name");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="User", Namespace="http://schemas.datacontract.org/2004/07/Timetable.Base.Entities.Personalization", IsReference=true)]
+    [System.SerializableAttribute()]
+    public partial class User : Timetable.Site.DataService.BaseEntity {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string LoginField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string PasswordField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Timetable.Site.DataService.UserRole RoleField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int RoleIdField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Login {
+            get {
+                return this.LoginField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.LoginField, value) != true)) {
+                    this.LoginField = value;
+                    this.RaisePropertyChanged("Login");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Password {
+            get {
+                return this.PasswordField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.PasswordField, value) != true)) {
+                    this.PasswordField = value;
+                    this.RaisePropertyChanged("Password");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Timetable.Site.DataService.UserRole Role {
+            get {
+                return this.RoleField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.RoleField, value) != true)) {
+                    this.RoleField = value;
+                    this.RaisePropertyChanged("Role");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int RoleId {
+            get {
+                return this.RoleIdField;
+            }
+            set {
+                if ((this.RoleIdField.Equals(value) != true)) {
+                    this.RoleIdField = value;
+                    this.RaisePropertyChanged("RoleId");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="UserRole", Namespace="http://schemas.datacontract.org/2004/07/Timetable.Base.Entities.Personalization", IsReference=true)]
+    [System.SerializableAttribute()]
+    public partial class UserRole : Timetable.Site.DataService.BaseEntity {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string TypeField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Name {
+            get {
+                return this.NameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NameField, value) != true)) {
+                    this.NameField = value;
+                    this.RaisePropertyChanged("Name");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        public string Type {
+            get {
+                return this.TypeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.TypeField, value) != true)) {
+                    this.TypeField = value;
+                    this.RaisePropertyChanged("Type");
                 }
             }
         }

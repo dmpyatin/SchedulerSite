@@ -21,5 +21,9 @@ namespace Timetable.Site.Models.Schedules
 
         public string SubGroup { get; set; }
 
+        public string GroupIds { get; set; }
+
+        public string Mode { get; set; }
+
     }
 }

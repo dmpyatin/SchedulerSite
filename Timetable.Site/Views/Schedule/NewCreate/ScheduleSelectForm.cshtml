@@ -19,8 +19,8 @@
     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
         <li><a tabindex="-1" href="#" data-bind="event:{click:$root.currentScheduleSelectForm().scheduleContextMenuForm().updateScheduleClick.bind($data,true) }">Изменить</a></li>
         <li><a tabindex="-1" href="#" data-bind="event:{click:$root.currentScheduleSelectForm().scheduleContextMenuForm().deleteScheduleClick.bind($data,true) }">Удалить</a></li>
-        <li><a tabindex="-1" href="#" data-bind="event:{click:$root.currentScheduleSelectForm().copySchedule.bind($data,true) }">Копировать</a></li>
-        <li><a tabindex="-1" href="#" data-bind="event:{click:$root.currentScheduleSelectForm().cutSchedule.bind($data,true) }">Вырезать</a></li>
+        <!--<li><a tabindex="-1" href="#" data-bind="event:{click:$root.currentScheduleSelectForm().copySchedule.bind($data,true) }">Копировать</a></li>
+        <li><a tabindex="-1" href="#" data-bind="event:{click:$root.currentScheduleSelectForm().cutSchedule.bind($data,true) }">Вырезать</a></li>-->
     </ul>
 </div>
 <!-- /ko -->  
@@ -36,9 +36,9 @@
         <li><a tabindex="-1" href="#" data-bind="event:{click:$root.currentScheduleSelectForm().scheduleBacketContextMenuForm().addScheduleClick.bind($data,true) }">Запланировать</a></li>
         <li><a tabindex="-1" href="#" data-bind="event:{click:$root.currentScheduleSelectForm().scheduleBacketContextMenuForm().freeAuditoriumsClick.bind($data,true) }">Свободные аудитории</a></li>
         <li><a tabindex="-1" href="#" data-bind="event:{click:$root.currentScheduleSelectForm().scheduleBacketContextMenuForm().calendarClick.bind($data,true) }">Календарь</a></li>
-        <!-- ko if: $root.currentScheduleSelectForm().copiedSchedule() !== undefined || $root.currentScheduleSelectForm().cutedSchedule() !== undefined -->
-        <li><a tabindex="-1" href="#" data-bind="event:{click:$root.currentScheduleSelectForm().pasteSchedule.bind($data,true) }">Вставить</a></li>
-        <!-- /ko --> 
+       
+        <!--<li><a tabindex="-1" href="#" data-bind="event:{click:$root.currentScheduleSelectForm().pasteSchedule.bind($data,true) }">Вставить</a></li> -->
+
     </ul>
 </div>
 <!-- /ko -->  
@@ -151,7 +151,7 @@
                                                 <div style="float:right; right:0px; top:0px; margin-right: 2px;">    
                                                     <strong data-bind="text: '#' + $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[0]().AuditoriumNumber"></strong>
                                                 </div>
-                                                <div style="float:left; color:green; left:0px; top:0px; margin-left: 5px;">
+                                                <div style="float:left; left:0px; top:0px; margin-left: 5px;">
                                                     <strong data-bind="text: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[0]().WeekTypeName">&nbsp;&nbsp;</strong>
                                                 </div>
 
@@ -217,7 +217,7 @@
                                                 <div style="float:right; right:0px; top:0px; margin-right: 2px;">    
                                                     <strong data-bind="text: '#' + $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[1]().AuditoriumNumber"></strong>
                                                 </div>
-                                                <div style="float:left; color:green; left:0px; top:0px; margin-left: 5px;">
+                                                <div style="float:left; left:0px; top:0px; margin-left: 5px;">
                                                     <strong data-bind="text: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[1]().WeekTypeName">&nbsp;&nbsp;</strong>
                                                 </div>
 
@@ -284,7 +284,7 @@
                                                 <div style="float:right; right:0px; top:0px; margin-right: 2px;">    
                                                     <strong data-bind="text: '#' + $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[2]().AuditoriumNumber"></strong>
                                                 </div>
-                                                <div style="float:left; color:green; left:0px; top:0px; margin-left: 5px;">
+                                                <div style="float:left; left:0px; top:0px; margin-left: 5px;">
                                                     <strong data-bind="text: $root.currentScheduleSelectForm().schedules()[$parentContext.$index()]()[$index()]()[2]().WeekTypeName">&nbsp;&nbsp;</strong>
                                                 </div>
 

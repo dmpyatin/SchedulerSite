@@ -6,114 +6,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-<style>
-  .modal-backdrop {background: white;}
-  .Timetable{background-color:#F2F2F2; left:230px; top:70px; position: absolute; opacity:1;}
-  .ChisScheduleTicket{top: 0px;}
-  .ZnamScheduleTicket{position:relative; top: 80px;}
-
-  .plannedScheduleInfo{background-color:white; opacity:0.7;}
-  .limitedScheduleInfo{background-color:white; opacity:0.3;}
-  .simpleScheduleInfo{background-color: white; opacity:1.0;}
-
-  .onContextMenuMouseDownSelect{background-color:#8AB9FF;}
-  .onContextMenuMouseDownUnselect{background-color:white;}
-
-  .onScheduleInfoSelect{background-color: #9F94FF;}
-  .onScheduleInfoUnselect{background-color:white;}
-  .onScheduleInfoClick{background-color: #E9C7FF;}
-  .onScheduleInfoUnclick{background-color: white;}
-  .onScheduleInfoDrag{background-color: #9F94FF;}
-  .onScheduleInfoUndrag{background-color: white;}
-
-  .onScheduleBacketDropSelect{background-color: #FFF5CC;}
-  .onScheduleBacketDropUnselect{background-color: white;}
-  .onScheduleBacketSelect{background-color: #F0F0F0;}
-  .onScheduleBacketUnselect{background-color: white;}
-  .onScheduleBacketClick{background-color: #FFFFA8;}
-  .onScheduleBacketUnclick{background-color: white;}
-
-  .onScheduleTicketDropSelect{background-color: #9F94FF;}
-  .onScheduleTicketDropUnselect{background-color: white;}
-  .onScheduleTicketSelect{background-color: #EEEEBA;}
-
-  
-  .onScheduleTicketUnselectForLecturer{background-color: #FFCCD6;}
-  .onScheduleTicketUnselectForAuditorium{background-color: #D9FFB3;}
-  .onScheduleTicketUnselectForGroup{}#background-color: #D1CCFF;
-
-
-  .onScheduleTicketClick{background-color: #FFFFB3;}
-  .onScheduleTicketUnclick{background-color: white;}
-
-
-  .onScheduleBacketPaddingOnlyZnam{height:62px; width:100px;}
-  .onScheduleBacketPaddingUsual{height:0px; width:100px;}
-  .onScheduleBacketPaddingOnlyEveryDay{height:31px; width:100px;}
-
-  .noTitleStuff .ui-dialog-titlebar {display:none;}
-
-
-  .chBroder{border: solid 3px; border-color: red;}
-
-  #background: url("");
-
-  .ui-widget-header{ background-color: lightgrey;}
-  #feedback { font-size: 1.4em; }
-  #timetabletitle {text-align:center; background-color: #ffffff; list-style-type: none; margin: 0px; height: 40px; padding: 0; width: 1180px; border: solid 1px; border-color:grey; }
-
-  #timetable .ui-selecting { background: #FECA40; }
-  #timetable .ui-selected { background: #F39814; color: black; }
-  #timetable { left:80px; list-style-type: none; margin-top:0px; margin-left: 0px; margin-right:0px; padding: 0px; width: 1180px; }
-  #timetable li { margin-left: 0px; margin-right:0px; padding: 0px; float: left;  font-size: 1em; text-align: center; }
-
-  #scheduleinfo .ui-selecting { background: #FECA40; }
-  #scheduleinfo .ui-selected { background: #F39814; color: black; }
-  #scheduleinfo { list-style-type: none; margin: 0; padding: 0; width: 100px; }
-  #scheduleinfo li { background-color:white; border:solid 1px; border-color:lightgrey; margin: 1px; padding: 1px; float: left; width: 180px; height: 40px; font-size: 1em; text-align: center; }
-
-  </style>
+<script type='text/javascript' src="@Url.Content("~/Scripts/Site/newbase.viewmodel.js")"></script>
 
 <body style="overflow-x:hidden; background-color:#E0E0E0;">
-
- 
-
-
     @Html.Partial("NewCreate/Forms")
 
-    <div id="headerMenu11" style="height:100px;">
-       
-
-        <!--
-        <div class="btn-toolbar">
-            <div class="btn-group" style="margin-top:35px;">
-                <input style="width:150px; height:30px;" type="date" id="startDate" data-bind=""/> 
-  
-                <input  style="width:150px; height:30px;" type="date" id="endDate" data-bind="" />
-         
-                <select style="width:110px;"  data-placeholder="Выберите здание" class="span5" id="buildings1" data-bind="">
-                    <option></option>
-                </select>
-            </div>
-
-            <div class="btn-group"">
-                <input  type="button"  id="si1" class="btn btn-primary" value="Таблица занятий" data-bind="" />
-                <input  type="button"  id="si2" class="btn btn-primary" value="Выбор потока" data-bind="" />
-                <input  type="button"  id="si3" class="btn btn-primary" value="Сведения к расписанию" data-bind="" />
-                <input  type="button"  id="add" class="btn btn-primary disabled" value="Запланировать" data-bind="" />
-                <input  type="button"  id="del" class="btn disabled" value="Снять занятие" data-bind="" />
-                
-                <input  type="button"  id="changeAuditorium" class="btn disabled" value="Поменять ауд." data-bind="" />
-                <input  type="button"  id="freeAuditorium" class="btn disabled" value="Доступные ауд." data-bind="" />
-            </div>
-            <div class="btn-group"">    
-                <button type="button"  id="printSchedule" class="btn" value="Сформировать отчет" data-bind="" > <i class="icon-print"></i>Сформировать отчет</button>
-            </div>
-        </div>-->
-
-    </div>
-   
+        
 </body>
 
 

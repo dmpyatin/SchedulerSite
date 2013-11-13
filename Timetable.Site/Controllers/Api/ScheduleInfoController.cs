@@ -69,7 +69,7 @@ namespace Timetable.Site.Controllers.Api
         private SendModel privateGetById(int Id)
         {
             var result = DataService.GetScheduleInfoById(Id);
-            return new SendModel(result, 0);
+            return new SendModel(result, result.SubgroupCount);
         }
 
 
@@ -109,10 +109,7 @@ namespace Timetable.Site.Controllers.Api
             foreach (var t in tmp)
             {
                 if (t.Groups.Any())
-                {
-                    int CurrentHours = 0;// DataService.CountSchedulesForScheduleInfoes(t);
-                    result.Add(new SendModel(t, CurrentHours));
-                }
+                    result.Add(new SendModel(t, t.SubgroupCount));
             }
 
             return result;

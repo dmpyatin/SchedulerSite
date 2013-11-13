@@ -189,6 +189,8 @@ namespace Timetable.Site.Controllers.Api
             return result;
         }
 
+
+
         public IEnumerable<SendModel> GetByIds(string groupIds)
         {
             var result = new List<SendModel>();
@@ -205,7 +207,55 @@ namespace Timetable.Site.Controllers.Api
                     }
                 }
             }
+            return result;
+        }
 
+        public IEnumerable<SendModel> GetBySpecialityIds(string courseIds, string specialityIds)
+        {
+            var result = new List<SendModel>();
+
+            var courseController = new CourseController();
+
+            var courses =  courseController.privateGetAll();
+
+            if (courseIds != null)
+                courses = courseController.GetByIds(courseIds);
+
+            foreach (var cc in courses)
+            {
+                var qCourse = new Course() { Id = cc.Id };
+                foreach (var specialityId in specialityIds.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    if (specialityId != " ")
+                    {
+                        var qSpeciality = new Speciality() { Id = int.Parse(specialityId)};
+                        var tmp = DataService.GetGroupsForSpeciality(qCourse, qSpeciality);
+                        foreach (var t in tmp)
+                            result.Add(new SendModel(t));
+                    }
+                }
+            }
+            return result;
+        }
+
+        public IEnumerable<SendModel> GetByCourseIds(int? facultyId, string courseIds)
+        {
+            var result = new List<SendModel>();
+
+            if(facultyId == null)
+                return result;
+
+            var courseController = new CourseController();
+            var courses = courseController.GetByIds(courseIds);
+
+            var qFaculty = new Faculty() { Id = facultyId.Value };
+            foreach (var cc in courses)
+            {
+                var qCourse = new Course() { Id = cc.Id };
+                var tmp = DataService.GetGroupsForCourse(qFaculty, qCourse);
+                foreach (var t in tmp)
+                    result.Add(new SendModel(t));
+            }
             return result;
         }
 

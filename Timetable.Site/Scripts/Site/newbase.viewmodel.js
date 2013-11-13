@@ -1,227 +1,92 @@
 ﻿//Модель данных
 var dModel;
+var freeScheduleTable = [[[], [], [], [], [], [], []],
+                        [[], [], [], [], [], [], []],
+                        [[], [], [], [], [], [], []],
+                        [[], [], [], [], [], [], []],
+                        [[], [], [], [], [], [], []],
+                        [[], [], [], [], [], [], []],
+                        [[], [], [], [], [], [], []],
+                        [[], [], [], [], [], [], []],
+                        [[], [], [], [], [], [], []]];
 
-var printLecturerId;
-var printAuditoriumId;
-var printFacultyId;
-var printCourseIds;
-var printGroupIds;
-var printStudyYearId;
-var printSemesterId;
-var printTimetableId;
-var printSequence;
+
+
 
 //Обработка ошибок
 var showError = function (msg) {
     $.jGrowl("<b><span style='color: #f00;'>" + msg + "</span></b>", { header: "<b><span style='color: #f00;'>Ошибка</span></b>", position: "center" });
 };
 
-var pair = function (first, second) {
-    this.first = first;
-    this.second = second;
-}
+function CreateDateRangePicker(selector, parentForm) {
 
-//Отображаемая информация в элементе клетки расписания
-var ScheduleDisplay = function (lecturer, tutorial, tutorialType, groups, auditorium, weekType, time, subgroup) {
-    var self = this;
-    self.Lecturer = ko.observable(lecturer);
-    self.Tutorial = ko.observable(tutorial);
-    self.TutorialType = ko.observable(tutorialType);
-    self.Groups = ko.observable(groups);
-    self.Auditorium = ko.observable(auditorium);
-    self.WeekType = ko.observable(weekType);
-    self.Time = ko.observable(time);
-    self.subGroup=ko.observable(subgroup);
+
+    /*
+        {
+            ranges: {
+                'Сегодня': [moment(), moment()],
+                'Вчера': [moment().subtract('days', 1), moment().subtract('days', 1)],
+                'Эта неделя': [moment().startOf('week'), moment().endOf('week')],
+                'Последние 7 дней': [moment().subtract('days', 6), moment()],
+                'Последние 30 дней': [moment().subtract('days', 29), moment()],
+                'Этот месяц': [moment().startOf('month'), moment().endOf('month')],
+                'Прошлый месяц': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
+            },
+            startDate: moment().startOf('week'),
+            endDate: moment().endOf('week')
+        },
+        function (start, end) {
+            //parentForm.startDate(start);
+            //parentForm.endDate(end);
+            console.log("RANGE : ")
+            console.log(start);
+            console.log(end);
+            $(selector + ' span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        });*/
 };
 
-//Служебная информация в элементе клетки расписания
-var ScheduleData = function (scheduleId, scheduleInfoId, tutorialId, tutorialTypeId, groupsIds, auditoriumId, weekTypeId, dayOfWeek, periodId, lecturerId, startDate, endDate, autoDelete) {
-    var self = this;
-
-    self.ScheduleId = ko.observable(scheduleId);
-    self.ScheduleInfoId = ko.observable(scheduleInfoId);
-    self.TutorialId = ko.observable(tutorialId);
-    self.TutorialTypeId = ko.observable(tutorialTypeId);
-    self.GroupsIds = ko.observable(groupsIds);
-    self.AuditoriumId = ko.observable(auditoriumId);
-    self.WeekTypeId = ko.observable(weekTypeId);
-    self.DayOfWeek = ko.observable(dayOfWeek);
-    self.PeriodId = ko.observable(periodId);
-    self.LecturerId = ko.observable(lecturerId);
-    self.StartDate = ko.observable(startDate);
-    self.EndDate = ko.observable(endDate);
-    self.AutoDelete = ko.observable(autoDelete);
-};
-
-
-//Элемент клетки расписания
-var ScheduleTicket = function (ScheduleDisplay, ScheduleData, isSelected, isDragged, isDropped, currentCss, isForLecturer, isForAuditorium, isForGroup) {
-    var self = this;
-    self.Display = ScheduleDisplay;
-    self.Data = ScheduleData;
-    self.IsSelected = ko.observable(isSelected);
-    self.IsDragged = ko.observable(isDragged);
-    self.IsDropped = ko.observable(isDropped);
-
-    self.UnselectCssClass = ko.observable(currentCss);
-    self.CssClass = ko.observable(currentCss);
-
-    self.IsForLecturer = ko.observable(isForLecturer);
-    self.IsForAuditorium = ko.observable(isForAuditorium);
-    self.IsForGroup = ko.observable(isForGroup);
-};
-
-//Клетка расписания (массив элементов scheduleBacket)
-var ScheduleBacket = function (scheduleTickets, isSelected, isDropped) {
-    var self = this;
-
-    self.Tickets = ko.observableArray([]);
-    self.IsSelected = ko.observable(isSelected);
-    self.IsDropped = ko.observable(isDropped);
-
-    //Класс стиля для установки положения занятия в клетке расписания
-    self.PaddingCss = ko.observable();
-    self.CssClass = ko.observable();
-
-    //Заполнение ScheduleBacket в зависимости от типа недели занятия. Занятия по числителю
-    //отображаются вверху, по знаменателю - внизу, еженедеьные - вцентре.
-    self.Tickets.subscribe(function (newValue) {
-
-        //Костыыыль
-        if (newValue.length == 2) {
-            if (newValue[0].Data.WeekTypeId() == 3 && newValue[1].Data.WeekTypeId() == 2) {
-                var t = newValue[0];
-                newValue[0] = newValue[1];
-                newValue[1] = t;
-            }
-        }
-   
-        if (newValue !== undefined) {
-            var sum = 0;
-            for (var i = 0; i < newValue.length; ++i) {
-                sum += newValue[i].Data.WeekTypeId()*newValue[i].Data.WeekTypeId();
-            }
-            //id = 1, id = 2, id = 3;
-            self.PaddingCss("onScheduleBacketPaddingUsual");
-            if (sum == 9)
-                self.PaddingCss("onScheduleBacketPaddingOnlyZnam");
-            if (sum == 1)
-                self.PaddingCss("onScheduleBacketPaddingOnlyEveryDay");
-        }
-    });
-};
-
-
-//Отображаемая на странице информация в каждом сведении к расписанию
-var ScheduleInfoDisplay = function (tutorial, lecturer, tutorialtype, maxhours, curhours, courses, groups, cssClass) {
-    var self = this;
-    self.Tutorial = ko.observable(tutorial);
-    self.Lecturer = ko.observable(lecturer);
-    self.TutorialType = ko.observable(tutorialtype);
-    self.Courses = ko.observable(courses);
-    self.Groups = ko.observable(groups);
-
-    self.CssClass = ko.observable(cssClass);
-    self.UnselectCssClass = ko.observable(cssClass);
-
-    self.maxHours = ko.observable(maxhours);
-    self.curHours = ko.observable(curhours);
-
-    //изначально ставим значение переменной isLimited
-    self.isLimited = ko.observable();
-    self.isPlanned = ko.observable();
-
-    if (self.maxHours() <= self.curHours())
-        self.isLimited(true);
-
-    if (self.curHours() > 0)
-        self.isPlanned(true);
-
-    //обновления - сюда надо функцию обновления в БД
-    self.curHours.subscribe(function (newValue) {
-    
-        if (newValue !== undefined) {
-            if (newValue >= self.maxHours())
-                self.isLimited(true);
-            else {
-                self.isLimited(false);
-
-                if (newValue <= 0) {
-                    if (self.CssClass() !== "onScheduleInfoClick")
-                        self.CssClass("simpleScheduleInfo");
-                    self.UnselectCssClass("simpleScheduleInfo");
-                } else {
-                    if (self.CssClass() !== "onScheduleInfoClick")
-                        self.CssClass("plannedScheduleInfo");
-                    self.UnselectCssClass("plannedScheduleInfo");
-                }
-            }
-        }
-    });
-
-    self.maxHours.subscribe(function (newValue) {
-        if (newValue !== undefined)
-            if (newValue <= self.curHours())
-                self.isLimited(true);
-            else
-                self.isLimited(false);
-    });
-
-    self.isPlanned.subscribe(function (newValue) {
-        if (newValue !== undefined) {
-            if (newValue == true) {
-                if (self.CssClass() !== "onScheduleInfoClick")
-                    self.CssClass("plannedScheduleInfo");
-
-                self.UnselectCssClass("plannedScheduleInfo");
-            } else {
-                if (self.CssClass() !== "onScheduleInfoClick")
-                    self.CssClass("simpleScheduleInfo");
-
-                self.UnselectCssClass("simpleScheduleInfo");
-            }
-        }
-    });
-
-
-    self.isLimited.subscribe(function (newValue) {
-        if (newValue !== undefined) {
-            if (newValue == true) {
-                if (self.CssClass() !== "onScheduleInfoClick")
-                    self.CssClass("limitedScheduleInfo");
-                self.UnselectCssClass("limitedScheduleInfo");
-            } else {
-                if (self.CssClass() !== "onScheduleInfoClick")
-                    self.CssClass("plannedScheduleInfo");
-                self.UnselectCssClass("plannedScheduleInfo");
-            }
-        }
-    });
-
-};
-
-//Служебная информация в каждом сведении к расписанию
-var ScheduleInfoData = function (tutorialId, scheduleInfoId, lecturerId, tutorialTypeId, groupsIds, coursesIds) {
-    this.TutorialId = ko.observable(tutorialId);
-    this.ScheduleInfoId = ko.observable(scheduleInfoId);
-    this.LecturerId = ko.observable(lecturerId);
-    this.TutorialTypeId = ko.observable(tutorialTypeId);
-    this.GroupsIds = ko.observable(groupsIds);
-    this.CoursesIds = ko.observable(coursesIds);
-
-};
-
-//Сведение к расписанию
-var ScheduleInfo = function (scheduleInfoDisplay, scheduleInfoData, isSelected, isDragged) {
-    this.Display = scheduleInfoDisplay;
-    this.Data = scheduleInfoData;
-    this.IsSelected = ko.observable(isSelected);
-    this.IsDragged = ko.observable(isDragged);
-};
 
 //Форма печати отчетов
-var PrintReportForm = function () {
+var PrintSettingForm = function (startDate, endDate, parentForm) {
     var self = this;
+
+    self.currentFlowSelectForPrintForm = ko.observable(new FlowSelectForm(self));
+
+    self.startDate = ko.observable(startDate);
+    self.endDate = ko.observable(endDate);
+
+    self.title = ko.computed(function () {
+        var res = "";
+        if (self.currentFlowSelectForPrintForm() !== undefined) {
+            if (self.currentFlowSelectForPrintForm().currentBranch() !== undefined)
+                res += self.currentFlowSelectForPrintForm().currentBranch().Name + " ";
+
+            if (self.currentFlowSelectForPrintForm().currentFaculty() !== undefined)
+                res += self.currentFlowSelectForPrintForm().currentFaculty().Name + " ";
+
+            if (self.currentFlowSelectForPrintForm().currentCourses() !== undefined) {
+                for (var i = 0; i < self.currentFlowSelectForPrintForm().currentCourses().length; ++i)
+                    res += self.currentFlowSelectForPrintForm().currentCourses()[i].Name + " ";
+            }
+
+            if (self.currentFlowSelectForPrintForm().currentSpecialities() !== undefined) {
+                for (var i = 0; i < self.currentFlowSelectForPrintForm().currentSpecialities().length; ++i)
+                    res += self.currentFlowSelectForPrintForm().currentSpecialities()[i].Name + " ";
+            }
+            
+            if (self.currentFlowSelectForPrintForm().currentGroups() !== undefined) {
+                for (var i = 0; i < self.currentFlowSelectForPrintForm().currentGroups().length; ++i)
+                    res += self.currentFlowSelectForPrintForm().currentGroups()[i].Code + " ";
+            }
+        }
+
+        res += "(" + self.startDate() + " - ";
+        res += self.endDate() + ")";
+
+        return res;
+    });
+
+    self.fontSize = ko.observable(12);
 
     self.init = function (status) {
         if (status == true) {
@@ -231,15 +96,89 @@ var PrintReportForm = function () {
 
     self.openDialog = function (status) {
         if (status == true) {
-            $("#printdialog").modal('show');
+            $("#printsettingdialog").modal('show');
         }
-    }
+    };
 
     self.closeDialog = function (status) {
         if (status == true) {
-            $("#printdialog").modal('hide');
+            $("#printsettingdialog").modal('hide');
+        }
+    };
+
+
+  
+
+    self.createPrintForm = function (status) {
+        if (status == true) {
+            console.log("create print form");
+            var facultyId = null;
+            var courseIds = "";
+            var specialityIds = "";
+            var groupIds = "";
+            var subGroup = "";
+
+            if(self.currentFlowSelectForPrintForm() !== undefined){
+                if(self.currentFlowSelectForPrintForm().currentFaculty() !== undefined)
+                    facultyId = self.currentFlowSelectForPrintForm().currentFaculty().Id;
+
+                if(self.currentFlowSelectForPrintForm().currentCourses() !== undefined)
+                    for(var i = 0; i < self.currentFlowSelectForPrintForm().currentCourses().length; ++i)
+                        courseIds +=  self.currentFlowSelectForPrintForm().currentCourses()[i].Id + ", ";
+
+                if(self.currentFlowSelectForPrintForm().currentSpecialities() !== undefined)
+                    for(var i = 0; i < self.currentFlowSelectForPrintForm().currentSpecialities().length; ++i)
+                        specialityIds +=  self.currentFlowSelectForPrintForm().currentSpecialities()[i].Id + ", ";
+
+                if(self.currentFlowSelectForPrintForm().currentGroups() !== undefined)
+                    for(var i = 0; i < self.currentFlowSelectForPrintForm().currentGroups().length; ++i)
+                        groupIds += self.currentFlowSelectForPrintForm().currentGroups()[i].Id + ", ";
+            }
+           
+            var ScheduleModel = {
+               lecturerId: null,
+               auditoriumId: null,
+               facultyId: facultyId,
+               courseIds: courseIds,
+               specialityIds: specialityIds,
+               groupIds: groupIds,
+               subGroup: subGroup,
+               startDate: self.startDate(),
+               endDate: self.endDate()
+            };
+
+            var TimeModel = {
+                buildingid: 1
+            };
+
+            $.ajax({
+                url: "PrintSchedule/IndexForGroups",
+                type: 'POST',
+                contentType: 'application/json',
+                dataType: 'html',
+                data: JSON.stringify({ s: ScheduleModel, t: TimeModel, h: self.title(), fs: self.fontSize()}),
+                success: function (responseText, textStatus, XMLHttpRequest) {
+                    console.log("success print");
+                    console.log(responseText);
+                   
+                    var OpenWindow = window.open('', 'Форма печати', 'width=1100,height=500,resizable=1');
+                    console.log(OpenWindow);
+                    $(OpenWindow.document.body).ready(function () {
+                        $(OpenWindow.document.body).append(responseText);
+                    });
+                },
+                error: function () {
+
+                }
+            });
         }
     }
+
+    self.makeReport = function (status) {
+        if (status == true) {
+            self.createPrintForm(true);
+        }
+    };
 
     self.init(true);
 
@@ -367,6 +306,9 @@ var UpdateScheduleForm = function (parentForm, param) {
     self.translateDate = function (status, date) {
         if (status == true) {
             res = date.split(".");
+
+            console.log(res);
+
             return res[2] + "-" + res[1] + "-" + res[0];
         }
     }
@@ -442,18 +384,27 @@ var UpdateScheduleForm = function (parentForm, param) {
         }
     }
 
+    self.presetSubGroup = function (status) {
+        if (status == true) {
+            for (var i = 0; i < self.subGroups().length; ++i)
+                if (self.currentSchedule().subGroup == self.subGroups()[i])
+                    self.currentSubGroup(self.subGroups()[i]);
+        }
+    }
+
     self.currentStartDate.subscribe(function (newValue) {
-   
+        self.tryUpdateSchedule(true);
     });
 
     self.currentEndDate.subscribe(function (newValue) {
-
+        self.tryUpdateSchedule(true);
     });
 
     self.currentDay = ko.observable(self.days()[parentForm.clickedSchedule().DayOfWeek - 1]);
     self.currentDay.subscribe(function (newValue) {
         if (newValue !== undefined) {
             self.loadFreeAuditoriums(true, 1, self.currentAuditoriumType());
+            self.tryUpdateSchedule(true);
         }
     });
 
@@ -463,17 +414,23 @@ var UpdateScheduleForm = function (parentForm, param) {
     self.currentTime.subscribe(function (newValue) {
         if (newValue !== undefined) {
             self.loadFreeAuditoriums(true, 1, self.currentAuditoriumType());
+            self.tryUpdateSchedule(true);
         }
     });
 
     self.subGroups = ko.observableArray(["Все", "1", "2", "3"]);
     self.currentSubGroup = ko.observable();
+    self.currentSubGroup.subscribe(function (newValue) {
+        if(newValue !== undefined)
+            self.tryUpdateSchedule(true);
+    });
 
     self.weekTypes = ko.observableArray([]);
     self.currentWeekType = ko.observable();
     self.currentWeekType.subscribe(function (newValue) {
         if (newValue !== undefined) {
             self.loadFreeAuditoriums(true, 1, self.currentAuditoriumType());
+            self.tryUpdateSchedule(true);
         }
     });
  
@@ -481,6 +438,7 @@ var UpdateScheduleForm = function (parentForm, param) {
     self.currentAuditoriumType.subscribe(function (newValue) {
         if (newValue !== undefined) {
             self.loadFreeAuditoriums(true, 1, newValue);
+            self.tryUpdateSchedule(true);
         }
     });
 
@@ -559,68 +517,37 @@ var UpdateScheduleForm = function (parentForm, param) {
         }
     }
 
-    self.ValidateSchedule = function (status, innerFunction) {
-        if (status == true) {
 
-     
-            dModel.loadData({
-                address: "schedule/Validate",
-                params: {
-                    AuditoriumId: self.currentAuditorium().Id,
-                    ScheduleInfoId: self.currentSchedule().ScheduleInfoId,
-                    DayOfWeek: self.currentDay().Id,
-                    PeriodId: self.currentTime().Id,
-                    WeekTypeId: self.currentWeekType().Id,
-                    StartDate: self.currentStartDate(),
-                    EndDate: self.currentEndDate()
-                },
-                onsuccess: function (data) {
-                    if (data.length == 0) {
-                   
-                        innerFunction(true);
-                    } else {
-                        self.validateScheduleForm(new ValidateScheduleForm(data));
-                        self.validateScheduleForm().openDialog(true);
-           
-                    }
-                }
-            });
+    self.tryUpdateSchedule = function (status) {
+        if (status == true) {
+            console.log("TRY UPD");
+            self.updateScheduleReal(true, "try");
         }
     };
-
-    self.ValidateSchedule2 = function (status, innerFunction, schedule) {
-        if (status == true) {
-     
 
   
-         
-            dModel.loadData({
-                address: "schedule/Validate",
-                params: {
-                    AuditoriumId: schedule.Id,
-                    ScheduleInfoId: schedule.ScheduleInfoId,
-                    DayOfWeek: schedule.DayOfWeek,
-                    PeriodId: schedule.PeriodId,
-                    WeekTypeId: schedule.WeekTypeId,
-                    StartDate: self.translateDate(true, schedule.StartDate),
-                    EndDate: self.translateDate(true, schedule.EndDate)
-                },
-                onsuccess: function (data) {
-                    if (data.length == 0) {
-             
-                        innerFunction(true, schedule);
-                    } else {
-                        self.validateScheduleForm(new ValidateScheduleForm(data));
-                        self.validateScheduleForm().openDialog(true);
-              
-                    }
-                }
-            });
+    self.updateSchedule = function (status) {
+        if (status == true) {
+            console.log("UPD");
+            self.updateScheduleReal(true, "execute");
         }
     };
 
-    self.updateSchedule = function (status) {
+    self.updateSchedule2 = function (status, schedule) {
         if (status == true) {
+            console.log("UPD2");
+            self.updateScheduleReal2(true, schedule, "execute");
+        }
+    }
+
+    self.isScheduleLoading = ko.observable(false);
+
+    self.updateScheduleReal = function (status, mode) {
+        if (status == true && !self.isScheduleLoading()) {
+
+            self.validateScheduleForm(new ValidateScheduleForm());
+            self.validateScheduleForm().doingSuccess(false);
+
             var subGroup = self.currentSubGroup();
             if (subGroup == "Все")
                 subGroup = "";
@@ -633,6 +560,8 @@ var UpdateScheduleForm = function (parentForm, param) {
                 self.currentStartDate() !== undefined &&
                 self.currentEndDate() !== undefined) {
 
+                
+                self.isScheduleLoading(true);
                 dModel.sendData({
                     address: "schedule/update",
                     params: {
@@ -645,23 +574,44 @@ var UpdateScheduleForm = function (parentForm, param) {
                         'StartDate': self.currentStartDate(),
                         'EndDate': self.currentEndDate(),
                         'AutoDelete': self.currentSchedule().AutoDelete,
-                        'SubGroup': subGroup
+                        'SubGroup': subGroup,
+                        'GroupIds': self.currentSchedule().GroupIds,
+                        'Mode': mode
                     },
-                    onsuccess: function () {
-                  
-                        parentForm.updateReload(true, self.currentSchedule(), self.currentTime().Id, self.currentDay().Id, self.currentWeekType().Id);
+                    onsuccess: function (data) {
+                        self.isScheduleLoading(false);
+
+                        self.validateScheduleForm().validate(true, data);
+                 
+                        if (data.length == 0) {
+                            parentForm.loadSchedules(true);
+
+                            if (mode == "try")
+                                self.validateScheduleForm().canDo(true);
+                            if (mode == "execute") {
+                                self.validateScheduleForm().doingSuccess(true);
+                            }
+                        } else {
+                            self.validateScheduleForm().canDo(false);
+                            self.validateScheduleForm().doingSuccess(false);
+                        }
                     }
                 });
             }
         }
     }
 
-    self.updateSchedule2 = function (status, schedule) {
-        if (status == true) {
+    self.updateScheduleReal2 = function (status, schedule, mode) {
+        if (status == true && !self.isScheduleLoading()) {
+
+            self.validateScheduleForm(new ValidateScheduleForm());
+            self.validateScheduleForm().doingSuccess(false);
+
             var subGroup = schedule.SubGroup;
             if (subGroup == "Все")
                 subGroup = "";
 
+            self.isScheduleLoading(true);
             dModel.sendData({
                 address: "schedule/update",
                 params: {
@@ -671,14 +621,33 @@ var UpdateScheduleForm = function (parentForm, param) {
                     'DayOfWeek': schedule.DayOfWeek,
                     'PeriodId': schedule.PeriodId,
                     'WeekTypeId': schedule.WeekTypeId,
-                    'StartDate': self.translateDate(schedule.StartDate),
-                    'EndDate': self.translateDate(schedule.EndDate),
+                    'StartDate': self.translateDate(true, schedule.StartDate),
+                    'EndDate': self.translateDate(true, schedule.EndDate),
                     'AutoDelete': schedule.AutoDelete,
-                    'SubGroup': schedule.subGroup
+                    'SubGroup': schedule.SubGroup,
+                    'GroupIds': schedule.GroupIds,
+                    'Mode': mode
                 },
-                onsuccess: function () {
-                
-                    parentForm.updateReload(true, schedule, schedule.PeriodId, schedule.DayOfWeek, schedule.WeekTypeId);
+                onsuccess: function (data) {
+                    self.isScheduleLoading(false);
+
+                    self.validateScheduleForm().validate(true, data);
+
+                    if (data.length == 0) {
+                        parentForm.loadSchedules(true);
+
+                        if (mode == "try")
+                            self.validateScheduleForm().canDo(true);
+                        if (mode == "execute") {
+                            self.validateScheduleForm().doingSuccess(true);
+                        }
+
+                    } else {
+                        self.validateScheduleForm().canDo(false);
+                        self.validateScheduleForm().doingSuccess(false);
+
+                        self.validateScheduleForm().openDialog(true);
+                    }
                 }
             });
         }
@@ -687,6 +656,8 @@ var UpdateScheduleForm = function (parentForm, param) {
   
     self.init = function (status) {
         if (status == true) {
+            self.presetSubGroup(true);
+
             if (param !== true) {
                 self.loadWeekTypes(true, true);
                 self.loadTimes(true, self.currentSchedule().BuildingId, true);
@@ -701,9 +672,10 @@ var UpdateScheduleForm = function (parentForm, param) {
 
     self.updateButtonClick = function (status) {
         if (status == true) {
-            self.currentConfirmForm(new UpdateScheduleConfirmForm(self.updateSchedule));
-            self.currentConfirmForm().openDialog(true);
-   
+            if (!$("#ScheduleOkButton").hasClass("disabled")) {
+                self.currentConfirmForm(new UpdateScheduleConfirmForm(self.updateSchedule));
+                self.currentConfirmForm().openDialog(true);
+            }
             //self.updateSchedule(true);
         }
     }
@@ -731,11 +703,11 @@ var UpdateScheduleForm = function (parentForm, param) {
 
 };
 
-var FreeAuditoriumsForm = function (timeId, dayId, wtId, tutorialTypeId, parentForm) {
+var FreeAuditoriumsForm = function (timeId, dayId, wtId, scheduleInfo, parentForm, startDate, endDate) {
     var self = this;
 
-    self.startDate = ko.observable("");
-    self.endDate = ko.observable("");
+    self.startDate = ko.observable(startDate);
+    self.endDate = ko.observable(endDate);
 
     self.auditoriumTypes = ko.observableArray([]);
     self.currentAuditoriumType = ko.observable();
@@ -747,6 +719,12 @@ var FreeAuditoriumsForm = function (timeId, dayId, wtId, tutorialTypeId, parentF
 
     self.auditoriums = ko.observableArray([]);
     self.currentAuditorium = ko.observable();
+
+    self.currentAuditorium.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            parentForm.auditorium(newValue);
+        }
+    });
 
     self.loadAuditoriumTypes = function (status) {
         if (status == true) {
@@ -772,7 +750,7 @@ var FreeAuditoriumsForm = function (timeId, dayId, wtId, tutorialTypeId, parentF
                     weekTypeId: wtId,
                     day: dayId,
                     timeId: timeId,
-                    tutorialtypeid: tutorialTypeId,
+                    tutorialtypeid: 1,
                     auditoriumtypeid: auditoriumType.Id,
                     starttime: self.startDate(),
                     endtime: self.endDate(),
@@ -863,7 +841,7 @@ var ScheduleBacketContextMenuForm = function (xPos, yPos, parentForm) {
             if (ind.wt == 2) weekTypeId = 3;
 
             parentForm.currentScheduleAddForm(new ScheduleAddForm(parentForm, parentForm.parentForm.currentScheduleInfoSelectForm().currentScheduleInfo(),
-                                                    parentForm.times()[ind.row].Id, parentForm.days()[ind.col].Id, weekTypeId));
+                                                    parentForm.times()[ind.row].Id, parentForm.days()[ind.col].Id, weekTypeId, parentForm.startTime(), parentForm.endTime()));
             parentForm.currentScheduleAddForm().openDialog(true);
             self.closeDialog(true);
         }
@@ -875,7 +853,7 @@ var ScheduleBacketContextMenuForm = function (xPos, yPos, parentForm) {
             var weekTypeId = 1;
             if (ind.wt == 0) weekTypeId = 2;
             if (ind.wt == 2) weekTypeId = 3;
-            parentForm.freeAuditoriumsForm(new FreeAuditoriumsForm(parentForm.times()[ind.row].Id, parentForm.days()[ind.col].Id, weekTypeId, 1, parentForm));
+            parentForm.freeAuditoriumsForm(new FreeAuditoriumsForm(parentForm.times()[ind.row].Id, parentForm.days()[ind.col].Id, weekTypeId, parentForm.parentForm.currentScheduleInfoSelectForm().currentScheduleInfo(), parentForm, parentForm.startTime(), parentForm.endTime()));
             parentForm.freeAuditoriumsForm().openDialog(true);
             self.closeDialog(true);
         }
@@ -898,7 +876,7 @@ var ScheduleBacketContextMenuForm = function (xPos, yPos, parentForm) {
                 lecturerId = parentForm.lecturer().Id;
 
             parentForm.currentCalendarForm(new Calendar(parentForm.days()[ind.col].Id, parentForm.times()[ind.row].Id, weekTypeId,
-                                                        lecturerId, groupIds, parentForm.currentSubGroup()));
+                                                        lecturerId, groupIds, parentForm.currentSubGroup(), parentForm));
 
             parentForm.currentCalendarForm().openDialog(true);
             self.closeDialog(true);
@@ -912,9 +890,23 @@ var ScheduleBacketContextMenuForm = function (xPos, yPos, parentForm) {
 var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endTime, parentForm) {
     var self = this;
 
+    $(document).click(function (event) {
+        if (event.target.className.indexOf("Backet") == -1)
+            if (event.target.className.indexOf("btn") == -1)
+                self.clickedBacketIndexes({ row: -1, col: -1, wt: -1 });
 
+    });
 
     self.parentForm = parentForm;
+
+    self.auditorium = ko.observable(auditorium);
+    self.auditorium.subscribe(function (newValue) {
+        self.loadSchedules(true);
+    });
+
+
+    self.startTime = ko.observable(startTime);
+    self.endTime = ko.observable(endTime);
 
     self.title = ko.computed(function() {
         var res = "";
@@ -925,16 +917,37 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
             if(parentForm.currentFlowSelectForm().currentFaculty() !== undefined)
                 res += parentForm.currentFlowSelectForm().currentFaculty().Name + " ";
 
+            if (parentForm.currentFlowSelectForm().currentCourses() !== undefined) {
+                for (var i = 0; i < parentForm.currentFlowSelectForm().currentCourses().length; ++i)
+                    res += parentForm.currentFlowSelectForm().currentCourses()[i].Name + " ";
+            }
+
+            if (parentForm.currentFlowSelectForm().currentSpecialities() !== undefined) {
+                for (var i = 0; i < parentForm.currentFlowSelectForm().currentSpecialities().length; ++i)
+                    res += parentForm.currentFlowSelectForm().currentSpecialities()[i].Name + " ";
+            }
+
             if (parentForm.currentFlowSelectForm().currentGroups() !== undefined) {
                 for (var i = 0; i < parentForm.currentFlowSelectForm().currentGroups().length; ++i)
                     res += parentForm.currentFlowSelectForm().currentGroups()[i].Code + " ";
             }
-
         }
+
+        if (parentForm.currentScheduleInfoSelectForm() !== undefined) {
+            if (parentForm.currentScheduleInfoSelectForm().currentScheduleInfo() !== undefined)
+                res += parentForm.currentScheduleInfoSelectForm().currentScheduleInfo().LecturerName + " ";
+        }
+
+        if (self.auditorium() !== undefined) {
+            res += " ауд № " + self.auditorium().Number + " ";
+        }
+
+        res += "(" + self.startTime() + " - ";
+        res += self.endTime() + ")";
+
         return res;
     });
-        
-       
+         
     self.isScheduleLoad = false;
 
     self.currentDeleteConfirmForm = ko.observable();
@@ -946,7 +959,10 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
     self.currentCalendarForm = ko.observable();
     self.freeAuditoriumsForm = ko.observable();
 
-   
+    self.freeAuditoriumsInTableForm = ko.observable();
+    if (parentForm.currentScheduleInfoSelectForm() !== undefined)
+        self.freeAuditoriumsInTableForm(new FreeAuditoriumsForm(0, 0, 0, parentForm.currentScheduleInfoSelectForm().currentScheduleInfo(), self, self.startTime(), self.endTime()));
+    
 
     self.buildings = ko.observableArray([]);
     self.currentBuilding = ko.observable();
@@ -964,12 +980,6 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
     self.lecturer.subscribe(function (newValue) {
         //self.loadSchedules(true);
     });
-
-    self.auditorium = ko.observable(auditorium);
-    self.auditorium.subscribe(function (newValue) {
-        //self.loadSchedules(true);
-    });
-
 
     self.groups = ko.observable(groups);
     self.groups.subscribe(function (newValue) {
@@ -994,14 +1004,13 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
     });
 
 
-    self.startTime = ko.observable(startTime);
     self.startTime.subscribe(function (newValue) {
         if (newValue !== undefined) {
             self.loadSchedules(true);
         }
     });
 
-    self.endTime = ko.observable(endTime);
+   
     self.endTime.subscribe(function (newValue) {
         if (newValue !== undefined) {
             self.loadSchedules(true);
@@ -1013,9 +1022,37 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
 
     self.preselectedBacketIndexes = ko.observable({ row: -1, col: -1, wt: -1 });
     self.clickedBacketIndexes = ko.observable({ row: -1, col: -1, wt: -1 });
+    self.clickedBacketIndexes.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            if (newValue.row != -1 && newValue.col != -1 && newValue.wt != -1) {
+                $("#addButton").removeClass("disabled");
+                $("#freeAuditoriumButton").removeClass("disabled");
+
+                var WeekTypeId = newValue.wt;
+                if (newValue.wt == 0) WeekTypeId = 2;
+                if (newValue.wt == 2) WeekTypeId = 3;
+
+                if (parentForm.currentScheduleInfoSelectForm() !== undefined)
+                    self.freeAuditoriumsInTableForm(new FreeAuditoriumsForm(self.times()[newValue.row].Id, self.days()[newValue.col].Id, WeekTypeId, parentForm.currentScheduleInfoSelectForm().currentScheduleInfo(), self, self.startTime(), self.endTime()));
+            } else {
+
+                $("#addButton").addClass("disabled");
+                $("#freeAuditoriumButton").addClass("disabled");
+            }
+        }
+    });
 
     self.preselectedSchedule = ko.observable();
     self.clickedSchedule = ko.observable();
+    self.clickedSchedule.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            $("#delButton").removeClass("disabled");
+            $("#changeScheduleButton").removeClass("disabled");
+        } else {
+            $("#delButton").addClass("disabled");
+            $("#changeScheduleButton").addClass("disabled");
+        }
+    });
 
     self.blockedRows = ko.observableArray();
 
@@ -1027,7 +1064,7 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
 
     self.clickBacketLeft = function (status, row, col, wt) {
         if (status == true) {
-  
+         
             self.clickedBacketIndexes({ row: row, col: col, wt: wt });
         }
     }
@@ -1039,16 +1076,15 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
             if (wt == 0) weekTypeId = 2;
             if (wt == 2) weekTypeId = 3;
 
-            self.currentScheduleAddForm(new ScheduleAddForm(self, parentForm.currentScheduleInfoSelectForm().currentScheduleInfo(), self.times()[row].Id, self.days()[col].Id, weekTypeId));
+            self.currentScheduleAddForm(new ScheduleAddForm(self, parentForm.currentScheduleInfoSelectForm().currentScheduleInfo(), self.times()[row].Id, self.days()[col].Id, weekTypeId, self.startTime(), self.endTime()));
             self.currentScheduleAddForm().openDialog(true);
             //self.currentScheduleAddForm().ValidateSchedule(true, self.currentScheduleAddForm().AddSchedule);
         }
     }
 
-    
     self.clickBacketRight = function (status, row, col, wt, data, event) {
         if (status == true) {
-            if (self.schedules()[row]()[col]()[wt]() == undefined) {
+            if (self.schedules()[row][col][wt] == undefined) {
 
                 if (self.scheduleContextMenuForm() !== undefined)
                     self.scheduleContextMenuForm().closeDialog(true);
@@ -1073,20 +1109,20 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
 
     self.preselectSchedule = function (status, row, col, wt) {
         if (status == true) {
-            self.preselectedSchedule(self.schedules()[row]()[col]()[wt]());
+            self.preselectedSchedule(self.schedules()[row][col][wt]);
         }
     }
 
     self.clickScheduleLeft = function (status, row, col, wt) {
         if (status == true) {
 
-            self.clickedSchedule(self.schedules()[row]()[col]()[wt]());
+            self.clickedSchedule(self.schedules()[row][col][wt]);
         }
     }
 
     self.clickScheduleRight = function (status, row, col, wt, data, event) {
         if (status == true) {
-            self.clickedSchedule(self.schedules()[row]()[col]()[wt]());
+            self.clickedSchedule(self.schedules()[row][col][wt]);
             self.scheduleContextMenuForm(new ScheduleContextMenuForm(self.clickedSchedule(), event.pageX, event.pageY, self));
             self.scheduleContextMenuForm().openDialog(true);
 
@@ -1102,7 +1138,7 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
 
     self.startDragSchedule = function (status, row, col, wt) {
         if (status) {
-            self.clickedSchedule(self.schedules()[row]()[col]()[wt]());
+            self.clickedSchedule(self.schedules()[row][col][wt]);
 
             self.clickedBacketIndexes({ row: row, col: col, wt: wt });
 
@@ -1132,19 +1168,20 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
                 if (wt == 0) weekTypeId = 2;
                 if (wt == 2) weekTypeId = 3;
 
-                self.currentScheduleAddForm(new ScheduleAddForm(self, parentForm.currentScheduleInfoSelectForm().currentScheduleInfo(), self.times()[row].Id, self.days()[col].Id, weekTypeId));
+                self.currentScheduleAddForm(new ScheduleAddForm(self, parentForm.currentScheduleInfoSelectForm().currentScheduleInfo(), self.times()[row].Id, self.days()[col].Id, weekTypeId, self.startTime(), self.endTime()));
                 self.currentScheduleAddForm().openDialog(true);
 
             }else{
              
-                self.scheduleUpdateForm(new UpdateScheduleForm(self, true));
+                self.currentScheduleUpdateForm(new UpdateScheduleForm(self, true));
                 self.clickedSchedule().DayOfWeek = self.days()[col].Id;
                 self.clickedSchedule().PeriodId = self.times()[row].Id;
                 self.clickedSchedule().WeekTypeId = wt;
                 if (wt == 0) self.clickedSchedule().WeekTypeId = 2;
                 if (wt == 2) self.clickedSchedule().WeekTypeId = 3;
 
-                self.scheduleUpdateForm().ValidateSchedule2(true, self.scheduleUpdateForm().updateSchedule2, self.clickedSchedule());
+                self.currentScheduleUpdateForm().updateSchedule2(true, self.clickedSchedule());
+             
             }
         }
     }
@@ -1163,56 +1200,6 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
 
     self.schedules = ko.observableArray([]);
 
-    self.addReload = function (status, timeId, dayId, wtId) {
-        if (status == true) {
-            //TODO: reload only one backet
-            self.loadSchedules(true);
-        }
-    }
-
-    self.updateReload = function (status, schedule, timeId, dayId, wtId) {
-        //if (wtId == 1) wtId = 1;
-        if (wtId == 2) wtId = 0;
-        if (wtId == 3) wtId = 2;
-
-        if (status == true) {
-            for (var i = 0; i < self.times().length; ++i) {
-                if (self.times()[i].Id == timeId) {
-                    timeId = i;
-                    break;
-                }
-            }
-
-            for (var i = 0; i < self.days().length; ++i) {
-                if (self.days()[i].Id == dayId) {
-                    dayId = i;
-                    break;
-                }
-            }
-
-            for (var i = 0; i < self.schedules().length; ++i)
-                for (var j = 0; j < self.schedules()[i]().length; ++j)
-                    for (var k = 0; k < self.schedules()[i]()[j]().length; ++k)
-                        if (self.schedules()[i]()[j]()[k]() !== undefined) {
-                            if (self.schedules()[i]()[j]()[k]().Id == schedule.Id) {
-                                self.schedules()[i]()[j]()[k](undefined);
-                                self.getScheduleByIdToObject(true, schedule.Id, timeId, dayId, wtId);
-                            }
-                        }
-        }
-    }
-
-    self.deleteReload = function (status, schedule) {
-        if (status == true) {
-            for (var i = 0; i < self.schedules().length; ++i)
-                for (var j = 0; j < self.schedules()[i]().length; ++j)
-                    for (var k = 0; k < self.schedules()[i]()[j]().length; ++k)
-                        if (self.schedules()[i]()[j]()[k]() !== undefined)
-                            if (self.schedules()[i]()[j]()[k]().Id == schedule.Id)
-                                self.schedules()[i]()[j]()[k](undefined);
-        }
-    }
-
     self.realDeleteSchedule = function (status, schedule) {
         if (status == true) {
          
@@ -1223,7 +1210,8 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
                         'Id': schedule.Id,
                     },
                     onsuccess: function () {
-                        self.deleteReload(true, schedule);
+                        self.loadSchedules(true);
+                        parentForm.currentScheduleInfoSelectForm().loadScheduleInfoes(true);
                     }
                 });
             }
@@ -1234,20 +1222,6 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
         if (status == true) {
             self.currentDeleteConfirmForm(new DeleteScheduleConfirmForm(self.realDeleteSchedule, schedule));
             self.currentDeleteConfirmForm().openDialog(true);
-        }
-    }
-
-    self.getScheduleByIdToObject = function (status, id, i, j, k) {
-        if (status == true) {
-            dModel.loadData({
-                address: "schedule/GetScheduleById",
-                params: {
-                    Id: id,
-                },
-                onsuccess: function (data) {
-                    self.schedules()[i]()[j]()[k](data);
-                }
-            });
         }
     }
 
@@ -1302,7 +1276,6 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
    
         if (status == true && !self.isScheduleLoad) {
 
-
             self.isScheduleLoad = true;
 
             if(self.lecturer() !== undefined)
@@ -1346,14 +1319,10 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
                 },
                 onsuccess: function (data) {
                     
-               
-
                     self.filteredTimes = ko.observableArray([]);
                     self.scheduleTimes([]);
                     self.times([]);
-                    self.schedules([]);
-
-
+                    
                     for (var i = 0; i < self.buildingTimes().length; ++i) {
                         var t = { Id: self.buildingTimes()[i].Id, Start: self.buildingTimes()[i].Start, End: self.buildingTimes()[i].End, StartEnd: self.buildingTimes()[i].StartEnd, IsBuilding: true };
                         if (self.filteredTimes.indexOf(t.StartEnd) == -1) {
@@ -1375,24 +1344,19 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
                         return left.Start == right.Start ? 0 : (left.Start < right.Start ? -1 : 1)
                     });
 
+
+                    var tempSchedulesArray = []
+
+          
                     for (var i = 0; i < self.times().length; ++i) {
-                        self.schedules.push(new ko.observableArray([new ko.observableArray([new ko.observable(), new ko.observable(), new ko.observable()]),
-                                                                    new ko.observableArray([new ko.observable(), new ko.observable(), new ko.observable()]),
-                                                                    new ko.observableArray([new ko.observable(), new ko.observable(), new ko.observable()]),
-                                                                    new ko.observableArray([new ko.observable(), new ko.observable(), new ko.observable()]),
-                                                                    new ko.observableArray([new ko.observable(), new ko.observable(), new ko.observable()]),
-                                                                    new ko.observableArray([new ko.observable(), new ko.observable(), new ko.observable()]),
-                                                                    new ko.observableArray([new ko.observable(), new ko.observable(), new ko.observable()])]));
+                
+                        tempSchedulesArray.push([[], [], [], [], [], [], []]);
                         if (self.times()[i].IsBuilding == false)
                             self.blockedRows()[i] = true;
                         else
                             self.blockedRows()[i] = false;
                     }
-
-
-                    //self.times.sort(function(left, right) { return left.lastName == right.lastName ? 0 : (left.lastName < right.lastName ? -1 : 1) });
-
-                    
+                
                     for (var i = 0; i < data.length; ++i) {
                         var row = -1;
                         for (var j = 0; j < self.times().length; ++j)
@@ -1403,18 +1367,12 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
                         if (data[i].WeekTypeId == 2)wt = 0;
                         if (data[i].WeekTypeId == 3)wt = 2;
 
-                        self.schedules()[row]()[col]()[wt](data[i]);
-             
+                        tempSchedulesArray[row][col][wt] = data[i];
                     }
+
+                    self.schedules(tempSchedulesArray);
                     self.isScheduleLoad = false;
-
-          
-                
-      
-                }
-
-
-                
+                }      
             });
         }
     }
@@ -1439,49 +1397,49 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
         }
     };
 
-
-
-    self.copiedSchedule = ko.observable();
-    self.cutedSchedule = ko.observable();
-
-    self.copySchedule = function (status) {
+    self.clickAddButton = function (status) {
         if (status == true) {
-            self.cutedSchedule(undefined);
-            self.copiedSchedule(self.clickedSchedule());
+            var ind = self.clickedBacketIndexes();
+            var weekTypeId = 1;
+            if (ind.wt == 0) weekTypeId = 2;
+            if (ind.wt == 2) weekTypeId = 3;
+            self.currentScheduleAddForm(new ScheduleAddForm(self, parentForm.currentScheduleInfoSelectForm().currentScheduleInfo(), self.times()[ind.row].Id, self.days()[ind.col].Id, weekTypeId, self.startTime(), self.endTime()));
+            self.currentScheduleAddForm().openDialog(true);
         }
     };
 
-    
-    self.cutSchedule = function (status) {
+    self.clickDelButton = function (status) {
         if (status == true) {
-            self.copiedSchedule(undefined);
-            self.cutedSchedule(self.clickedSchedule());
+            self.deleteSchedule(true, self.clickedSchedule());
         }
     }
 
-    self.pasteSchedule = function (status) {
+    self.clickChangeScheduleButton = function (status) {
         if (status == true) {
-            if (self.cutedSchedule() !== undefined) {
-                self.scheduleUpdateForm(new UpdateScheduleForm(self, true));
-
-                var ind = self.clickedBacketIndexes();
-
-                self.cutedSchedule().DayOfWeek = self.days()[ind.col].Id;
-                self.cutedSchedule().PeriodId = self.times()[ind.row].Id;
-                self.cutedSchedule().WeekTypeId = ind.wt;
-                if (ind.wt == 0) self.cutedSchedule().WeekTypeId = 2;
-                if (ind.wt == 2) self.cutedSchedule().WeekTypeId = 3;
-
-                self.scheduleUpdateForm().ValidateSchedule2(true, self.scheduleUpdateForm().updateSchedule2, self.cutedSchedule());
-
-                //self.cutedSchedule(undefined);
-            }
-            if (self.copiedSchedule() !== undefined) {
-                //self.copiedSchedule(undefined);
-            }
+            self.currentScheduleUpdateForm(new UpdateScheduleForm(self));
+            self.currentScheduleUpdateForm().openDialog(true);
         }
     }
 
+    self.clickFreeAuditoriumButton = function (status) {
+        if (status == true) {
+            var ind = self.clickedBacketIndexes();
+            var weekTypeId = 1;
+            if (ind.wt == 0) weekTypeId = 2;
+            if (ind.wt == 2) weekTypeId = 3;
+            self.freeAuditoriumsForm(new FreeAuditoriumsForm(self.times()[ind.row].Id, self.days()[ind.col].Id, weekTypeId, parentForm.currentScheduleInfoSelectForm().currentScheduleInfo(), self, self.startTime(), self.endTime()));
+            self.freeAuditoriumsForm().openDialog(true);
+        }
+    }
+
+    self.clickPrintSettingsButton = function (status) {
+        console.log("okokok");
+        if (status == true) {
+            console.log("okokok23445");
+            parentForm.currentPrintSettingForm(new PrintSettingForm(startTime, endTime, self));
+            parentForm.currentPrintSettingForm().openDialog(true);
+        }
+    }
 };
 
 //Форма выбора потока
@@ -1504,22 +1462,33 @@ var FlowSelectForm = function (parentForm) {
     self.courses = ko.observableArray([]);
     self.currentCourses = ko.observableArray([]);
     self.faculties = ko.observableArray([]);
+    self.groups = ko.observableArray([]);
+    self.currentGroups = ko.observableArray([]);
 
     self.currentFaculty = ko.observable();
     self.currentFaculty.subscribe(function (newValue) {
+        self.groups("");
+        groupIds = "";
+        self.currentGroups(undefined);
+        specialityIds = "";
+        self.specialities("");
+        self.currentSpecialities(undefined);
         if (newValue !== undefined) {
             self.loadSpecialities(true,newValue.Id);
-            self.groups("");
         }
     });
 
     self.specialities = ko.observableArray([]);
     self.currentSpecialities = ko.observableArray([]);
     self.currentSpecialities.subscribe(function (newValue) {
+        self.groups("");
+        groupIds = "";
+        self.currentGroups(undefined);
         if (newValue !== undefined) {
+           
             if (self.currentFaculty() !== undefined) {
                 specialityIds = "";
-                for(var i = 0; i < newValue.length; ++i)
+                for (var i = 0; i < newValue.length; ++i)
                     specialityIds += newValue[i].Id + ", ";
                 self.loadGroups(true, self.currentFaculty().Id, courseIds, specialityIds);
             }
@@ -1527,6 +1496,11 @@ var FlowSelectForm = function (parentForm) {
     });
 
     self.currentCourses.subscribe(function (newValue) {
+        self.groups("");
+        groupIds = "";
+        courseIds = "";
+        self.currentGroups(undefined);
+        
         if (newValue !== undefined) {
             if (self.currentFaculty() !== undefined) {
                 courseIds = "";
@@ -1537,15 +1511,31 @@ var FlowSelectForm = function (parentForm) {
         }
     });
 
-    self.groups = ko.observableArray([]);
-    self.currentGroups = ko.observableArray([]);
-    self.currentGroups.subscribe(function (newValue) {
-        parentForm.currentScheduleInfoSelectForm(new ScheduleInfoSelectForm(newValue, { Id: 12 }, { Id: 0 }, parentForm));
-        if (newValue !== undefined) {
-            parentForm.currentScheduleSelectForm().groups(newValue);
 
-            parentForm.currentScheduleSelectForm().loadSchedules(true);
+    self.groups.subscribe(function (newValue) {
+        if (parentForm.currentScheduleSelectForm !== undefined)
+            if (parentForm.currentScheduleSelectForm() !== undefined) {
+                parentForm.currentScheduleSelectForm().loadSchedules(true);
+            }
+    });
+   
+    self.currentGroups.subscribe(function (newValue) {
+        console.log("groups subscribe");
+
+        if(parentForm.currentScheduleInfoSelectForm !== undefined)
+            parentForm.currentScheduleInfoSelectForm(new ScheduleInfoSelectForm(newValue, { Id: 12 }, { Id: 0 }, parentForm));
+
+
+        if (newValue !== undefined) {
+            if (parentForm.currentScheduleSelectForm !== undefined)
+                if (parentForm.currentScheduleSelectForm !== undefined)
+                    parentForm.currentScheduleSelectForm().groups(newValue);
         }
+
+        if(parentForm.currentScheduleSelectForm !== undefined)
+            if (parentForm.currentScheduleSelectForm() !== undefined) {
+                parentForm.currentScheduleSelectForm().loadSchedules(true);
+            }
     });
 
 
@@ -1648,7 +1638,7 @@ var UpdateScheduleInfoForm = function (parentForm) {
                     'HoursPerWeek': self.newScheduleInfo().HoursPerWeek
                 },
                 onsuccess: function () {
-                    parentForm.updateReload(true, self.newScheduleInfo());
+                    parentForm.loadScheduleInfoes(true);
                     //parentForm.scheduleInfoes()[parentForm.currentScheduleInfoIndex()] = self.newScheduleInfo();
                     //parentForm.scheduleInfoes(parentForm.scheduleInfoes());
                 }
@@ -1824,12 +1814,11 @@ var ScheduleInfoSelectForm = function (groups, currentStudyYear, currentSemester
             if (newValue != oldScheduleInfo) {
                 var newGroups = newValue.GroupIds.split(", "); newGroups.pop();
                 var ng = [];
-                for(var i = 0; i < newGroups.length; ++i)
-                    ng.push({Id: newGroups[i]});
-  
+                for (var i = 0; i < newGroups.length; ++i)
+                    ng.push({ Id: newGroups[i] });
+
                 parentForm.currentScheduleSelectForm().groups(ng);
                 parentForm.currentScheduleSelectForm().lecturer({ Id: newValue.LecturerId });
-       
                 parentForm.currentScheduleSelectForm().loadSchedules(true);
             }
         }
@@ -1851,35 +1840,12 @@ var ScheduleInfoSelectForm = function (groups, currentStudyYear, currentSemester
     self.init = function (status) {
         if (status == true) {
             self.loadTutorialTypes(true);
+            parentForm.currentScheduleSelectForm().lecturer(undefined);
         }
     };
 
     self.init(true);
     
-    self.updateReload = function (status, scheduleInfo) {
-        for(var i = 0; i < self.scheduleInfoes().length; ++i)
-            if (self.scheduleInfoes()[i].Id == scheduleInfo.Id) {
-                self.loadScheduleInfoByIdToObject(true, scheduleInfo.Id, i);
-            }
-    }
-
-    self.loadScheduleInfoByIdToObject = function (status, id, i) {
-        if (status == true) {
-            dModel.loadData({
-                address: "scheduleinfo/GetById",
-                params: {
-                    Id: id
-                },
-                onsuccess: function (data) {
-                    var newScheduleInfoes = self.scheduleInfoes();
-                    newScheduleInfoes[i] = data;
-                    self.scheduleInfoes(newScheduleInfoes);
-                }
-            });
-            
-        }
-    }
-
     self.loadScheduleInfoes = function (status) {
         if (status == true && self.currentTutorialType() !== undefined
                            && self.currentStudyYear() !== undefined
@@ -1985,10 +1951,30 @@ var ScheduleInfoSelectForm = function (groups, currentStudyYear, currentSemester
 };
 
 //Форма валидации добавляемого занятия
-var ValidateScheduleForm = function (validateErrors) {
+var ValidateScheduleForm = function () {
     var self=this;
-    self.validateErrors = ko.observableArray(validateErrors);
 
+    self.doingSuccess = ko.observable(false);
+    self.canDo = ko.observable(false);
+
+    self.doingSuccess.subscribe(function (newValue) {
+        if (newValue == true) {
+            $("#ScheduleOkButton").removeClass("disabled");
+            $("#ScheduleOkButtonWithClose").removeClass("disabled");
+        }
+    });
+
+    self.canDo.subscribe(function (newValue) {
+        if (newValue == true) {
+            $("#ScheduleOkButton").removeClass("disabled");
+            $("#ScheduleOkButtonWithClose").removeClass("disabled");
+   
+        } else {
+            $("#ScheduleOkButton").addClass("disabled");
+            $("#ScheduleOkButtonWithClose").addClass("disabled");
+        }
+    });
+   
     self.init = function (status) {
         if (status == true) {
 
@@ -1997,27 +1983,38 @@ var ValidateScheduleForm = function (validateErrors) {
     
     self.openDialog=function(status) {
         if (status == true) {
-            $('#validatedialog').modal('show');       
-            for (var i = 0; i < self.validateErrors().length; ++i) {
-                $("#validatemessage" + self.validateErrors()[i]).removeClass("hide");
+            $('#validatedialog').modal('show');
+        }
+    };
+
+    self.validate = function (status, validateErrors) {
+        if (status == true) {
+            for (var i = 0; i < validateErrors.length; ++i) {
+                $("#validatemessage" + validateErrors[i]).removeClass("hide");
             }
         }
     };
 
     self.closeDialog=function(status) {
         if(status==true) {
-       
+            for (var i = 2; i <= 10; ++i) {
+                $("#validatemessage" + i).addClass("hide");
+            }
             $("#validatedialog").modal('hide');
         }
     };
 };
 
 //Меню добавления занятия
-var ScheduleAddForm = function (parentForm, scheduleInfo, timeId, dayId, weekTypeId) {
+var ScheduleAddForm = function (parentForm, scheduleInfo, timeId, dayId, weekTypeId, startDate, endDate) {
 
     var self = this;
 
+    $('.datepicker').datepicker({ autoclose: true });
+
     self.validateScheduleForm = ko.observable();
+
+    self.isScheduleAdding = ko.observable(false);
 
     self.translateDate = function (status, date) {
         if (status == true) {
@@ -2036,6 +2033,7 @@ var ScheduleAddForm = function (parentForm, scheduleInfo, timeId, dayId, weekTyp
     self.currentDay.subscribe(function (newValue) {
         if (newValue !== undefined) {
             self.loadFreeAuditoriums(true, 1, self.currentAuditoriumType());
+            self.tryAddSchedule(true);
         }
     });
 
@@ -2044,6 +2042,7 @@ var ScheduleAddForm = function (parentForm, scheduleInfo, timeId, dayId, weekTyp
     self.currentTime.subscribe(function (newValue) {
         if (newValue !== undefined) {
             self.loadFreeAuditoriums(true, 1, self.currentAuditoriumType());
+            self.tryAddSchedule(true);
         }
     });
 
@@ -2076,23 +2075,41 @@ var ScheduleAddForm = function (parentForm, scheduleInfo, timeId, dayId, weekTyp
     self.currentWeekType.subscribe(function (newValue) {
         if (newValue !== undefined) {
             self.loadFreeAuditoriums(true, 1, self.currentAuditoriumType());
+            self.tryAddSchedule(true);
         }
     });
    
 
     self.subGroups = ko.observableArray(["Все", "1", "2", "3"]);
     self.currentSubGroup = ko.observable();
+    self.currentSubGroup.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            self.tryAddSchedule(true);
+        }
+    });
 
     self.auditoriumTypes = ko.observableArray([]);
     self.currentAuditoriumType = ko.observable();
     self.currentAuditoriumType.subscribe(function (newValue) {
         if (newValue !== undefined) {
             self.loadFreeAuditoriums(true, 1, newValue);
+            self.tryAddSchedule(true);
         }
     });
  
-    self.startDate = ko.observable("");
-    self.endDate = ko.observable("");
+    self.startDate = ko.observable(startDate);
+    self.startDate.subscribe(function (newValue) {
+        if(newValue !== undefined)
+            self.tryAddSchedule(true);
+    });
+
+    self.endDate = ko.observable(endDate);
+    self.endDate.subscribe(function (newValue) {
+        if (newValue !== undefined)
+            self.tryAddSchedule(true);
+    });
+
+
     self.autoDelete = ko.observable(false);
 
     self.loadTimes = function (status, buildingId) {
@@ -2144,7 +2161,7 @@ var ScheduleAddForm = function (parentForm, scheduleInfo, timeId, dayId, weekTyp
                     endtime: self.endDate(),
                 },
                 onsuccess: function () {
-                    
+                    self.tryAddSchedule(true);
                 }
             });
         }
@@ -2171,48 +2188,28 @@ var ScheduleAddForm = function (parentForm, scheduleInfo, timeId, dayId, weekTyp
         }
     };
 
-    self.ValidateSchedule=function(status, innerFunction) {
+    self.tryAddSchedule = function (status) {
         if (status == true) {
-        
-            var startDateLocal = self.startDate();
-            var endDateLocal = self.endDate();
-            if (startDateLocal == undefined)
-                startDateLocal = "";
-            if (endDateLocal == undefined)
-                endDateLocal = "";
-
-            dModel.loadData({
-                address: "schedule/Validate",
-                params: {
-                    AuditoriumId: self.currentAuditorium().Id,
-                    ScheduleInfoId: self.scheduleInfo().Id,
-                    DayOfWeek: self.currentDay().Id,
-                    PeriodId: self.currentTime().Id,
-                    WeekTypeId: self.currentWeekType().Id,
-                    StartDate: startDateLocal,
-                    EndDate: endDateLocal
-                },
-                onsuccess: function (data) {
-                    if(data.length==0) {
-                   
-                        innerFunction(true);
-                        parentForm.addReload(true, self.currentTime().Id, self.currentDay().Id, self.currentWeekType().Id);
-                    } else {
-                        self.validateScheduleForm(new ValidateScheduleForm(data));
-                        self.validateScheduleForm().openDialog(true);
-           
-                    }
-                }
-            });
+            console.log("TRY ADD");
+            self.AddSchedule(true, "try");
         }
     };
 
-    self.AddSchedule=function(status) {
-        if (status == true) {
-   
+    self.AddSchedule=function(status, mode) {
+        if (status == true && !self.isScheduleAdding()) {
+
+            self.validateScheduleForm(undefined);
+            //self.validateScheduleForm().doingSuccess(false);
+
+            console.log("TEST");
+
             var subGroup = self.currentSubGroup();
             if (subGroup == "Все")
                 subGroup = "";
+
+            var groupIds = "";
+            for(var i = 0; i < parentForm.groups().length; ++i)
+                groupIds += parentForm.groups()[i].Id + ", ";
 
             if(self.currentAuditorium() !== undefined &&
                self.scheduleInfo() !== undefined &&
@@ -2223,6 +2220,7 @@ var ScheduleAddForm = function (parentForm, scheduleInfo, timeId, dayId, weekTyp
                self.endDate() !== undefined &&
                self.autoDelete() !== undefined){
 
+                self.isScheduleAdding(true);
                 dModel.sendData({
                     address: "schedule/add",
                     params: {
@@ -2234,10 +2232,30 @@ var ScheduleAddForm = function (parentForm, scheduleInfo, timeId, dayId, weekTyp
                         'StartDate': self.startDate(),
                         'EndDate': self.endDate(),
                         'AutoDelete': self.autoDelete(),
-                        'SubGroup': subGroup
+                        'SubGroup': subGroup,
+                        'GroupIds': groupIds,
+                        'Mode': mode
                     },
-                    onsuccess: function () {
-                    
+                    onsuccess: function (data) {
+                        self.isScheduleAdding(false);
+
+                        self.validateScheduleForm(new ValidateScheduleForm());
+                        self.validateScheduleForm().doingSuccess(false);
+
+                        self.validateScheduleForm().validate(true, data);
+                        if (data.length == 0) {
+                            parentForm.loadSchedules(true);
+                            parentForm.parentForm.currentScheduleInfoSelectForm().loadScheduleInfoes(true);
+
+                            if (mode == "try")
+                                self.validateScheduleForm().canDo(true);
+                            if (mode == "execute") {
+                                self.validateScheduleForm().doingSuccess(true);
+                            }
+                        } else {
+                            self.validateScheduleForm().canDo(false);
+                            self.validateScheduleForm().doingSuccess(false);
+                        }
                     }
                 });
             }
@@ -2261,10 +2279,20 @@ var ScheduleAddForm = function (parentForm, scheduleInfo, timeId, dayId, weekTyp
     };
 
     self.addButtonPress = function (status) {
-       
         if (status == true) {
-         
-            self.ValidateSchedule(true, self.AddSchedule);
+            if (!$("#ScheduleOkButton").hasClass("disabled")) {
+                self.AddSchedule(true, "execute");
+            }
+        }
+    };
+
+
+    self.addAndCloseButtonPress = function (status) {
+        if (status == true) {
+            if (!$("#ScheduleOkButtonWithClose").hasClass("disabled")) {
+                self.AddSchedule(true, "execute");
+                self.closeDialog(true);
+            }
         }
     };
 
@@ -2286,7 +2314,7 @@ function toStrDateDDMMYYYY(date) {
 }
 
 //Календарь
-var Calendar=function(dayOfWeek, periodId, weekTypeId, lecturerId, groupIds, subGroup) {
+var Calendar=function(dayOfWeek, periodId, weekTypeId, lecturerId, groupIds, subGroup, parentForm) {
     var self = this;
     
     if (lecturerId == undefined) lecturerId = null;
@@ -2310,8 +2338,6 @@ var Calendar=function(dayOfWeek, periodId, weekTypeId, lecturerId, groupIds, sub
     self.currentWeek = ko.observable();
     
     
-   
- 
     self.weeks = ko.observableArray([]);
     self.calendarSchedules = ko.observableArray([new ko.observableArray([]),
                                                  new ko.observableArray([]),
@@ -2383,34 +2409,11 @@ var Calendar=function(dayOfWeek, periodId, weekTypeId, lecturerId, groupIds, sub
             newWeeks.push(newWeek);
             self.weeks(newWeeks);
 
-            var newCalendarSchedules = [];
-            for (var jjj = 0; jjj < self.weeks().length-1; ++jjj)
-                newCalendarSchedules[jjj] = self.calendarSchedules()[jjj+1];
-            newCalendarSchedules.push(new ko.observableArray([]));
-
-            self.calendarSchedules(newCalendarSchedules);
-            
-            //self.weeks([self.weeks()[1], self.weeks()[2], newWeek]);
-            //self.calendarSchedules([self.calendarSchedules()[1], self.calendarSchedules()[2], new ko.observableArray([])]);
-            setTimeout(function () { self.loadCalendarSchedules(toStrDate(tss), toStrDate(tes), self.weeks().length - 1, true); }, 500);
+            self.loadSchedules(true);
         }
     };
 
-    self.updateReload = function (status, schedule, timeId, dayId, wtId) {
-        if (status == true) {
-            for (var i = 0; i < 7; ++i) {
-                for(var j = 0; j < self.calendarSchedules()[i]().length; ++j)
-                    if (self.calendarSchedules()[i]()[j].Id == schedule.Id) {
-                        if (self.dayOfWeek().Id == dayId && self.periodId() == timeId)
-                            self.getScheduleByIdToObject(true, schedule.Id, i, j);
-                        else {
-                            self.calendarSchedules()[i].remove(self.calendarSchedules()[i]()[j]);
-                        }
-                    }
-            }
-        }
-    }
-    
+
     self.toPrevWeek = function (flag) {
         if (flag == true) {
 
@@ -2434,13 +2437,7 @@ var Calendar=function(dayOfWeek, periodId, weekTypeId, lecturerId, groupIds, sub
                 newWeeks.push(self.weeks()[j-1]);
             self.weeks(newWeeks);
 
-            var newCalendarSchedules = [];
-            newCalendarSchedules.push(new ko.observableArray([]));
-            for (var j = 1; j < self.weeks().length; ++j)
-                newCalendarSchedules.push(self.calendarSchedules()[j-1]);
-
-            self.calendarSchedules(newCalendarSchedules);
-            setTimeout(function () { self.loadCalendarSchedules(toStrDate(tss), toStrDate(tes), 0, true); }, 500);
+            self.loadSchedules(true);
         }
     };
     
@@ -2509,14 +2506,13 @@ var Calendar=function(dayOfWeek, periodId, weekTypeId, lecturerId, groupIds, sub
         });
     }
     
-    setTimeout(function () { self.loadCalendarSchedules(self.weeks()[0].StartDate, self.weeks()[0].EndDate, 0, true); }, 200);
-    setTimeout(function () { self.loadCalendarSchedules(self.weeks()[1].StartDate, self.weeks()[1].EndDate, 1, true); }, 200);
-    setTimeout(function () { self.loadCalendarSchedules(self.weeks()[2].StartDate, self.weeks()[2].EndDate, 2, true); }, 200);
-    setTimeout(function () { self.loadCalendarSchedules(self.weeks()[3].StartDate, self.weeks()[3].EndDate, 3, true); }, 200);
-    setTimeout(function () { self.loadCalendarSchedules(self.weeks()[4].StartDate, self.weeks()[4].EndDate, 4, true); }, 200);
-    setTimeout(function () { self.loadCalendarSchedules(self.weeks()[5].StartDate, self.weeks()[5].EndDate, 5, true); }, 200);
-    setTimeout(function () { self.loadCalendarSchedules(self.weeks()[6].StartDate, self.weeks()[6].EndDate, 6, true); }, 200);
-    
+    self.loadSchedules = function (status) {
+        if (status == true) {
+            for(var i = 0; i <= 6; ++i)
+                self.loadCalendarSchedules(self.weeks()[i].StartDate, self.weeks()[i].EndDate, i, true);
+        }
+    };
+
 
     self.realDeleteSchedule = function (status, schedule) {
         if (status == true) {
@@ -2528,37 +2524,24 @@ var Calendar=function(dayOfWeek, periodId, weekTypeId, lecturerId, groupIds, sub
                         'Id': schedule.Id,
                     },
                     onsuccess: function () {
-                        self.deleteReload(true, schedule);
+                        self.loadSchedules(true);
+                        parentForm.loadSchedules(true);
                     }
                 });
             }
         }
     }
 
-    self.deleteReload = function (status, schedule) {
-
-        if (status == true) {
-            for (var i = 0; i < 7; ++i) {
-                for (var j = 0; j < self.calendarSchedules()[i]().length; ++j)
-                    if (self.calendarSchedules()[i]()[j].Id == schedule.Id) {
-                        self.calendarSchedules()[i].remove(self.calendarSchedules()[i]()[j]);
-                    }
-            }
-        }
-    }
-
+  
     self.deleteSchedule = function (status, schedule) {
         if (status == true) {
-
             self.currentDeleteConfirmForm(new DeleteScheduleConfirmForm(self.realDeleteSchedule, schedule));
             self.currentDeleteConfirmForm().openDialog(true);
         }
     }
 
     self.openDialog = function (status) {
-
         if (status == true) {
-
             $("#calendardialog").modal('show');
         }
     };
@@ -2570,24 +2553,57 @@ var Calendar=function(dayOfWeek, periodId, weekTypeId, lecturerId, groupIds, sub
             $("#calendardialog").modal('hide');
         }
     };
+
+    self.init = function (status) {
+        if (status == true) {
+            self.loadSchedules(true);
+        }
+    };
+
+    self.init(true);
 };
 
+
+function getCurrentWeek(){
+    var start = new Date();
+    start.setDate(start.getDate() - (start.getDay() - 1));
+    var day = ("0" + start.getDate()).slice(-2);
+    var month = ("0" + (start.getMonth() + 1)).slice(-2);
+    start = start.getFullYear() + "-" + (month) + "-" + (day);
+
+    var end = new Date();
+    end.setDate(end.getDate() + 7 - end.getDay());
+    var day = ("0" + end.getDate()).slice(-2);
+    var month = ("0" + (end.getMonth() + 1)).slice(-2);
+    end = end.getFullYear() + "-" + (month) + "-" + (day);
+    return { start: start, end: end };
+}
 
 function baseViewModel() {
     var self = this;
 
     dModel = new dataModel();
 
-    
     self.currentFlowSelectForm = ko.observable(new FlowSelectForm(self));
     self.currentScheduleInfoSelectForm = ko.observable();
     self.currentScheduleAddForm = ko.observable();
     self.currentCalendar = ko.observable();
-    self.currentScheduleSelectForm = ko.observable(new ScheduleSelectForm(undefined, undefined, undefined, undefined, undefined, self));
+   
+
+    var date = getCurrentWeek();
+    self.currentScheduleSelectForm = ko.observable(new ScheduleSelectForm(undefined, undefined, undefined, date.start, date.end, self));
+    self.currentPrintSettingForm = ko.observable();
 
     //#init function
     self.init = function () {
+
+        console.log("777");
+
      
+
+
+ 
+
         Ext.create('Ext.container.Viewport', {
             width: 1400,
             height: '100%',
@@ -2634,8 +2650,6 @@ function baseViewModel() {
        
     }
 };
-
-
 
 $(function () {
 

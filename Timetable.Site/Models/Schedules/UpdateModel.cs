@@ -26,5 +26,10 @@ namespace Timetable.Site.Models.Schedules
         public bool AutoDelete { get; set; }
 
         public string SubGroup { get; set; }
+
+        public string GroupIds { get; set; }
+
+        public string Mode { get; set; }
+
     }
 }

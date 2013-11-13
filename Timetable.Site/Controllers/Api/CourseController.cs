@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using Timetable.Site.DataService;
 using Timetable.Site.Models.Courses;
 using System.Web.Http;
+using System.Linq;
 
 namespace Timetable.Site.Controllers.Api
 {
@@ -27,6 +28,23 @@ namespace Timetable.Site.Controllers.Api
                 result.Add(new SendModel(t));
             }
 
+            return result;
+        }
+
+        public IEnumerable<SendModel> GetByIds(string courseIds)
+        {
+            var result = new List<SendModel>();
+            var tmp = DataService.GetCources();
+            var Ids = new List<int>();
+             foreach (var courseId in courseIds.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                 if (courseId != " ")
+                    Ids.Add(int.Parse(courseId));
+
+            var courses = privateGetAll();
+            foreach(var c in courses){
+                if (Ids.Any(x => x == c.Id))
+                    result.Add(c);
+            }
             return result;
         }
 

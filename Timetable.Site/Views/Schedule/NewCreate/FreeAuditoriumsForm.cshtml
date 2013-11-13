@@ -12,12 +12,12 @@
                 <option></option>
         </select>-->
     
-        <span>Тип аудитории</span>
+        <span class="label">Тип аудитории</span>
         <select style="width:100%;"  data-placeholder="Выберите тип аудитории" class="span5" id="auditoriumtype1" data-bind="options: $root.currentScheduleSelectForm().freeAuditoriumsForm().auditoriumTypes, optionsText: 'Name', value: $root.currentScheduleSelectForm().freeAuditoriumsForm().currentAuditoriumType">
                 <option></option>
         </select>
 
-        <span>Свободны</span>
+        <span class="label">Свободны</span>
         <select style="width:100%"  size="8" data-placeholder="Выберите аудиторию" class="span5" id="auditorium1" data-bind="options: $root.currentScheduleSelectForm().freeAuditoriumsForm().auditoriums, optionsText: 'Number', value: $root.currentScheduleSelectForm().freeAuditoriumsForm().currentAuditorium">
                 <option></option>
         </select>

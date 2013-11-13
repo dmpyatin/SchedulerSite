@@ -2,7 +2,39 @@
 .modal-body {
     max-height: 800px;
 }
+
+.datepicker{z-index:100700 !important;}
+
 </style>
+
+
+<!-- Validate Form -->
+<!-- ko if: $root.currentScheduleSelectForm().currentScheduleUpdateForm() !== undefined -->
+<!-- ko if: $root.currentScheduleSelectForm().currentScheduleUpdateForm().validateScheduleForm() !== undefined -->
+<div class="modal hide" id ="validatedialog" data-bind=" draggable: {handle: '.modal-header'}" style="z-index:100500; cursor:move; width:400px; overflow-x:hidden;">
+    <div class="modal-header" style="overflow-x:hidden;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h5>Не получилось добавить занятие</h5>
+    </div>
+    <div class="modal-body" style="overflow-x:hidden;">
+        <div class="alert alert-error">
+            <div id="validatemessage2" class="hide">В выбранный Вами день, время и тип недели уже проводится другое занятие. <strong style="cursor:pointer;" data-bind="">Сделать замену занятия</strong> </div>
+            <div id="validatemessage3" class="hide">Не выбран день недели</div>
+            <div id="validatemessage4" class="hide">Не выбрана аудитория</div>
+            <div id="validatemessage5" class="hide">Не выбрано время проведения занятия</div>
+            <div id="validatemessage6" class="hide">Не выбрано сведение к расписанию</div>
+            <div id="validatemessage7" class="hide">Не выбран тип недели</div>
+            <div id="validatemessage8" class="hide">Не указана дата начала занятия</div>
+            <div id="validatemessage9" class="hide">Не указана дата окончания занятия</div>
+            <div id="validatemessage10" class="hide">Дата начала занятия больше даты окончания</div>
+        </div>
+    </div>
+    <div class="modal-footer" style="overflow-x:hidden;">
+        <input id="validateOkButton" type="button" class="btn btn-primary" value="Продолжить" data-bind="click: $root.currentScheduleSelectForm().currentScheduleUpdateForm().validateScheduleForm().closeDialog.bind($data,true)" />
+    </div>
+</div>
+<!-- /ko -->   
+<!-- /ko -->  
 
 <!-- ko if: $root.currentCalendar() !== undefined -->
 <!-- ko if: $root.currentCalendar().currentScheduleUpdateForm() !== undefined -->
@@ -12,10 +44,46 @@
         <h5>Редактирование занятия</h5>
     </div>
     <div class="modal-body" style="overflow-x:hidden; overflow-y:hidden;">
+
+        <!-- ko if: $root.currentCalendar().currentScheduleUpdateForm() !== undefined -->
+        <!-- ko if: $root.currentCalendar().currentScheduleUpdateForm().validateScheduleForm() !== undefined -->
+        
+        <!-- ko ifnot: $root.currentCalendar().currentScheduleUpdateForm().validateScheduleForm().canDo() -->
+         <!-- ko ifnot: $root.currentCalendar().currentScheduleUpdateForm().validateScheduleForm().doingSuccess() -->
+        <div class="alert alert-error">
+            <div id="validatemessage2" class="hide">В выбранный Вами день, время и тип недели уже проводится другое занятие. <strong style="cursor:pointer;" data-bind="">Сделать замену занятия</strong> </div>
+            <div id="validatemessage3" class="hide">Не выбран день недели</div>
+            <div id="validatemessage4" class="hide">Не выбрана аудитория</div>
+            <div id="validatemessage5" class="hide">Не выбрано время проведения занятия</div>
+            <div id="validatemessage6" class="hide">Не выбрано сведение к расписанию</div>
+            <div id="validatemessage7" class="hide">Не выбран тип недели</div>
+            <div id="validatemessage8" class="hide">Не указана дата начала занятия</div>
+            <div id="validatemessage9" class="hide">Не указана дата окончания занятия</div>
+            <div id="validatemessage10" class="hide">Дата начала занятия больше даты окончания</div>
+        </div>
+        <!-- /ko --> 
+        <!-- /ko --> 
+
+        <!-- ko if: $root.currentCalendar().currentScheduleUpdateForm().validateScheduleForm().canDo() -->
+        <div class="alert alert-success">
+                Вы можете добавить занятие
+        </div>
+         <!-- /ko --> 
+
+         <!-- ko if: $root.currentCalendar().currentScheduleUpdateForm().validateScheduleForm().doingSuccess() -->
+        <div class="alert alert-success">
+                Занятие успешно добавлено
+        </div>
+         <!-- /ko --> 
+
+         <!-- /ko --> 
+         <!-- /ko --> 
+
+         
         <table>
               <tr>
-                <th style="text-align:left;"><strong>Идет с</strong></th>
-                <th style="text-align:left;"><strong>Идет по</strong></th>
+                <th style="text-align:left;"><span class="label">Идет с</span></th>
+                <th style="text-align:left;"><span class="label">Идет по</span></th>
               </tr>
             <tr>
                 <td>
@@ -26,39 +94,39 @@
                 </td>
                </tr>
           </table>
-        <strong>День недели</strong>
+        <span class="label">День недели</span>
         <select style="width:100%"  data-placeholder="Выберите день недели" class="span5" id="dayofweek" data-bind="options: $root.currentCalendar().currentScheduleUpdateForm().days, optionsText: 'Name', value: $root.currentCalendar().currentScheduleUpdateForm().currentDay">
             <option></option>
         </select>
 
-        <strong>Тип недели</strong>
+        <span class="label">Тип недели</span>
         <select style="width:100%"  data-placeholder="Выберите тип недели" class="span5" id="weektype" data-bind="options: $root.currentCalendar().currentScheduleUpdateForm().weekTypes, optionsText: 'Name', value: $root.currentCalendar().currentScheduleUpdateForm().currentWeekType">
             <option></option>
         </select>
 
-        <strong>Время</strong>     
+        <span class="label">Время</span>     
         <select style="width:100%" data-placeholder="Выберите время" class="span5" id="times" data-bind="options: $root.currentCalendar().currentScheduleUpdateForm().times, optionsText: 'StartEnd', value: $root.currentCalendar().currentScheduleUpdateForm().currentTime">
             <option></option>
         </select>
 
-         <strong>Тип аудитории</strong>
+         <span class="label">Тип аудитории</span>
         <select style="width:100%"  data-placeholder="Выберите тип аудитории" class="span5" id="auditoriumType" data-bind="options: $root.currentCalendar().currentScheduleUpdateForm().auditoriumTypes, optionsText: 'Name', value: $root.currentCalendar().currentScheduleUpdateForm().currentAuditoriumType">
             <option></option>
         </select>
 
-        <strong>Аудитория</strong>
+        <span class="label">Аудитория</span>
         <select style="width:100%"  data-placeholder="Выберите аудиторию" class="span5" id="auditorium" data-bind="options: $root.currentCalendar().currentScheduleUpdateForm().auditoriums, optionsText: 'Number', value: $root.currentCalendar().currentScheduleUpdateForm().currentAuditorium">
             <option></option>
         </select>
 
-        <strong>Подгруппа</strong>
+        <span class="label">Подгруппа</span>
         <select style="width:100%"  data-placeholder="Выберите подгруппу" class="span5" id="subgroup" data-bind="options: $root.currentCalendar().currentScheduleUpdateForm().subGroups, value: $root.currentCalendar().currentScheduleUpdateForm().currentSubGroup">
             <option></option>
         </select>
 
     </div>
     <div class="modal-footer" style="overflow-x:hidden;">
-        <input id="updateScheduleOkButton" type="button" class="btn btn-primary" value="Изменить" data-bind="event:{click:$root.currentCalendar().currentScheduleUpdateForm().updateButtonClick.bind($data,true)}" />
+        <input id="ScheduleOkButton" type="button" class="btn btn-primary" value="Изменить" data-bind="event:{click:$root.currentCalendar().currentScheduleUpdateForm().updateButtonClick.bind($data,true)}" />
         <a  style="cursor:pointer;" data-bind="event:{click:$root.currentCalendar().currentScheduleUpdateForm().cancelButtonClick.bind($data,true)}">Отмена</a>
     </div>
 </div>
@@ -75,10 +143,46 @@
         <h5>Редактирование занятия</h5>
     </div>
     <div class="modal-body" style="overflow-x:hidden; overflow-y:hidden;">
+
+         <!-- ko if: $root.currentScheduleSelectForm().currentScheduleUpdateForm() !== undefined -->
+        <!-- ko if: $root.currentScheduleSelectForm().currentScheduleUpdateForm().validateScheduleForm() !== undefined -->
+        
+        <!-- ko ifnot: $root.currentScheduleSelectForm().currentScheduleUpdateForm().validateScheduleForm().canDo() -->
+         <!-- ko ifnot: $root.currentScheduleSelectForm().currentScheduleUpdateForm().validateScheduleForm().doingSuccess() -->
+        <div class="alert alert-error">
+            <div id="validatemessage2" class="hide">В выбранный Вами день, время и тип недели уже проводится другое занятие. <strong style="cursor:pointer;" data-bind="">Сделать замену занятия</strong> </div>
+            <div id="validatemessage3" class="hide">Не выбран день недели</div>
+            <div id="validatemessage4" class="hide">Не выбрана аудитория</div>
+            <div id="validatemessage5" class="hide">Не выбрано время проведения занятия</div>
+            <div id="validatemessage6" class="hide">Не выбрано сведение к расписанию</div>
+            <div id="validatemessage7" class="hide">Не выбран тип недели</div>
+            <div id="validatemessage8" class="hide">Не указана дата начала занятия</div>
+            <div id="validatemessage9" class="hide">Не указана дата окончания занятия</div>
+            <div id="validatemessage10" class="hide">Дата начала занятия больше даты окончания</div>
+        </div>
+        <!-- /ko --> 
+        <!-- /ko --> 
+
+        <!-- ko if: $root.currentScheduleSelectForm().currentScheduleUpdateForm().validateScheduleForm().canDo() -->
+        <div class="alert alert-success">
+                Вы можете изменить занятие
+        </div>
+         <!-- /ko --> 
+
+         <!-- ko if: $root.currentScheduleSelectForm().currentScheduleUpdateForm().validateScheduleForm().doingSuccess() -->
+        <div class="alert alert-success">
+                Занятие успешно изменено
+        </div>
+         <!-- /ko --> 
+
+         <!-- /ko --> 
+         <!-- /ko --> 
+
+
         <table>
               <tr>
-                <th style="text-align:left;"><strong>Идет с</strong></th>
-                <th style="text-align:left;"><strong>Идет по</strong></th>
+                <th style="text-align:left;"><span class="label">Идет с</span></th>
+                <th style="text-align:left;"><span class="label">Идет по</span></th>
               </tr>
             <tr>
                 <td>
@@ -89,39 +193,40 @@
                 </td>
                </tr>
           </table>
-        <strong>День недели</strong>
+       
+        <span class="label">День недели</span>
         <select style="width:100%"  data-placeholder="Выберите день недели" class="span5" id="dayofweek" data-bind="options: $root.currentScheduleSelectForm().currentScheduleUpdateForm().days, optionsText: 'Name', value: $root.currentScheduleSelectForm().currentScheduleUpdateForm().currentDay">
             <option></option>
         </select>
 
-        <strong>Тип недели</strong>
+        <span class="label">Тип недели</span>
         <select style="width:100%"  data-placeholder="Выберите тип недели" class="span5" id="weektype" data-bind="options: $root.currentScheduleSelectForm().currentScheduleUpdateForm().weekTypes, optionsText: 'Name', value: $root.currentScheduleSelectForm().currentScheduleUpdateForm().currentWeekType">
             <option></option>
         </select>
 
-        <strong>Время</strong>     
+        <span class="label">Время</span>     
         <select style="width:100%" data-placeholder="Выберите время" class="span5" id="times" data-bind="options: $root.currentScheduleSelectForm().currentScheduleUpdateForm().times, optionsText: 'StartEnd', value: $root.currentScheduleSelectForm().currentScheduleUpdateForm().currentTime">
             <option></option>
         </select>
 
-         <strong>Тип аудитории</strong>
+         <span class="label">Тип аудитории</span>
         <select style="width:100%"  data-placeholder="Выберите тип аудитории" class="span5" id="auditoriumType" data-bind="options: $root.currentScheduleSelectForm().currentScheduleUpdateForm().auditoriumTypes, optionsText: 'Name', value: $root.currentScheduleSelectForm().currentScheduleUpdateForm().currentAuditoriumType">
             <option></option>
         </select>
 
-        <strong>Аудитория</strong>
+        <span class="label">Аудитория</span>
         <select style="width:100%"  data-placeholder="Выберите аудиторию" class="span5" id="auditorium" data-bind="options: $root.currentScheduleSelectForm().currentScheduleUpdateForm().auditoriums, optionsText: 'Number', value: $root.currentScheduleSelectForm().currentScheduleUpdateForm().currentAuditorium">
             <option></option>
         </select>
 
-        <strong>Подгруппа</strong>
+        <span class="label">Подгруппа</span>
         <select style="width:100%"  data-placeholder="Выберите подгруппу" class="span5" id="subgroup" data-bind="options: $root.currentScheduleSelectForm().currentScheduleUpdateForm().subGroups, value: $root.currentScheduleSelectForm().currentScheduleUpdateForm().currentSubGroup">
             <option></option>
         </select>
 
     </div>
     <div class="modal-footer" style="overflow-x:hidden;">
-        <input id="updateScheduleOkButton" type="button" class="btn btn-primary" value="Изменить" data-bind="event:{click:$root.currentScheduleSelectForm().currentScheduleUpdateForm().updateButtonClick.bind($data,true)}" />
+        <input id="ScheduleOkButton" type="button" class="btn btn-primary disabled" value="Изменить" data-bind="event:{click:$root.currentScheduleSelectForm().currentScheduleUpdateForm().updateButtonClick.bind($data,true)}" />
         <a  style="cursor:pointer;" data-bind="event:{click:$root.currentScheduleSelectForm().currentScheduleUpdateForm().cancelButtonClick.bind($data,true)}">Отмена</a>
     </div>
 </div>

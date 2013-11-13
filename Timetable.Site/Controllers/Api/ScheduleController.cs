@@ -283,7 +283,7 @@ namespace Timetable.Site.Controllers.Api
                 endTime);
         }
 
-        private IEnumerable<SendModel> privateGetScheduleByAll(
+        public IEnumerable<SendModel> privateGetScheduleByAll(
            int? lecturerId,
            int? auditoriumId,
            string groupIds,
@@ -586,34 +586,20 @@ namespace Timetable.Site.Controllers.Api
         }
 
 
-        [HttpGet]
-        public HttpResponseMessage Validate(
+      
+        private IEnumerable<int> ValidateSchedule(
+            int? ScheduleId,
+            int? LecturerId,
             int? AuditoriumId,
             int? ScheduleInfoId,
             int? DayOfWeek,
             int? PeriodId,
             int? WeekTypeId,
+            string GroupIds,
+            string SubGroup,
             string StartDate,
-            string EndDate)
-        {
-            return CreateResponse<int?, int?, int?, int?, int?, string, string, IEnumerable<int>>(privateValidate,
-             AuditoriumId,
-             ScheduleInfoId,
-             DayOfWeek,
-             PeriodId,
-             WeekTypeId,
-             StartDate,
-             EndDate);
-        }
-
-        private IEnumerable<int> privateValidate(
-            int? AuditoriumId,
-            int? ScheduleInfoId,
-            int? DayOfWeek,
-            int? PeriodId,
-            int? WeekTypeId,
-            string StartDate,
-            string EndDate)
+            string EndDate,
+            string Mode)
         {
 
             var validateErrors = new List<int>();
@@ -674,10 +660,39 @@ namespace Timetable.Site.Controllers.Api
             else
                 aSchedule.EndDate = DateTime.ParseExact(EndDate, "yyyy-MM-dd", null);
 
+
+            if (aSchedule.StartDate > aSchedule.EndDate)
+                validateErrors.Add(10);
+
+
             aSchedule.AutoDelete = false;
 
-            if (!DataService.ValidateSchedule(aSchedule))
-                validateErrors.Add(2);
+
+
+            //if (!DataService.ValidateSchedule(aSchedule))
+                //validateErrors.Add(2);
+
+
+       
+            var Schedules= privateGetScheduleByAll(LecturerId, AuditoriumId, GroupIds, WeekTypeId, SubGroup, StartDate, EndDate)
+                            .Where(x => x.DayOfWeek == aSchedule.DayOfWeek && x.PeriodId == aSchedule.PeriodId).ToArray();
+
+            if (Mode == "Update")
+            {
+                if(Schedules.Count() > 1)
+                    validateErrors.Add(2);
+                else
+                    if(Schedules.Count() == 1)
+                        if(Schedules[0].Id != ScheduleId.Value)
+                            validateErrors.Add(2);
+                    
+            }
+
+            if (Mode == "Add")
+            {
+                if (Schedules.Count() > 0)
+                    validateErrors.Add(2);
+            }
 
             return validateErrors;
         }
@@ -687,65 +702,85 @@ namespace Timetable.Site.Controllers.Api
         [HttpPost]
         public HttpResponseMessage Update(UpdateModel model)
         {
-            return CreateResponse(privateUpdate, model);
+            return CreateResponse <UpdateModel, IEnumerable<int>>(privateUpdate, model);
         }
 
-        public void privateUpdate(UpdateModel model)
+        public IEnumerable<int> privateUpdate(UpdateModel model)
         {
-            
-            var qSchedule = DataService.GetScheduleById(model.ScheduleId);
 
-            if (qSchedule != null)
-            {
+           var ErrorList = ValidateSchedule(model.ScheduleId,
+                            null,
+                            model.AuditoriumId, 
+                            model.ScheduleInfoId, 
+                            model.DayOfWeek,
+                            model.PeriodId,
+                            model.WeekTypeId,
+                            model.GroupIds,
+                            model.SubGroup,
+                            model.StartDate,
+                            model.EndDate,
+                            "Update");
 
-                qSchedule.SubGroup = model.SubGroup;
-                qSchedule.DayOfWeek = model.DayOfWeek;
+           if (ErrorList.Count() == 0 && model.Mode == "execute")
+           {
+               var qSchedule = DataService.GetScheduleById(model.ScheduleId);
 
-                if (model.AuditoriumId != null)
-                {
-                    qSchedule.Auditorium = new Auditorium();
-                    qSchedule.Auditorium.Id = model.AuditoriumId;
-                    qSchedule.AuditoriumId = model.AuditoriumId;
-                }
+               if (qSchedule != null)
+               {
 
-                qSchedule.UpdateDate = DateTime.Now.Date;
+                   qSchedule.SubGroup = model.SubGroup;
+                   qSchedule.DayOfWeek = model.DayOfWeek;
 
+                   if (model.AuditoriumId != null)
+                   {
+                       qSchedule.Auditorium = new Auditorium();
+                       qSchedule.Auditorium.Id = model.AuditoriumId;
+                       qSchedule.AuditoriumId = model.AuditoriumId;
+                   }
 
-                if (model.PeriodId != null)
-                {
-                    qSchedule.Period = new Time();
-                    qSchedule.Period.Id = model.PeriodId;
-                    qSchedule.PeriodId = model.PeriodId;
-                }
-
-
-                if (model.ScheduleInfoId != null)
-                {
-                    qSchedule.ScheduleInfoId = model.ScheduleInfoId;
-                }
-
-                if (model.WeekTypeId != null)
-                {
-                    qSchedule.WeekType = new WeekType();
-                    qSchedule.WeekType.Id = model.WeekTypeId;
-                    qSchedule.WeekTypeId = model.WeekTypeId;
-                }
+                   qSchedule.UpdateDate = DateTime.Now.Date;
 
 
+                   if (model.PeriodId != null)
+                   {
+                       qSchedule.Period = new Time();
+                       qSchedule.Period.Id = model.PeriodId;
+                       qSchedule.PeriodId = model.PeriodId;
+                   }
 
-                if (model.StartDate != "" && model.StartDate != null)
-                    qSchedule.StartDate = DateTime.ParseExact(model.StartDate, "yyyy-MM-dd", null);
-                if (model.EndDate != "" && model.EndDate != null)
-                    qSchedule.EndDate = DateTime.ParseExact(model.EndDate, "yyyy-MM-dd", null);
+
+                   if (model.ScheduleInfoId != null)
+                   {
+                       qSchedule.ScheduleInfoId = model.ScheduleInfoId;
+                   }
+
+                   if (model.WeekTypeId != null)
+                   {
+                       qSchedule.WeekType = new WeekType();
+                       qSchedule.WeekType.Id = model.WeekTypeId;
+                       qSchedule.WeekTypeId = model.WeekTypeId;
+                   }
 
 
 
-                if (model.AutoDelete != null)
-                    qSchedule.AutoDelete = model.AutoDelete;
+                   if (model.StartDate != "" && model.StartDate != null)
+                       qSchedule.StartDate = DateTime.ParseExact(model.StartDate, "yyyy-MM-dd", null);
+                   if (model.EndDate != "" && model.EndDate != null)
+                       qSchedule.EndDate = DateTime.ParseExact(model.EndDate, "yyyy-MM-dd", null);
 
-                DataService.Update(qSchedule);
-            }
 
+
+                   if (model.AutoDelete != null)
+                       qSchedule.AutoDelete = model.AutoDelete;
+
+
+
+                   DataService.Update(qSchedule);
+               }
+           }
+
+
+           return ErrorList;
         }
 
 
@@ -753,31 +788,50 @@ namespace Timetable.Site.Controllers.Api
         [HttpPost]
         public HttpResponseMessage Add(AddModel model)
         {
-            return CreateResponse(privateAdd, model);
+            return CreateResponse <AddModel, IEnumerable<int>>(privateAdd, model);
         }
 
-        public void privateAdd(AddModel model)
+        public IEnumerable<int> privateAdd(AddModel model)
         {
-            var aSchedule = new Schedule();
-            
-            aSchedule.DayOfWeek = model.DayOfWeek;
-            aSchedule.SubGroup = model.SubGroup;
 
-            aSchedule.AuditoriumId = model.AuditoriumId;
-            aSchedule.PeriodId = model.PeriodId;
-            aSchedule.ScheduleInfoId = model.ScheduleInfoId;
-            aSchedule.WeekTypeId = model.WeekTypeId;
+            var ErrorList = ValidateSchedule(null,
+                            null,
+                            model.AuditoriumId,
+                            model.ScheduleInfoId,
+                            model.DayOfWeek,
+                            model.PeriodId,
+                            model.WeekTypeId,
+                            model.GroupIds,
+                            model.SubGroup,
+                            model.StartDate,
+                            model.EndDate,
+                            "Add");
 
-            aSchedule.CreatedDate = DateTime.Now.Date;
-            aSchedule.UpdateDate = DateTime.Now.Date;
-            aSchedule.IsActual = true;
+            if (ErrorList.Count() == 0 && model.Mode == "execute")
+            {
+                var aSchedule = new Schedule();
 
-            aSchedule.StartDate = DateTime.ParseExact(model.StartDate, "yyyy-MM-dd", null);
-            aSchedule.EndDate = DateTime.ParseExact(model.EndDate, "yyyy-MM-dd", null);
+                aSchedule.DayOfWeek = model.DayOfWeek;
+                aSchedule.SubGroup = model.SubGroup;
 
-            aSchedule.AutoDelete = model.AutoDelete;
+                aSchedule.AuditoriumId = model.AuditoriumId;
+                aSchedule.PeriodId = model.PeriodId;
+                aSchedule.ScheduleInfoId = model.ScheduleInfoId;
+                aSchedule.WeekTypeId = model.WeekTypeId;
 
-            DataService.Add(aSchedule);
+                aSchedule.CreatedDate = DateTime.Now.Date;
+                aSchedule.UpdateDate = DateTime.Now.Date;
+                aSchedule.IsActual = true;
+
+                aSchedule.StartDate = DateTime.ParseExact(model.StartDate, "yyyy-MM-dd", null);
+                aSchedule.EndDate = DateTime.ParseExact(model.EndDate, "yyyy-MM-dd", null);
+
+                aSchedule.AutoDelete = model.AutoDelete;
+
+                DataService.Add(aSchedule);
+            }
+
+            return ErrorList;
         }
 
         //Удалить запись из расписания
