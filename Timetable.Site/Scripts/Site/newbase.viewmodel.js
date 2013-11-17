@@ -20,40 +20,186 @@ var showError = function (msg) {
 
 function CreateDateRangePicker(selector, parentForm) {
 
-
-    /*
-        {
-            ranges: {
-                'Сегодня': [moment(), moment()],
-                'Вчера': [moment().subtract('days', 1), moment().subtract('days', 1)],
-                'Эта неделя': [moment().startOf('week'), moment().endOf('week')],
-                'Последние 7 дней': [moment().subtract('days', 6), moment()],
-                'Последние 30 дней': [moment().subtract('days', 29), moment()],
-                'Этот месяц': [moment().startOf('month'), moment().endOf('month')],
-                'Прошлый месяц': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
-            },
-            startDate: moment().startOf('week'),
-            endDate: moment().endOf('week')
-        },
-        function (start, end) {
-            //parentForm.startDate(start);
-            //parentForm.endDate(end);
-            console.log("RANGE : ")
-            console.log(start);
-            console.log(end);
-            $(selector + ' span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-        });*/
 };
 
+
+var AuditoriumSelectForm = function (parentForm) {
+    var self = this;
+
+    self.auditoriums = ko.observableArray([]);
+    self.buildings = ko.observableArray([]);
+    self.auditoriumTypes = ko.observableArray([]);
+
+    self.currentAuditoriumType = ko.observable();
+    self.currentAuditorium = ko.observable();
+    self.currentBuilding = ko.observable();
+
+
+    self.currentAuditoriumType.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            console.log("aud type");
+            console.log(newValue.Id);
+            self.loadAuditoriums(true, self.currentBuilding().Id, newValue.Id);
+        }
+    });
+
+
+    self.currentBuilding.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            if(self.currentAuditoriumType() !== undefined)
+                self.loadAuditoriums(true, newValue.Id, self.currentAuditoriumType().Id);
+        }
+    });
+
+    self.loadBuildings = function (status) {
+        if (status == true) {
+            dModel.loadData({
+                address: "building/GetAll",
+                obj: self.buildings,
+                onsuccess: function () {
+                    self.loadAuditoriumTypes(true);
+                }
+            });
+        }
+    };
+
+    self.loadAuditoriumTypes = function (status) {
+        if (status == true) {
+            dModel.loadData({
+                address: "auditoriumtype/getall",
+                obj: self.auditoriumTypes,
+                onsuccess: function () {
+
+                }
+            });
+        }
+    };
+
+    self.loadAuditoriums = function (status, buildingId, auditoriumTypeId) {
+        if (status == true) {
+
+            dModel.loadData({
+                address: "auditorium/GetByBuilding",
+                obj: self.auditoriums,
+                params: {
+                    buildingId: buildingId,
+                    auditoriumtypeid: auditoriumTypeId,
+                },
+                onsuccess: function () {
+
+                }
+            });
+        }
+    };
+
+
+    self.init = function (status) {
+        if (status == true) {
+            self.loadBuildings(true);
+            
+        }
+    };
+
+    self.init(true);
+}
+
+var LecturerSelectForm = function (parentForm) {
+
+    var self = this;
+
+    console.log("dasdasdasdasd");
+    self.lecturers = ko.observableArray([]);
+    self.currentLecturer = ko.observable();
+    self.lecturerText = ko.observable("");
+
+    self.lecturerText.subscribe(function (newValue) {
+        if (newValue !== undefined)
+            if(newValue.length > 30)
+        dModel.loadData({
+            address: "lecturer/GetByMask",
+            obj: self.lecturers,
+            params: {
+                mask: self.lecturerText()
+            },
+            onsuccess: function () {
+                console.log(self.lecturers());
+            }
+        });
+        
+    });
+
+
+
+    self.init = function (status) {
+        if (status == true) {
+
+            
+            
+        }
+    };
+
+    self.init(true);
+}
 
 //Форма печати отчетов
 var PrintSettingForm = function (startDate, endDate, parentForm) {
     var self = this;
 
     self.currentFlowSelectForPrintForm = ko.observable(new FlowSelectForm(self));
+    self.currentLecturerSelectForPrintForm = ko.observable(new LecturerSelectForm(self));
+    self.currentAuditoriumSelectForPrintForm = ko.observable(new AuditoriumSelectForm(self));
 
     self.startDate = ko.observable(startDate);
     self.endDate = ko.observable(endDate);
+
+    
+    self.titleForFlow = ko.computed(function () {
+        var res = "";
+        if (self.currentFlowSelectForPrintForm() !== undefined) {
+            if (self.currentFlowSelectForPrintForm().currentBranch() !== undefined)
+                res += self.currentFlowSelectForPrintForm().currentBranch().Name + " ";
+
+            if (self.currentFlowSelectForPrintForm().currentFaculty() !== undefined)
+                res += self.currentFlowSelectForPrintForm().currentFaculty().Name + " ";
+
+            if (self.currentFlowSelectForPrintForm().currentCourses() !== undefined) {
+                for (var i = 0; i < self.currentFlowSelectForPrintForm().currentCourses().length; ++i)
+                    res += self.currentFlowSelectForPrintForm().currentCourses()[i].Name + " ";
+            }
+
+            if (self.currentFlowSelectForPrintForm().currentSpecialities() !== undefined) {
+                for (var i = 0; i < self.currentFlowSelectForPrintForm().currentSpecialities().length; ++i)
+                    res += self.currentFlowSelectForPrintForm().currentSpecialities()[i].Name + " ";
+            }
+
+            if (self.currentFlowSelectForPrintForm().currentGroups() !== undefined) {
+                for (var i = 0; i < self.currentFlowSelectForPrintForm().currentGroups().length; ++i)
+                    res += self.currentFlowSelectForPrintForm().currentGroups()[i].Code + " ";
+            }
+        }
+
+        res += "(" + self.startDate() + " - ";
+        res += self.endDate() + ")";
+
+        return res;
+    });
+
+    self.titleForAuditorium = ko.computed(function () {
+        var res = "";
+       
+        if (self.currentAuditoriumSelectForPrintForm() !== undefined) {
+            if (self.currentAuditoriumSelectForPrintForm().currentBuilding() !== undefined)
+                res += self.currentAuditoriumSelectForPrintForm().currentBuilding().Name + " ";
+
+            if (self.currentAuditoriumSelectForPrintForm().currentAuditorium() !== undefined)
+                res += "ауд. #" + self.currentAuditoriumSelectForPrintForm().currentAuditorium().Number + " ";
+        }
+
+        res += "(" + self.startDate() + " - ";
+        res += self.endDate() + ")";
+
+        return res;
+    });
 
     self.title = ko.computed(function () {
         var res = "";
@@ -78,6 +224,14 @@ var PrintSettingForm = function (startDate, endDate, parentForm) {
                 for (var i = 0; i < self.currentFlowSelectForPrintForm().currentGroups().length; ++i)
                     res += self.currentFlowSelectForPrintForm().currentGroups()[i].Code + " ";
             }
+        }
+
+        if (self.currentAuditoriumSelectForPrintForm() !== undefined) {
+            if (self.currentAuditoriumSelectForPrintForm().currentBuilding() !== undefined)
+                res += self.currentAuditoriumSelectForPrintForm().currentBuilding().Name + " ";
+
+            if (self.currentAuditoriumSelectForPrintForm().currentAuditorium() !== undefined)
+                res += "ауд. #" + self.currentAuditoriumSelectForPrintForm().currentAuditorium().Number + " ";
         }
 
         res += "(" + self.startDate() + " - ";
@@ -107,7 +261,43 @@ var PrintSettingForm = function (startDate, endDate, parentForm) {
     };
 
 
-  
+    self.createPrintForAuditoriumForm = function (status) {
+        if (status == true) {
+            if (self.currentAuditoriumSelectForPrintForm().currentAuditorium() !== undefined &&
+                self.currentAuditoriumSelectForPrintForm().currentBuilding() !== undefined) {
+                var ScheduleModel = {
+                    auditoriumId: self.currentAuditoriumSelectForPrintForm().currentAuditorium().Id,
+                    startDate: self.startDate(),
+                    endDate: self.endDate()
+                };
+
+                var TimeModel = {
+                    buildingid: self.currentAuditoriumSelectForPrintForm().currentBuilding().Id
+                };
+
+                $.ajax({
+                    url: "PrintSchedule/IndexForAuditorium",
+                    type: 'POST',
+                    contentType: 'application/json',
+                    dataType: 'html',
+                    data: JSON.stringify({ s: ScheduleModel, t: TimeModel, h: self.titleForAuditorium(), fs: self.fontSize() }),
+                    success: function (responseText, textStatus, XMLHttpRequest) {
+                        console.log("success print");
+                        console.log(responseText);
+
+                        var OpenWindow = window.open('', 'Форма печати', 'width=1100,height=500,resizable=1');
+                        console.log(OpenWindow);
+                        $(OpenWindow.document.body).ready(function () {
+                            $(OpenWindow.document.body).append(responseText);
+                        });
+                    },
+                    error: function () {
+
+                    }
+                });
+            }
+        }
+    }
 
     self.createPrintForm = function (status) {
         if (status == true) {
@@ -156,7 +346,7 @@ var PrintSettingForm = function (startDate, endDate, parentForm) {
                 type: 'POST',
                 contentType: 'application/json',
                 dataType: 'html',
-                data: JSON.stringify({ s: ScheduleModel, t: TimeModel, h: self.title(), fs: self.fontSize()}),
+                data: JSON.stringify({ s: ScheduleModel, t: TimeModel, h: self.titleForFlow(), fs: self.fontSize() }),
                 success: function (responseText, textStatus, XMLHttpRequest) {
                     console.log("success print");
                     console.log(responseText);
@@ -177,6 +367,12 @@ var PrintSettingForm = function (startDate, endDate, parentForm) {
     self.makeReport = function (status) {
         if (status == true) {
             self.createPrintForm(true);
+        }
+    };
+
+    self.makeReportForAuditorium = function (status) {
+        if (status == true) {
+            self.createPrintForAuditoriumForm(true);
         }
     };
 

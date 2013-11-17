@@ -41,7 +41,7 @@ namespace Timetable.Site.Controllers.Api
         public IEnumerable<SendModel> privateGetAll(int buildingId)
         {
            var result = new List<SendModel>();
-
+            
            var qBuilding = new Building();
            qBuilding.Id = buildingId;
            //qBuilding.Id = 1;

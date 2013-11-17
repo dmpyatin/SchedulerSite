@@ -11,6 +11,8 @@
   <div class="modal-body" style="cursor:default; overflow-x:hidden;">
       <div style="float:left;">
           @Html.Partial("NewCreate/FlowSelectForPrint")
+          <br />
+          <input type="button" class="btn btn-primary" value="Создать отчет по потоку" data-bind="click: $root.currentPrintSettingForm().makeReport.bind($data,true)" />  
       </div>
 
       <div style="margin-left:270px;">
@@ -28,18 +30,40 @@
             </td>
          </tr>
       </table>
-
-     
-
      <span class="label">Размер шрифта</span> <br />
      <input style="width: 100px;" data-bind="spinner: $root.currentPrintSettingForm().fontSize, spinnerOptions: { min: 1, max:100 } " /> pt <br />
+     
+     <br />
+     <br />
+     <br />
+     <br />
+     <br />
+     <br />
+     <br />
+     <!-- ko if: $root.currentPrintSettingForm().currentLecturerSelectForPrintForm() !== undefined -->
+     <span class="label">Выбор преподавателя</span>
+     <input id="lecturerSelect" type="text" data-bind="value: $root.currentPrintSettingForm().currentLecturerSelectForPrintForm().lecturerText, valueUpdate: 'afterkeydown'"/>  
+      <br />
+          <div data-bind="foreach: $root.currentPrintSettingForm().currentLecturerSelectForPrintForm().lecturers ">
+              <span class="label" style="background-color:blue;" data-bind="$root.currentPrintSettingForm().currentLecturerSelectForPrintForm().lecturers()[$index()].Name"></span>
+          </div>
+     <!-- /ko -->
+
+     <div>
+         @Html.Partial("NewCreate/AuditoriumSelectForPrint")
+     </div>
+     <br />
+     <input type="button" class="btn btn-primary" value="Создать отчет по аудитории" data-bind="click: $root.currentPrintSettingForm().makeReportForAuditorium.bind($data,true)" />   
+     <br />
+     
+
      
      </div>
 
   </div>
   <div class="modal-footer" style="cursor:default; overflow-x:hidden;">
-       <input type="button" class="btn btn-primary" value="Создать отчет" data-bind="click: $root.currentPrintSettingForm().makeReport.bind($data,true)" />  
-       <a style="cursor:pointer;" data-bind="click: $root.currentPrintSettingForm().closeDialog.bind($data,true)" >Отмена</a>
+     
+       <a style="cursor:pointer;" data-bind="click: $root.currentPrintSettingForm().closeDialog.bind($data,true)" >Закрыть</a>
   </div>
 </div>
 <!-- /ko -->

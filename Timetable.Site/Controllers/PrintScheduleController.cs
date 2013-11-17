@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ScheduleForPrintModel = Timetable.Site.Models.Schedules.ForPrintModel;
+using ScheduleForPrintByAuditorium = Timetable.Site.Models.Schedules.ForPrintByAuditoriumModel;
 using ScheduleForAllModel = Timetable.Site.Models.Schedules.ForAllModel;
 using TimeForAllModel = Timetable.Site.Models.Times.ForAllModel;
 using SendSchedule = Timetable.Site.Models.Schedules.SendModel;
@@ -26,7 +27,7 @@ namespace Timetable.Site.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(ScheduleForAllModel s, TimeForAllModel t, string h, int fs, string mode)
+        public ActionResult IndexForAuditorium(ScheduleForPrintByAuditorium s, TimeForAllModel t, string h, int fs, string mode)
         {
            
             var scheduleController = new Timetable.Site.Controllers.Api.ScheduleController();
@@ -44,47 +45,11 @@ namespace Timetable.Site.Controllers
 
             printScheduleModel.ScheduleTable = new SendSchedule[30, 30, 5];
 
-            printScheduleModel.Mode = mode;
+            printScheduleModel.Mode = "forAuditorium";
          
-           var Schedules = scheduleController.privateGetByAll(
-                    s.lecturerId,
-                    s.auditoriumId,
-                    s.facultyId,
-                    s.courseIds,
-                    s.groupIds,
-                    s.studyYearId,
-                    s.semesterId,
-                    s.timetableId,
-                    s.sequence,
-                    s.startTime,
-                    s.endTime,
-                    "");
+        
+            var Schedules = scheduleController.privateGetScheduleByAll(null, s.auditoriumId, "", 1, "", s.startDate, s.endDate);
            
-
-            if (mode == "forAuditorium")
-            {
-                Schedules = scheduleController.privateGetByAuditorium(
-                                    s.auditoriumId,
-                                    s.studyYearId,
-                                    s.semesterId,
-                                    s.timetableId,
-                                    s.startTime,
-                                    s.endTime);
-            }
-
-
-            if (mode == "forLecturer")
-            {
-                Schedules = scheduleController.privateGetByLecturer(
-                                    s.lecturerId,
-                                    s.studyYearId,
-                                    s.semesterId,
-                                    s.timetableId,
-                                    s.startTime,
-                                    s.endTime);
-            }
-
-
             foreach (var ss in Schedules)
             {
                 int timeId = 0;
@@ -97,12 +62,10 @@ namespace Timetable.Site.Controllers
                     }
                 }
 
-                printScheduleModel.ScheduleTable[timeId - 1, ss.DayOfWeek - 1, ss.WeekTypeId] = ss;
+                if(ss.DayOfWeek > 0 && timeId > 0)
+                    printScheduleModel.ScheduleTable[timeId - 1, ss.DayOfWeek - 1, ss.WeekTypeId] = ss;
             }
 
-            //printScheduleModel.Schedules = scheduleController.privateGetByAll(s);
-            //printScheduleModel.Times = timeController.privateGetAll(t);
-            
             return View(printScheduleModel);
         }
 
@@ -122,6 +85,7 @@ namespace Timetable.Site.Controllers
             var scheduleController = new Timetable.Site.Controllers.Api.ScheduleController();
             var timeController = new Timetable.Site.Controllers.Api.TimeController();
             var groupController = new Timetable.Site.Controllers.Api.GroupController();
+            var buildingController = new Timetable.Site.Controllers.Api.BuildingController();
 
             var printScheduleModel = new PrintScheduleForGroupsModel();
 
@@ -144,11 +108,10 @@ namespace Timetable.Site.Controllers
                 else
                     if(s.courseIds != null)
                         printScheduleModel.Groups = groupController.GetByCourseIds(s.facultyId, s.courseIds);
-                    
 
 
             
-            printScheduleModel.Times = timeController.privateGetAll(t.buildingId); //TODO: change all
+            //printScheduleModel.Times = timeController.privateGetAll(t.buildingId); //TODO: change all
          
             var targetGroupsIds = "";
             var targetCourseIds = s.courseIds;
@@ -161,8 +124,24 @@ namespace Timetable.Site.Controllers
             //var Schedules = scheduleController.privateGetByAll(s.lecturerId, s.auditoriumId, s.facultyId, s.courseIds, s.groupIds, s.studyYearId, s.semesterId, s.timetableId, s.sequence);
             //var Schedules = scheduleController.privateGetByGroups(s.facultyId, targetCourseIds, targetGroupsIds, s.studyYearId, s.semesterId, s.timetableId, s.startTime, s.endTime, "");
 
-            var Schedules = scheduleController.privateGetScheduleByAll(s.lecturerId, s.auditoriumId, targetGroupsIds, 1, s.subGroup, s.startDate, s.endDate);
+            var Schedules = scheduleController.privateGetScheduleByAll(s.lecturerId, s.auditoriumId, targetGroupsIds, 1, s.subGroup, s.startDate, s.endDate).ToList();
 
+            var buildings = buildingController.privateGetAll();
+
+            foreach (var b in buildings)
+            {
+                var tTimes = timeController.privateGetAll(b.Id).Where(x => Schedules.Any(y => y.PeriodId == x.Id)).ToList();
+                printScheduleModel.Times = printScheduleModel.Times == null ?  tTimes : printScheduleModel.Times.Union(tTimes);
+            }
+            printScheduleModel.Times = printScheduleModel.Times.OrderBy(x => x.Start);
+            var ind = 1;
+            foreach (var time in printScheduleModel.Times)
+            {
+                time.ViewId = ind;
+                ind++;
+            }
+
+            var a = printScheduleModel.Times.ToList();
 
             
             string newGroupIds = "";

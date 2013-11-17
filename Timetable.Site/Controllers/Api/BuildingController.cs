@@ -14,7 +14,7 @@ namespace Timetable.Site.Controllers.Api
             return CreateResponse<IEnumerable<SendModel>>(privateGetAll);
         }
 
-        private IEnumerable<SendModel> privateGetAll()
+        public IEnumerable<SendModel> privateGetAll()
         {
             var result = new List<SendModel>();
 

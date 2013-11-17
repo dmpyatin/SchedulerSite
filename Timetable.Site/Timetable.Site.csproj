@@ -269,6 +269,7 @@
     <Compile Include="Models\Schedules\ForAuditoriumModel.cs" />
     <Compile Include="Models\Schedules\ForGroupModel.cs" />
     <Compile Include="Models\Schedules\ForLecturerModel.cs" />
+    <Compile Include="Models\Schedules\ForPrintByAuditoriumModel .cs" />
     <Compile Include="Models\Schedules\ForPrintModel.cs" />
     <Compile Include="Models\Schedules\SendModel.cs" />
     <Compile Include="Models\Schedules\ValidateModel.cs" />
@@ -1372,7 +1373,7 @@
     <Content Include="Views\Schedule\Auditorium\TimetableForPrint.cshtml" />
     <Content Include="Views\Schedule\Auditorium\Index.cshtml" />
     <Content Include="Views\Schedule\Database\DBAuditoriumIndex.cshtml" />
-    <Content Include="Views\PrintSchedule\Index.cshtml" />
+    <Content Include="Views\PrintSchedule\IndexForAuditorium.cshtml" />
     <Content Include="Views\PrintSchedule\IndexForGroups.cshtml" />
     <Content Include="Views\Schedule\NewCreate\PrintSettingForm.cshtml" />
     <None Include="Service References\UserService\UserService5.xsd">
@@ -1397,6 +1398,7 @@
     <Content Include="Views\Schedule\NewCreate\ScheduleInfoSelectInTable.cshtml" />
     <Content Include="Views\Schedule\NewCreate\FreeAuditoriumsFormInTable.cshtml" />
     <Content Include="Views\Schedule\NewCreate\FlowSelectForPrint.cshtml" />
+    <Content Include="Views\Schedule\NewCreate\AuditoriumSelectForPrint.cshtml" />
     <None Include="Views\Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

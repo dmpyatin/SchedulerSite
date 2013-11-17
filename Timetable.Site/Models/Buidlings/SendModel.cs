@@ -11,10 +11,10 @@ namespace Timetable.Site.Models.Buidlings
     public class SendModel
     {
         [DataMember(Name = "Id")]
-        int Id;
+        public int Id;
 
         [DataMember(Name = "Name")]
-        string Name;
+        public string Name;
 
         public SendModel() { }
         public SendModel(int Id, string Name)

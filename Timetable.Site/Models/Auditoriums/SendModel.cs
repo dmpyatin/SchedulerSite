@@ -40,7 +40,7 @@ namespace Timetable.Site.Models.Auditoriums
         {
             this.Id = t.Id;
             this.Number = t.Number;
-            this.Capacity = (int)t.Capacity;
+            this.Capacity = t.Capacity.HasValue ? t.Capacity.Value : 0;
             this.Name = t.Name;
             this.Info = t.Info;
         }

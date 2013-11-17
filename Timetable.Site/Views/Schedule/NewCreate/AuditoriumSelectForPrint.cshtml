@@ -1,0 +1,16 @@
+﻿<!-- ko if: $root.currentPrintSettingForm().currentAuditoriumSelectForPrintForm() !== undefined -->
+         <span class="label">Здание</span>
+        <select style="width:100%;"  data-placeholder="Выберите здание" class="span5" id="building" data-bind="options: $root.currentPrintSettingForm().currentAuditoriumSelectForPrintForm().buildings, optionsText: 'Name', value: $root.currentPrintSettingForm().currentAuditoriumSelectForPrintForm().currentBuilding">
+                <option></option>
+        </select>
+          
+        <span class="label">Тип аудитории</span>
+        <select style="width:100%;"  data-placeholder="Выберите тип аудитории" class="span5" id="auditoriumtype1" data-bind="options: $root.currentPrintSettingForm().currentAuditoriumSelectForPrintForm().auditoriumTypes, optionsText: 'Name', value: $root.currentPrintSettingForm().currentAuditoriumSelectForPrintForm().currentAuditoriumType">
+                <option></option>
+        </select>
+
+        <span class="label">Аудитория</span>
+        <select style="width:100%"  data-placeholder="Выберите аудиторию" class="span5" id="auditorium1" data-bind="options: $root.currentPrintSettingForm().currentAuditoriumSelectForPrintForm().auditoriums, optionsText: 'Number', value: $root.currentPrintSettingForm().currentAuditoriumSelectForPrintForm().currentAuditorium">
+                <option></option>
+        </select>    
+<!-- /ko -->

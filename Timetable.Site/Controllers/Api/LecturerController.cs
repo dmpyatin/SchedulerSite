@@ -11,6 +11,23 @@ namespace Timetable.Site.Controllers.Api
 {
     public class LecturerController : BaseApiController<Lecturer>
     {
+        public string lcs(string a, string b)
+        {
+            string aSub = a.Substring(0, (a.Length - 1 < 0) ? 0 : a.Length - 1);
+            string bSub = b.Substring(0, (b.Length - 1 < 0) ? 0 : b.Length - 1);
+
+            if (a.Length == 0 || b.Length == 0)
+                return "";
+            else if (a[a.Length - 1] == b[b.Length - 1])
+                return lcs(aSub, bSub) + a[a.Length - 1];
+            else
+            {
+                string x = lcs(a, bSub);
+                string y = lcs(aSub, b);
+                return (x.Length > y.Length) ? x : y;
+            }
+        }
+
         //Получить преводавателей по идентификатору кафедры
         public HttpResponseMessage GetAll(int departmentId)
         {
@@ -39,13 +56,18 @@ namespace Timetable.Site.Controllers.Api
         {
             var result = new List<SendModel>();
 
-            mask = "Кузнецов Владимир Алексеевич";
-
             var tmp = DataService.GetLecturersByFirstMiddleLastname(mask);
-            foreach (var t in tmp)
+
+            var tmp2 = tmp.Where(x => !string.IsNullOrEmpty(x.Firstname) &&
+            !string.IsNullOrEmpty(x.Lastname) &&
+            !string.IsNullOrEmpty(x.Middlename))
+            .Where(x => mask.Contains(x.Firstname) && mask.Contains(x.Lastname) && mask.Contains(x.Middlename)).ToList();
+
+            foreach (var t in tmp2)
             {
-                 result.Add(new SendModel(t));
+                result.Add(new SendModel(t));
             }
+
             return result;
         }
 
