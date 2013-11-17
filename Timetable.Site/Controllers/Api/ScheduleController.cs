@@ -325,8 +325,7 @@ namespace Timetable.Site.Controllers.Api
             foreach (var t in answer)
             {
                 //TODO: correct divide on types
-                result.Add(new SendModel(t, t.ScheduleInfo.LecturerId == lecturerId, t.AuditoriumId == auditoriumId, (t.ScheduleInfo.LecturerId != lecturerId) &&
-                                                                                                                     (t.AuditoriumId != auditoriumId)));
+                result.Add(new SendModel(t, t.ScheduleInfo.LecturerId == lecturerId, t.AuditoriumId == auditoriumId, t.ScheduleInfo.Groups.Any(x => qGroups.Any(y => y.Id == x.Id))));
             }
 
             return result;

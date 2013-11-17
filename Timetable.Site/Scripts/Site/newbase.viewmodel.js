@@ -296,7 +296,7 @@ var UpdateScheduleConfirmForm = function (action) {
 };
 
 //Форма обновления занятия
-var UpdateScheduleForm = function (parentForm, param) {
+var UpdateScheduleForm = function (parentForm, param, schedule, times) {
 
     var self = this;
 
@@ -306,81 +306,71 @@ var UpdateScheduleForm = function (parentForm, param) {
     self.translateDate = function (status, date) {
         if (status == true) {
             res = date.split(".");
-
             console.log(res);
-
             return res[2] + "-" + res[1] + "-" + res[0];
         }
     }
 
     self.days = ko.observableArray([{ Id: 1, Name: "Понедельник" }, { Id: 2, Name: "Вторник" }, { Id: 3, Name: "Среда" }, { Id: 4, Name: "Четверг" }, { Id: 5, Name: "Пятница" }, { Id: 6, Name: "Суббота" }]);
+    self.currentDay = ko.observable();
+
+    self.times = ko.observableArray(times);
+    self.currentTime = ko.observable();
+
     self.auditoriumTypes = ko.observableArray([]);
     self.currentAuditoriumType = ko.observable();
     self.auditoriums = ko.observableArray([]);
     self.currentAuditorium = ko.observable();
-    self.currentSchedule = ko.observable(parentForm.clickedSchedule());
+
+    self.currentSchedule = ko.observable(schedule);
 
 
     self.currentStartDate = ko.observable(self.translateDate(true, self.currentSchedule().StartDate));
     self.currentEndDate = ko.observable(self.translateDate(true, self.currentSchedule().EndDate));
 
-    
-    self.presetAuditoriumType = function (status) {
-        
+    self.subGroups = ko.observableArray(["Все", "1", "2", "3"]);
+    self.currentSubGroup = ko.observable();
+
+    self.weekTypes = ko.observableArray([]);
+    self.currentWeekType = ko.observable();
+
+    self.presetAuditoriumType = function (status) {  
         if (status == true) {
-
-
             for (var i = 0; i < self.auditoriumTypes().length; ++i)
-                if (self.currentSchedule().AuditoriumTypeId == self.auditoriumTypes()[i].Id) {
-            
+                if (self.currentSchedule().AuditoriumTypeId == self.auditoriumTypes()[i].Id)
                     self.currentAuditoriumType(self.auditoriumTypes()[i]);
-                }
         }
     }
 
     self.presetDay = function (status) {
         if (status == true) {
-   
             for (var i = 0; i < self.days().length; ++i)
-                if (self.currentSchedule().DayOfWeek == self.days()[i].Id) {
-      
+                if (self.currentSchedule().DayOfWeek == self.days()[i].Id)
                     self.currentDay(self.days()[i]);
-                }
         }
     }
 
     self.presetTime = function (status) {
         if (status == true) {
-
             for (var i = 0; i < self.times().length; ++i)
-                if (self.currentSchedule().PeriodId == self.times()[i].Id) {
-  
+                if (self.currentSchedule().PeriodId == self.times()[i].Id)
                     self.currentTime(self.times()[i]);
-                }
-            //TODO: preset schedule paramenters in fields
         }
     }
 
     self.presetWeekType = function (status) {
         if (status == true) {
-
             for (var i = 0; i < self.weekTypes().length; ++i)
-                if (self.currentSchedule().WeekTypeId == self.weekTypes()[i].Id) {
-       
+                if (self.currentSchedule().WeekTypeId == self.weekTypes()[i].Id)
                     self.currentWeekType(self.weekTypes()[i]);
-                }
-            //TODO: preset schedule paramenters in fields
         }
     }
 
     self.presetAuditorium = function (status) {
         if (status == true) {
-      
             for (var i = 0; i < self.auditoriums().length; ++i)
-                if (self.currentSchedule().AuditoriumId == self.auditoriums()[i].Id) {
-  
+                if (self.currentSchedule().AuditoriumId == self.auditoriums()[i].Id)
                     self.currentAuditorium(self.auditoriums()[i]);
-                }
         }
     }
 
@@ -400,16 +390,12 @@ var UpdateScheduleForm = function (parentForm, param) {
         self.tryUpdateSchedule(true);
     });
 
-    self.currentDay = ko.observable(self.days()[parentForm.clickedSchedule().DayOfWeek - 1]);
     self.currentDay.subscribe(function (newValue) {
         if (newValue !== undefined) {
             self.loadFreeAuditoriums(true, 1, self.currentAuditoriumType());
             self.tryUpdateSchedule(true);
         }
     });
-
-    self.times = ko.observableArray([]);
-    self.currentTime = ko.observable();
 
     self.currentTime.subscribe(function (newValue) {
         if (newValue !== undefined) {
@@ -418,15 +404,11 @@ var UpdateScheduleForm = function (parentForm, param) {
         }
     });
 
-    self.subGroups = ko.observableArray(["Все", "1", "2", "3"]);
-    self.currentSubGroup = ko.observable();
     self.currentSubGroup.subscribe(function (newValue) {
         if(newValue !== undefined)
             self.tryUpdateSchedule(true);
     });
 
-    self.weekTypes = ko.observableArray([]);
-    self.currentWeekType = ko.observable();
     self.currentWeekType.subscribe(function (newValue) {
         if (newValue !== undefined) {
             self.loadFreeAuditoriums(true, 1, self.currentAuditoriumType());
@@ -434,7 +416,6 @@ var UpdateScheduleForm = function (parentForm, param) {
         }
     });
  
-
     self.currentAuditoriumType.subscribe(function (newValue) {
         if (newValue !== undefined) {
             self.loadFreeAuditoriums(true, 1, newValue);
@@ -442,22 +423,11 @@ var UpdateScheduleForm = function (parentForm, param) {
         }
     });
 
-    self.loadTimes = function (status, buildingId, isInit) {
-        if (status == true) {
-            dModel.loadData({
-                address: "time/getall",
-                obj: self.times,
-                params: {
-                    buildingId: 1 //TODO: Fix Host Project
-                },
-                onsuccess: function () {
-       
-                    if (isInit)
-                        self.presetTime(true);
-                }
-            });
+    self.currentAuditorium.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            self.tryUpdateSchedule(true);
         }
-    }
+    });
 
     self.loadAuditoriumTypes = function (status, isInit) {
         if (status == true) {
@@ -473,7 +443,6 @@ var UpdateScheduleForm = function (parentForm, param) {
     }
 
     self.loadFreeAuditoriums = function (status, buildingId, auditoriumType) {
-      
         if (status == true &&
             self.currentWeekType() !== undefined &&
             self.currentDay() !== undefined &&
@@ -500,9 +469,7 @@ var UpdateScheduleForm = function (parentForm, param) {
             });
         }
     }
-    
-
-
+   
     self.loadWeekTypes = function (status, isInit) {
         if (status == true) {
             dModel.loadData({
@@ -517,7 +484,6 @@ var UpdateScheduleForm = function (parentForm, param) {
         }
     }
 
-
     self.tryUpdateSchedule = function (status) {
         if (status == true) {
             console.log("TRY UPD");
@@ -525,7 +491,6 @@ var UpdateScheduleForm = function (parentForm, param) {
         }
     };
 
-  
     self.updateSchedule = function (status) {
         if (status == true) {
             console.log("UPD");
@@ -545,8 +510,7 @@ var UpdateScheduleForm = function (parentForm, param) {
     self.updateScheduleReal = function (status, mode) {
         if (status == true && !self.isScheduleLoading()) {
 
-            self.validateScheduleForm(new ValidateScheduleForm());
-            self.validateScheduleForm().doingSuccess(false);
+            self.validateScheduleForm(undefined);
 
             var subGroup = self.currentSubGroup();
             if (subGroup == "Все")
@@ -581,6 +545,9 @@ var UpdateScheduleForm = function (parentForm, param) {
                     onsuccess: function (data) {
                         self.isScheduleLoading(false);
 
+                        self.validateScheduleForm(new ValidateScheduleForm());
+                        self.validateScheduleForm().doingSuccess(false);
+
                         self.validateScheduleForm().validate(true, data);
                  
                         if (data.length == 0) {
@@ -604,8 +571,7 @@ var UpdateScheduleForm = function (parentForm, param) {
     self.updateScheduleReal2 = function (status, schedule, mode) {
         if (status == true && !self.isScheduleLoading()) {
 
-            self.validateScheduleForm(new ValidateScheduleForm());
-            self.validateScheduleForm().doingSuccess(false);
+            self.validateScheduleForm(undefined);
 
             var subGroup = schedule.SubGroup;
             if (subGroup == "Все")
@@ -631,6 +597,9 @@ var UpdateScheduleForm = function (parentForm, param) {
                 onsuccess: function (data) {
                     self.isScheduleLoading(false);
 
+                    self.validateScheduleForm(new ValidateScheduleForm());
+                    self.validateScheduleForm().doingSuccess(false);
+
                     self.validateScheduleForm().validate(true, data);
 
                     if (data.length == 0) {
@@ -645,7 +614,6 @@ var UpdateScheduleForm = function (parentForm, param) {
                     } else {
                         self.validateScheduleForm().canDo(false);
                         self.validateScheduleForm().doingSuccess(false);
-
                         self.validateScheduleForm().openDialog(true);
                     }
                 }
@@ -656,15 +624,12 @@ var UpdateScheduleForm = function (parentForm, param) {
   
     self.init = function (status) {
         if (status == true) {
+
             self.presetSubGroup(true);
 
             if (param !== true) {
                 self.loadWeekTypes(true, true);
-                self.loadTimes(true, self.currentSchedule().BuildingId, true);
-
                 self.loadAuditoriumTypes(true, true);
-
-
                 self.presetDay(true);
             }
         }
@@ -676,10 +641,8 @@ var UpdateScheduleForm = function (parentForm, param) {
                 self.currentConfirmForm(new UpdateScheduleConfirmForm(self.updateSchedule));
                 self.currentConfirmForm().openDialog(true);
             }
-            //self.updateSchedule(true);
         }
     }
-
 
     self.openDialog = function (status) {
         if (status == true) {
@@ -700,7 +663,6 @@ var UpdateScheduleForm = function (parentForm, param) {
     }
 
     self.init(true);
-
 };
 
 var FreeAuditoriumsForm = function (timeId, dayId, wtId, scheduleInfo, parentForm, startDate, endDate) {
@@ -841,7 +803,7 @@ var ScheduleBacketContextMenuForm = function (xPos, yPos, parentForm) {
             if (ind.wt == 2) weekTypeId = 3;
 
             parentForm.currentScheduleAddForm(new ScheduleAddForm(parentForm, parentForm.parentForm.currentScheduleInfoSelectForm().currentScheduleInfo(),
-                                                    parentForm.times()[ind.row].Id, parentForm.days()[ind.col].Id, weekTypeId, parentForm.startTime(), parentForm.endTime()));
+                                                    parentForm.times()[ind.row].Id, parentForm.days()[ind.col].Id, weekTypeId, parentForm.startTime(), parentForm.endTime(), parentForm.auditorium().Id));
             parentForm.currentScheduleAddForm().openDialog(true);
             self.closeDialog(true);
         }
@@ -887,22 +849,31 @@ var ScheduleBacketContextMenuForm = function (xPos, yPos, parentForm) {
 };
 
 //Форма выбора занятий
-var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endTime, parentForm) {
+var ScheduleSelectForm = function (lecturer, groups, startTime, endTime, parentForm) {
     var self = this;
 
-    $(document).click(function (event) {
-        if (event.target.className.indexOf("Backet") == -1)
-            if (event.target.className.indexOf("btn") == -1)
-                self.clickedBacketIndexes({ row: -1, col: -1, wt: -1 });
-
-    });
+    self.translateDate = function (status, date) {
+        if (status == true) {
+            res = date.split(".");
+            console.log(res);
+            return res[2] + "-" + res[1] + "-" + res[0];
+        }
+    }
 
     self.parentForm = parentForm;
 
-    self.auditorium = ko.observable(auditorium);
+    self.auditorium = ko.observable();
     self.auditorium.subscribe(function (newValue) {
-        self.loadSchedules(true);
+     
     });
+
+    self.lecturer = ko.observable(lecturer);
+    self.lecturer.subscribe(function (newValue) {
+
+    });
+
+    self.scheduleStartTime = ko.observable();
+    self.scheduleEndTime = ko.observable();
 
 
     self.startTime = ko.observable(startTime);
@@ -933,23 +904,30 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
             }
         }
 
-        if (parentForm.currentScheduleInfoSelectForm() !== undefined) {
-            if (parentForm.currentScheduleInfoSelectForm().currentScheduleInfo() !== undefined)
-                res += parentForm.currentScheduleInfoSelectForm().currentScheduleInfo().LecturerName + " ";
-        }
+        if (self.lecturer() !== undefined)
+            res += self.lecturer().Name + " ";
+        
 
-        if (self.auditorium() !== undefined) {
-            res += " ауд № " + self.auditorium().Number + " ";
-        }
+        if (self.auditorium() !== undefined)
+            if (self.auditorium().Number !== undefined) {
+                res += " ауд № " + self.auditorium().Number + " ";
+            }
 
-        res += "(" + self.startTime() + " - ";
-        res += self.endTime() + ")";
+
+        if (self.scheduleStartTime() !== undefined && self.scheduleEndTime() !== undefined) {
+            res += "(" + self.scheduleStartTime() + " - ";
+            res += self.scheduleEndTime() + ")";
+        }else{
+            res += "(" + self.startTime() + " - ";
+            res += self.endTime() + ")";
+        }
 
         return res;
     });
          
     self.isScheduleLoad = false;
 
+    //Forms
     self.currentDeleteConfirmForm = ko.observable();
     self.currentScheduleUpdateForm = ko.observable();
     self.scheduleBacketContextMenuForm = ko.observable();
@@ -958,12 +936,10 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
     self.currentScheduleAddForm = ko.observable();
     self.currentCalendarForm = ko.observable();
     self.freeAuditoriumsForm = ko.observable();
-
     self.freeAuditoriumsInTableForm = ko.observable();
-    if (parentForm.currentScheduleInfoSelectForm() !== undefined)
-        self.freeAuditoriumsInTableForm(new FreeAuditoriumsForm(0, 0, 0, parentForm.currentScheduleInfoSelectForm().currentScheduleInfo(), self, self.startTime(), self.endTime()));
-    
+    self.selectAuditoriumContextMenuForm = ko.observable();
 
+    //Properties
     self.buildings = ko.observableArray([]);
     self.currentBuilding = ko.observable();
     self.currentBuilding.subscribe(function (newValue) {
@@ -976,22 +952,29 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
     self.scheduleTimes = ko.observableArray([]);
     self.times = ko.observableArray([]);
 
-    self.lecturer = ko.observable(lecturer);
-    self.lecturer.subscribe(function (newValue) {
-        //self.loadSchedules(true);
-    });
-
-    self.groups = ko.observable(groups);
-    self.groups.subscribe(function (newValue) {
-        //self.loadSchedules(true);
-    });
+    
 
 
+    self.groupIds = ko.observable("");
+    
+
+    self.setGroupsIds = function (status, groups) {
+        if (status == true) {
+            var groupIds = "";
+            if (groups !== undefined)
+                for (var i = 0; i < groups.length; ++i)
+                    groupIds += groups[i].Id + ", ";
+            self.groupIds(groupIds);
+        }
+    };
+
+    self.setGroupsIds(true, groups);
+
+ 
     self.weekTypes = ko.observableArray([]);
     self.currentWeekType = ko.observable();
     self.currentWeekType.subscribe(function (newValue) {
         if (newValue !== undefined) {
-            self.loadSchedules(true);
         }
     });
 
@@ -999,7 +982,6 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
     self.currentSubGroup = ko.observable();
     self.currentSubGroup.subscribe(function (newValue) {
         if (newValue !== undefined) {
-            self.loadSchedules(true);
         }
     });
 
@@ -1010,21 +992,38 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
         }
     });
 
-   
     self.endTime.subscribe(function (newValue) {
         if (newValue !== undefined) {
             self.loadSchedules(true);
         }
     });
 
+   
+
+    self.isDragSchedule = ko.observable(false);
+
     self.days = ko.observableArray([{}, { Id: 1, Name: "Понедельник" }, { Id: 2, Name: "Вторник" }, { Id: 3, Name: "Среда" }, { Id: 4, Name: "Четверг" }, { Id: 5, Name: "Пятница" }, { Id: 6, Name: "Суббота" }]);
 
 
     self.preselectedBacketIndexes = ko.observable({ row: -1, col: -1, wt: -1 });
     self.clickedBacketIndexes = ko.observable({ row: -1, col: -1, wt: -1 });
+    self.blockedRows = ko.observableArray();
+    self.schedules = ko.observableArray([]);
+    self.preselectedSchedule = ko.observable();
+    self.clickedSchedule = ko.observable();
+
+
+    //Backet and schedule subscribes
+
     self.clickedBacketIndexes.subscribe(function (newValue) {
         if (newValue !== undefined) {
             if (newValue.row != -1 && newValue.col != -1 && newValue.wt != -1) {
+
+                //self.auditorium({ Id: undefined, Number: undefined });
+
+                if (self.schedules()[newValue.row][newValue.col][newValue.wt] == undefined && !self.isDragSchedule())
+                    self.clickedSchedule(undefined);
+
                 $("#addButton").removeClass("disabled");
                 $("#freeAuditoriumButton").removeClass("disabled");
 
@@ -1032,30 +1031,48 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
                 if (newValue.wt == 0) WeekTypeId = 2;
                 if (newValue.wt == 2) WeekTypeId = 3;
 
-                if (parentForm.currentScheduleInfoSelectForm() !== undefined)
-                    self.freeAuditoriumsInTableForm(new FreeAuditoriumsForm(self.times()[newValue.row].Id, self.days()[newValue.col].Id, WeekTypeId, parentForm.currentScheduleInfoSelectForm().currentScheduleInfo(), self, self.startTime(), self.endTime()));
+                //if (parentForm.currentScheduleInfoSelectForm() !== undefined)
+                   // self.freeAuditoriumsInTableForm(new FreeAuditoriumsForm(self.times()[newValue.row].Id, self.days()[newValue.col].Id, WeekTypeId, parentForm.currentScheduleInfoSelectForm().currentScheduleInfo(), self, self.startTime(), self.endTime()));
             } else {
-
                 $("#addButton").addClass("disabled");
                 $("#freeAuditoriumButton").addClass("disabled");
             }
         }
     });
 
-    self.preselectedSchedule = ko.observable();
-    self.clickedSchedule = ko.observable();
+  
     self.clickedSchedule.subscribe(function (newValue) {
         if (newValue !== undefined) {
+
+            self.lecturer({ Id: newValue.LecturerId, Name: newValue.LecturerName });
+            self.auditorium({ Id: newValue.AuditoriumId, Number: newValue.AuditoriumNumber });
+            self.currentSubGroup(newValue.SubGroup);
+            self.groupIds(newValue.GroupIds);
+            self.scheduleStartTime(self.translateDate(true, newValue.StartDate));
+            self.scheduleEndTime(self.translateDate(true, newValue.EndDate));
+
+            self.loadSchedules(true);
+
+            if (parentForm.currentScheduleInfoSelectForm() !== undefined)
+                parentForm.currentScheduleInfoSelectForm().currentScheduleInfo(undefined);
+
             $("#delButton").removeClass("disabled");
             $("#changeScheduleButton").removeClass("disabled");
         } else {
+            self.scheduleStartTime(undefined);
+            self.scheduleEndTime(undefined);
+            //self.lecturer(undefined);
+            //self.auditorium(undefined);
+            //self.currentSubGroup(undefined);
+            //self.groupIds(undefined);
+
             $("#delButton").addClass("disabled");
             $("#changeScheduleButton").addClass("disabled");
         }
     });
 
-    self.blockedRows = ko.observableArray();
-
+   
+    //Backet and Schedule events
     self.preselectBacket = function(status, row, col, wt){
         if (status == true) {
             self.preselectedBacketIndexes({row: row, col: col, wt: wt});
@@ -1063,9 +1080,17 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
     }
 
     self.clickBacketLeft = function (status, row, col, wt) {
+        
         if (status == true) {
-         
-            self.clickedBacketIndexes({ row: row, col: col, wt: wt });
+            var ind = self.clickedBacketIndexes();
+            if (ind.row !== row || ind.col !== col || ind.wt !== wt) {
+
+                self.auditorium({ Id: undefined, Number: undefined });
+                if (self.schedules()[row][col][wt] == undefined)
+                    self.clickedBacketIndexes({ row: row, col: col, wt: wt });
+                else
+                    self.clickedBacketIndexes({ row: -1, col: -1, wt: -1 });
+            }
         }
     }
 
@@ -1076,27 +1101,28 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
             if (wt == 0) weekTypeId = 2;
             if (wt == 2) weekTypeId = 3;
 
-            self.currentScheduleAddForm(new ScheduleAddForm(self, parentForm.currentScheduleInfoSelectForm().currentScheduleInfo(), self.times()[row].Id, self.days()[col].Id, weekTypeId, self.startTime(), self.endTime()));
+            self.currentScheduleAddForm(new ScheduleAddForm(self, parentForm.currentScheduleInfoSelectForm().currentScheduleInfo(), self.times()[row].Id, self.days()[col].Id, weekTypeId, self.startTime(), self.endTime(), self.auditorium().Id));
             self.currentScheduleAddForm().openDialog(true);
-            //self.currentScheduleAddForm().ValidateSchedule(true, self.currentScheduleAddForm().AddSchedule);
         }
     }
 
     self.clickBacketRight = function (status, row, col, wt, data, event) {
         if (status == true) {
-            if (self.schedules()[row][col][wt] == undefined) {
+            var ind = self.clickedBacketIndexes();
 
+            if (self.schedules()[row][col][wt] == undefined) {
+                if (ind.row !== row || ind.col !== col || ind.wt !== wt) {
+                    self.clickedBacketIndexes({ row: row, col: col, wt: wt });
+                }
                 if (self.scheduleContextMenuForm() !== undefined)
                     self.scheduleContextMenuForm().closeDialog(true);
-
-            
-                self.clickedBacketIndexes({ row: row, col: col, wt: wt });
-
                 self.scheduleBacketContextMenuForm(new ScheduleBacketContextMenuForm(event.pageX, event.pageY, self));
                 self.scheduleBacketContextMenuForm().openDialog(true);
             } else {
+                self.clickedBacketIndexes({ row: -1, col: -1, wt: -1 });
                 if (self.scheduleBacketContextMenuForm() !== undefined)
                     self.scheduleBacketContextMenuForm().closeDialog(true);
+
             }
         }
     }
@@ -1115,18 +1141,28 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
 
     self.clickScheduleLeft = function (status, row, col, wt) {
         if (status == true) {
-
-            self.clickedSchedule(self.schedules()[row][col][wt]);
+            console.log("self.clickScheduleLeft");
+            console.log(self.clickedSchedule());
+            if (self.clickedSchedule() !== undefined && self.schedules()[row][col][wt] !== undefined) {
+                if (self.clickedSchedule().Id !== self.schedules()[row][col][wt].Id)
+                    self.clickedSchedule(self.schedules()[row][col][wt]);
+            } else {
+                self.clickedSchedule(self.schedules()[row][col][wt]);
+            }
         }
     }
 
     self.clickScheduleRight = function (status, row, col, wt, data, event) {
         if (status == true) {
-            self.clickedSchedule(self.schedules()[row][col][wt]);
-            self.scheduleContextMenuForm(new ScheduleContextMenuForm(self.clickedSchedule(), event.pageX, event.pageY, self));
-            self.scheduleContextMenuForm().openDialog(true);
+            if (self.clickedSchedule() !== undefined && self.schedules()[row][col][wt] !== undefined) {
+                if (self.clickedSchedule().Id !== self.schedules()[row][col][wt].Id)
+                    self.clickedSchedule(self.schedules()[row][col][wt]);
+            } else {
+                self.clickedSchedule(self.schedules()[row][col][wt]);
+            }
 
-     
+            self.scheduleContextMenuForm(new ScheduleContextMenuForm(self.clickedSchedule(), event.pageX, event.pageY, self, self.times()));
+            self.scheduleContextMenuForm().openDialog(true);
         }
     }
 
@@ -1138,10 +1174,20 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
 
     self.startDragSchedule = function (status, row, col, wt) {
         if (status) {
-            self.clickedSchedule(self.schedules()[row][col][wt]);
+            self.isDragSchedule(true);
 
-            self.clickedBacketIndexes({ row: row, col: col, wt: wt });
+            console.log("self.startDragSchedule");
+            console.log(self.clickedSchedule());
+            console.log(self.schedules()[row][col][wt]);
 
+            if (self.clickedSchedule() !== undefined && self.schedules()[row][col][wt] !== undefined) {
+                if (self.clickedSchedule().Id !== self.schedules()[row][col][wt].Id)
+                    self.clickedSchedule(self.schedules()[row][col][wt]);
+            } else {
+                self.clickedSchedule(self.schedules()[row][col][wt]);
+            }
+
+            self.clickedBacketIndexes({ row: row, col: col, wt: wt });       
         }
     }
 
@@ -1168,12 +1214,12 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
                 if (wt == 0) weekTypeId = 2;
                 if (wt == 2) weekTypeId = 3;
 
-                self.currentScheduleAddForm(new ScheduleAddForm(self, parentForm.currentScheduleInfoSelectForm().currentScheduleInfo(), self.times()[row].Id, self.days()[col].Id, weekTypeId, self.startTime(), self.endTime()));
+                self.currentScheduleAddForm(new ScheduleAddForm(self, parentForm.currentScheduleInfoSelectForm().currentScheduleInfo(), self.times()[row].Id, self.days()[col].Id, weekTypeId, self.startTime(), self.endTime(), self.auditorium().Id));
                 self.currentScheduleAddForm().openDialog(true);
 
             }else{
              
-                self.currentScheduleUpdateForm(new UpdateScheduleForm(self, true));
+                self.currentScheduleUpdateForm(new UpdateScheduleForm(self, true, self.clickedSchedule(), self.times()));
                 self.clickedSchedule().DayOfWeek = self.days()[col].Id;
                 self.clickedSchedule().PeriodId = self.times()[row].Id;
                 self.clickedSchedule().WeekTypeId = wt;
@@ -1181,25 +1227,24 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
                 if (wt == 2) self.clickedSchedule().WeekTypeId = 3;
 
                 self.currentScheduleUpdateForm().updateSchedule2(true, self.clickedSchedule());
-             
             }
+
+            self.isDragSchedule(false);
         }
     }
 
     self.outBacket = function (status) {
         if (status == true) {
-            //self.preselectedBacketIndexes({ row: -1, col: -1, wt: -1 });
         }
     }
 
     self.overBacket = function (status, row, col, wt, data, event) {
         if (status == true) {
-    
         }
     }
 
-    self.schedules = ko.observableArray([]);
 
+    //Delete schedule
     self.realDeleteSchedule = function (status, schedule) {
         if (status == true) {
          
@@ -1225,12 +1270,14 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
         }
     }
 
+    //init table
     self.init = function (status) {
         if (status == true) {
             self.loadWeekTypes(true);
             self.loadBuildings(true);
         }
     };
+
 
     self.loadBuildings = function (status) {
         if (status == true) {
@@ -1253,7 +1300,6 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
                     buildingId: building.Id
                 },
                 onsuccess: function () {
-                  
                     self.loadSchedules(true);
                 }
             });
@@ -1272,12 +1318,20 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
         }
     }
 
+
+    self.blockedCells = ko.observableArray([]);
+    //loadSchedules
     self.loadSchedules = function (status) {
-   
+    
         if (status == true && !self.isScheduleLoad) {
+            console.log("self.loadSchedules");
+            console.log(self.groupIds());
+
+            var prevClickedSchedule = self.clickedSchedule();
+            var prevClickedBacketIndexes = self.clickedBacketIndexes();
 
             self.isScheduleLoad = true;
-
+         
             if(self.lecturer() !== undefined)
                 var lecturerId = self.lecturer().Id;
             if (self.auditorium() !== undefined)
@@ -1286,10 +1340,23 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
                 var weekTypeId = self.currentWeekType().Id;
             if (self.currentSubGroup() !== undefined)
                 var subGroup = self.currentSubGroup();
-            if (self.startTime() !== undefined)
-                var startTime = self.startTime();
-            if (self.endTime() !== undefined)
-                var endTime = self.endTime();
+
+
+            if (self.scheduleStartTime() !== undefined && self.scheduleEndTime() !== undefined) {
+                var startTime = self.scheduleStartTime();
+                var endTime = self.scheduleEndTime();
+
+                
+
+            } else {
+                if (self.startTime() !== undefined)
+                    var startTime = self.startTime();
+                if (self.endTime() !== undefined)
+                    var endTime = self.endTime();
+            }
+
+            console.log(startTime);
+            console.log(endTime);
 
             
             if (lecturerId == undefined) lecturerId = null;
@@ -1300,11 +1367,12 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
             if (endTime == undefined) endTime = "";
             if (subGroup == "Все") subGroup = "";
 
-            var groupIds = "";
-            if (self.groups() !== undefined) {
-                for (var i = 0; i < self.groups().length; ++i)
-                    groupIds += self.groups()[i].Id + ", ";
-            }
+
+            var groupIds = self.groupIds();
+
+            
+            console.log("AuditoriumId");
+            console.log(auditoriumId);
 
             dModel.loadData({
                 address: "schedule/GetScheduleByAll",
@@ -1318,10 +1386,13 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
                     endTime: endTime
                 },
                 onsuccess: function (data) {
-                    
+
+                    self.clickedBacketIndexes({ row: -1, col: -1, wt: -1 });
+
                     self.filteredTimes = ko.observableArray([]);
                     self.scheduleTimes([]);
                     self.times([]);
+                    
                     
                     for (var i = 0; i < self.buildingTimes().length; ++i) {
                         var t = { Id: self.buildingTimes()[i].Id, Start: self.buildingTimes()[i].Start, End: self.buildingTimes()[i].End, StartEnd: self.buildingTimes()[i].StartEnd, IsBuilding: true };
@@ -1346,17 +1417,21 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
 
 
                     var tempSchedulesArray = []
-
+                    var tempBlockedCells = []
           
                     for (var i = 0; i < self.times().length; ++i) {
                 
                         tempSchedulesArray.push([[], [], [], [], [], [], []]);
+                        tempBlockedCells.push([[], [], [], [], [], [], []]);
+
                         if (self.times()[i].IsBuilding == false)
                             self.blockedRows()[i] = true;
                         else
                             self.blockedRows()[i] = false;
                     }
                 
+             
+                    var prevInd;
                     for (var i = 0; i < data.length; ++i) {
                         var row = -1;
                         for (var j = 0; j < self.times().length; ++j)
@@ -1367,23 +1442,68 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
                         if (data[i].WeekTypeId == 2)wt = 0;
                         if (data[i].WeekTypeId == 3)wt = 2;
 
+                        if(prevClickedSchedule !== undefined)
+                            if (data[i].Id == prevClickedSchedule.Id)
+                                prevInd = { row: row, col: col, wt: wt };
+
                         tempSchedulesArray[row][col][wt] = data[i];
+
+                        if (prevClickedSchedule !== undefined) {
+                            if (data[i].Id !== prevClickedSchedule.Id) {
+                                tempBlockedCells[row][col][wt] = true;
+                                if (wt == 1) {
+                                    tempBlockedCells[row][col][0] = true;
+                                    tempBlockedCells[row][col][2] = true;
+                                }
+                                if (wt == 2) {
+                                    tempBlockedCells[row][col][1] = true;
+                                }
+                                if (wt == 0) {
+                                    tempBlockedCells[row][col][1] = true;
+                                }
+                            }
+                        } else {
+                            tempBlockedCells[row][col][wt] = true;
+                            if (wt == 1) {
+                                tempBlockedCells[row][col][0] = true;
+                                tempBlockedCells[row][col][2] = true;
+                            }
+                            if (wt == 2) {
+                                tempBlockedCells[row][col][1] = true;
+                            }
+                            if (wt == 0) {
+                                tempBlockedCells[row][col][1] = true;
+                            }
+                        }
                     }
 
                     self.schedules(tempSchedulesArray);
+                    self.blockedCells(tempBlockedCells);
+
+                    console.log("self.blockedCells");
+                    console.log(self.blockedCells());
+                    console.log(self.schedules());
+                   
+
+                    if (prevInd !== undefined && parentForm.currentScheduleInfoSelectForm().currentScheduleInfo() == undefined) {
+                        self.clickedSchedule(self.schedules()[prevInd.row][prevInd.col][prevInd.wt]);
+                        self.lecturer({ Id: self.clickedSchedule().LecturerId, Name: self.clickedSchedule().LecturerName });
+                        self.auditorium({ Id: self.clickedSchedule().AuditoriumId, Number: self.clickedSchedule().AuditoriumNumber });
+                        self.groupIds(self.clickedSchedule().GroupIds);
+                    }
+
+                   
+
+                    console.log("prevInd");
+                    console.log(prevInd);
                     self.isScheduleLoad = false;
                 }      
             });
         }
     }
 
-    self.init(true);
-
-    self.startDrag = function (status) {
-        if (status == true) {
-        
-        }
-    };
+   
+    //Dialog functions and events
 
     self.openDialog = function (status) {
         if (status == true) {
@@ -1397,13 +1517,36 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
         }
     };
 
+    self.startDrag = function (status) {
+        if (status == true) {
+        }
+    };
+
+
+    //Buttons handles
+  
+    self.clickSelectAuditorium = function (status, data, event) {
+        console.log(event);
+        if (status == true) {
+            console.log("self.clickSelectAuditorium ");
+            var ind = self.clickedBacketIndexes();
+            var weekTypeId = 1;
+            if (ind.wt == 0) weekTypeId = 2;
+            if (ind.wt == 2) weekTypeId = 3;
+            self.selectAuditoriumContextMenuForm(new SelectAuditoriumContextMenuForm(event.pageX, event.pageY, self.times()[ind.row].Id, self.days()[ind.col].Id, weekTypeId, parentForm.currentScheduleInfoSelectForm().currentScheduleInfo(), self, self.startTime(), self.endTime()));
+            self.selectAuditoriumContextMenuForm().openDialog(true);
+
+            console.log(ind);
+        }
+    }
+
     self.clickAddButton = function (status) {
         if (status == true) {
             var ind = self.clickedBacketIndexes();
             var weekTypeId = 1;
             if (ind.wt == 0) weekTypeId = 2;
             if (ind.wt == 2) weekTypeId = 3;
-            self.currentScheduleAddForm(new ScheduleAddForm(self, parentForm.currentScheduleInfoSelectForm().currentScheduleInfo(), self.times()[ind.row].Id, self.days()[ind.col].Id, weekTypeId, self.startTime(), self.endTime()));
+            self.currentScheduleAddForm(new ScheduleAddForm(self, parentForm.currentScheduleInfoSelectForm().currentScheduleInfo(), self.times()[ind.row].Id, self.days()[ind.col].Id, weekTypeId, self.startTime(), self.endTime(), self.auditorium().Id));
             self.currentScheduleAddForm().openDialog(true);
         }
     };
@@ -1416,7 +1559,7 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
 
     self.clickChangeScheduleButton = function (status) {
         if (status == true) {
-            self.currentScheduleUpdateForm(new UpdateScheduleForm(self));
+            self.currentScheduleUpdateForm(new UpdateScheduleForm(self, false, self.clickedSchedule(), self.times()));
             self.currentScheduleUpdateForm().openDialog(true);
         }
     }
@@ -1440,7 +1583,50 @@ var ScheduleSelectForm = function (lecturer, auditorium, groups, startTime, endT
             parentForm.currentPrintSettingForm().openDialog(true);
         }
     }
+
+
+    self.init(true);
 };
+
+
+var SelectAuditoriumContextMenuForm = function (xPos, yPos, timeId, dayId, wtId, scheduleInfo, parentForm, startDate, endDate) {
+    var self = this;
+
+  
+
+    self.currentAuditorium = ko.observable();
+
+    self.currentAuditorium.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+            parentForm.auditorium(newValue);
+            self.closeDialog(true);
+        }
+    });
+
+    self.freeAuditoriumsForm = ko.observable(new FreeAuditoriumsForm(timeId, dayId,wtId,scheduleInfo,parentForm,startDate,endDate));
+
+    self.init = function (status) {
+        if (status == true) {
+
+        }
+    };
+
+    self.openDialog = function (status) {
+        if (status == true) {
+            $("#selectAuditoriumContextMenu").removeClass("hide");
+            $("#selectAuditoriumContextMenu").css({
+                left: xPos,
+                top: yPos
+            });
+        }
+    };
+
+    self.closeDialog = function (status) {
+        if (status == true) {
+            $("#selectAuditoriumContextMenu").addClass("hide");
+        }
+    };
+}
 
 //Форма выбора потока
 var FlowSelectForm = function (parentForm) {
@@ -1448,44 +1634,44 @@ var FlowSelectForm = function (parentForm) {
 
     var specialityIds = "";
     var courseIds = "";
+    var groupIds = "";
 
     self.branches = ko.observableArray([]);
-
     self.currentBranch = ko.observable();
-    self.currentBranch.subscribe(function (newValue) {
-        if (newValue !== undefined) {
-            self.loadFaculties(true,newValue.Id);
-            self.groups("");
-        }
-    });
 
     self.courses = ko.observableArray([]);
     self.currentCourses = ko.observableArray([]);
+
     self.faculties = ko.observableArray([]);
+    self.currentFaculty = ko.observable();
+
     self.groups = ko.observableArray([]);
     self.currentGroups = ko.observableArray([]);
 
-    self.currentFaculty = ko.observable();
-    self.currentFaculty.subscribe(function (newValue) {
-        self.groups("");
-        groupIds = "";
-        self.currentGroups(undefined);
+    self.specialities = ko.observableArray([]);
+    self.currentSpecialities = ko.observableArray([]);
+
+    self.currentBranch.subscribe(function (newValue) {
         specialityIds = "";
-        self.specialities("");
-        self.currentSpecialities(undefined);
+        groupIds = "";
         if (newValue !== undefined) {
-            self.loadSpecialities(true,newValue.Id);
+            self.loadFaculties(true,newValue.Id);
         }
     });
 
-    self.specialities = ko.observableArray([]);
-    self.currentSpecialities = ko.observableArray([]);
-    self.currentSpecialities.subscribe(function (newValue) {
-        self.groups("");
+    self.currentFaculty.subscribe(function (newValue) {
+        specialityIds = "";
         groupIds = "";
-        self.currentGroups(undefined);
         if (newValue !== undefined) {
-           
+            console.log("Faculty sub");
+            self.loadSpecialities(true, newValue.Id);
+        }
+    });
+
+    self.currentSpecialities.subscribe(function (newValue) {
+        groupIds = "";
+        if (newValue !== undefined) {
+            console.log("Speciality sub");
             if (self.currentFaculty() !== undefined) {
                 specialityIds = "";
                 for (var i = 0; i < newValue.length; ++i)
@@ -1496,12 +1682,9 @@ var FlowSelectForm = function (parentForm) {
     });
 
     self.currentCourses.subscribe(function (newValue) {
-        self.groups("");
         groupIds = "";
-        courseIds = "";
-        self.currentGroups(undefined);
-        
         if (newValue !== undefined) {
+            console.log("Courses sub");
             if (self.currentFaculty() !== undefined) {
                 courseIds = "";
                 for (var i = 0; i < newValue.length; ++i)
@@ -1512,30 +1695,26 @@ var FlowSelectForm = function (parentForm) {
     });
 
 
-    self.groups.subscribe(function (newValue) {
-        if (parentForm.currentScheduleSelectForm !== undefined)
-            if (parentForm.currentScheduleSelectForm() !== undefined) {
+    self.reloadScheduleAndScheduleInfo = function (status, newValue) {
+        if (status == true) {
+            if (parentForm.currentScheduleInfoSelectForm !== undefined) {
+                if (newValue !== undefined) {
+                    parentForm.currentScheduleInfoSelectForm(new ScheduleInfoSelectForm(newValue, { Id: 12 }, { Id: 0 }, parentForm));
+                    parentForm.currentScheduleInfoSelectForm().loadScheduleInfoes(true);
+                } else {
+                    parentForm.currentScheduleInfoSelectForm(undefined);
+                }
+            }
+
+            if (parentForm.currentScheduleSelectForm !== undefined) {
+                parentForm.currentScheduleSelectForm().setGroupsIds(true, newValue);
                 parentForm.currentScheduleSelectForm().loadSchedules(true);
             }
-    });
-   
-    self.currentGroups.subscribe(function (newValue) {
-        console.log("groups subscribe");
-
-        if(parentForm.currentScheduleInfoSelectForm !== undefined)
-            parentForm.currentScheduleInfoSelectForm(new ScheduleInfoSelectForm(newValue, { Id: 12 }, { Id: 0 }, parentForm));
-
-
-        if (newValue !== undefined) {
-            if (parentForm.currentScheduleSelectForm !== undefined)
-                if (parentForm.currentScheduleSelectForm !== undefined)
-                    parentForm.currentScheduleSelectForm().groups(newValue);
         }
+    };
 
-        if(parentForm.currentScheduleSelectForm !== undefined)
-            if (parentForm.currentScheduleSelectForm() !== undefined) {
-                parentForm.currentScheduleSelectForm().loadSchedules(true);
-            }
+    self.currentGroups.subscribe(function (newValue) {
+            self.reloadScheduleAndScheduleInfo(true, newValue);
     });
 
 
@@ -1578,6 +1757,7 @@ var FlowSelectForm = function (parentForm) {
                 },
                 obj: self.groups,
                 onsuccess: function () {
+                    self.reloadScheduleAndScheduleInfo(true, undefined);
                 }
             });
         }
@@ -1596,7 +1776,6 @@ var FlowSelectForm = function (parentForm) {
                 address: "branch/getall",
                 obj: self.branches,
                 onsuccess: function () {
-                    //self.loadFaculties(true, self.branches()[0].Id);
                 }
             });
         }
@@ -1684,7 +1863,7 @@ var UpdateScheduleInfoForm = function (parentForm) {
 };
 
 //Форма контекстного меню для занятия
-var ScheduleContextMenuForm = function (schedule, xPos, yPos, parentForm) {
+var ScheduleContextMenuForm = function (schedule, xPos, yPos, parentForm, times) {
     var self = this;
 
     self.isOpen = false;
@@ -1722,7 +1901,7 @@ var ScheduleContextMenuForm = function (schedule, xPos, yPos, parentForm) {
  
     self.updateScheduleClick = function (status) {
         if (status == true) {
-            parentForm.currentScheduleUpdateForm(new UpdateScheduleForm(parentForm));
+            parentForm.currentScheduleUpdateForm(new UpdateScheduleForm(parentForm, false, schedule, times));
             parentForm.currentScheduleUpdateForm().openDialog(true);
             self.closeDialog(true);
         }
@@ -1808,19 +1987,35 @@ var ScheduleInfoSelectForm = function (groups, currentStudyYear, currentSemester
     self.currentScheduleInfoIndex = ko.observable(-1);
     self.selectedScheduleInfoIndex = ko.observable(-1);
 
+    self.selectedScheduleInfoIndex.subscribe(function (newValue) {
+        if (newValue !== undefined) {
+
+        } else {
+            self.currentScheduleInfo(undefined);
+        }
+    });
+
     var oldScheduleInfo;
     self.currentScheduleInfo.subscribe(function (newValue) {
         if (newValue !== undefined) {
             if (newValue != oldScheduleInfo) {
+
+                parentForm.currentScheduleSelectForm().clickedSchedule(undefined);
+
                 var newGroups = newValue.GroupIds.split(", "); newGroups.pop();
                 var ng = [];
                 for (var i = 0; i < newGroups.length; ++i)
                     ng.push({ Id: newGroups[i] });
 
-                parentForm.currentScheduleSelectForm().groups(ng);
-                parentForm.currentScheduleSelectForm().lecturer({ Id: newValue.LecturerId });
+                parentForm.currentScheduleSelectForm().lecturer({ Id: newValue.LecturerId, Name: newValue.LecturerName });
+                parentForm.currentScheduleSelectForm().auditorium({ Id: newValue.AuditoriumId, Name: newValue.AuditoriumName });
+                parentForm.currentScheduleSelectForm().currentSubGroup(newValue.SubGroup);
+                parentForm.currentScheduleSelectForm().groupIds(newValue.GroupIds);
+
                 parentForm.currentScheduleSelectForm().loadSchedules(true);
             }
+        } else {
+            self.currentScheduleInfoIndex(-1);
         }
         oldScheduleInfo = newValue;
     });
@@ -1961,6 +2156,7 @@ var ValidateScheduleForm = function () {
         if (newValue == true) {
             $("#ScheduleOkButton").removeClass("disabled");
             $("#ScheduleOkButtonWithClose").removeClass("disabled");
+            $("#ScheduleOkButtonUpdate").removeClass("disabled");
         }
     });
 
@@ -1968,10 +2164,12 @@ var ValidateScheduleForm = function () {
         if (newValue == true) {
             $("#ScheduleOkButton").removeClass("disabled");
             $("#ScheduleOkButtonWithClose").removeClass("disabled");
+            $("#ScheduleOkButtonUpdate").removeClass("disabled");
    
         } else {
             $("#ScheduleOkButton").addClass("disabled");
             $("#ScheduleOkButtonWithClose").addClass("disabled");
+            $("#ScheduleOkButtonUpdate").addClass("disabled");
         }
     });
    
@@ -1983,7 +2181,7 @@ var ValidateScheduleForm = function () {
     
     self.openDialog=function(status) {
         if (status == true) {
-            $('#validatedialog').modal('show');
+            $('#validatedialogmodal').modal('show');
         }
     };
 
@@ -1997,16 +2195,13 @@ var ValidateScheduleForm = function () {
 
     self.closeDialog=function(status) {
         if(status==true) {
-            for (var i = 2; i <= 10; ++i) {
-                $("#validatemessage" + i).addClass("hide");
-            }
-            $("#validatedialog").modal('hide');
+            $("#validatedialogmodal").modal('hide');
         }
     };
 };
 
 //Меню добавления занятия
-var ScheduleAddForm = function (parentForm, scheduleInfo, timeId, dayId, weekTypeId, startDate, endDate) {
+var ScheduleAddForm = function (parentForm, scheduleInfo, timeId, dayId, weekTypeId, startDate, endDate, auditoriumId) {
 
     var self = this;
 
@@ -2067,6 +2262,14 @@ var ScheduleAddForm = function (parentForm, scheduleInfo, timeId, dayId, weekTyp
             for (var i = 0; i < self.weekTypes().length; ++i)
                 if (self.weekTypes()[i].Id == weekTypeId)
                     self.currentWeekType(self.weekTypes()[i]);
+        }
+    };
+
+    self.preselectAuditorium = function (status) {
+        if (status == true) {
+            for (var i = 0; i < self.auditoriums().length; ++i)
+                if (self.auditoriums()[i].Id == auditoriumId)
+                    self.currentAuditorium(self.auditoriums()[i]);
         }
     };
 
@@ -2162,6 +2365,7 @@ var ScheduleAddForm = function (parentForm, scheduleInfo, timeId, dayId, weekTyp
                 },
                 onsuccess: function () {
                     self.tryAddSchedule(true);
+                    self.preselectAuditorium(true);
                 }
             });
         }
@@ -2196,7 +2400,7 @@ var ScheduleAddForm = function (parentForm, scheduleInfo, timeId, dayId, weekTyp
     };
 
     self.AddSchedule=function(status, mode) {
-        if (status == true && !self.isScheduleAdding()) {
+        if (status == true){// && !self.isScheduleAdding()) {
 
             self.validateScheduleForm(undefined);
             //self.validateScheduleForm().doingSuccess(false);
@@ -2207,10 +2411,8 @@ var ScheduleAddForm = function (parentForm, scheduleInfo, timeId, dayId, weekTyp
             if (subGroup == "Все")
                 subGroup = "";
 
-            var groupIds = "";
-            for(var i = 0; i < parentForm.groups().length; ++i)
-                groupIds += parentForm.groups()[i].Id + ", ";
-
+            var groupIds = parentForm.groupIds();
+          
             if(self.currentAuditorium() !== undefined &&
                self.scheduleInfo() !== undefined &&
                self.currentDay() !== undefined &&
@@ -2244,13 +2446,12 @@ var ScheduleAddForm = function (parentForm, scheduleInfo, timeId, dayId, weekTyp
 
                         self.validateScheduleForm().validate(true, data);
                         if (data.length == 0) {
-                            parentForm.loadSchedules(true);
-                            parentForm.parentForm.currentScheduleInfoSelectForm().loadScheduleInfoes(true);
-
                             if (mode == "try")
                                 self.validateScheduleForm().canDo(true);
                             if (mode == "execute") {
                                 self.validateScheduleForm().doingSuccess(true);
+                                parentForm.loadSchedules(true);
+                                parentForm.parentForm.currentScheduleInfoSelectForm().loadScheduleInfoes(true);
                             }
                         } else {
                             self.validateScheduleForm().canDo(false);
@@ -2368,7 +2569,8 @@ var Calendar=function(dayOfWeek, periodId, weekTypeId, lecturerId, groupIds, sub
             self.clickedSchedule(self.calendarSchedules()[parentIndex]()[index]);
             self.clickedScheduleIndex(index);
 
-            self.scheduleContextMenuForm(new ScheduleContextMenuForm(self.clickedSchedule(), event.pageX, event.pageY, self));
+            //TODO: load times in calendar and pass into context form
+            self.scheduleContextMenuForm(new ScheduleContextMenuForm(self.clickedSchedule(), event.pageX, event.pageY, self, []));
             self.scheduleContextMenuForm().openDialog(true);
         }
     };
@@ -2591,18 +2793,13 @@ function baseViewModel() {
    
 
     var date = getCurrentWeek();
-    self.currentScheduleSelectForm = ko.observable(new ScheduleSelectForm(undefined, undefined, undefined, date.start, date.end, self));
+    self.currentScheduleSelectForm = ko.observable(new ScheduleSelectForm(undefined, undefined, date.start, date.end, self));
     self.currentPrintSettingForm = ko.observable();
 
     //#init function
     self.init = function () {
 
         console.log("777");
-
-     
-
-
- 
 
         Ext.create('Ext.container.Viewport', {
             width: 1400,

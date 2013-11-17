@@ -1378,7 +1378,6 @@
     <None Include="Service References\UserService\UserService5.xsd">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="Views\Schedule\NewCreate\ValidateForm.cshtml" />
     <Content Include="Views\Schedule\NewCreate\ProgressBarForm.cshtml" />
     <Content Include="Views\Web.config">
       <SubType>Designer</SubType>

@@ -66,66 +66,42 @@
                </tr>
           </table>
              
-        
-        
-        <table>
-             <tr>
-                <th style="text-align:left;"><span class="label">День недели</span></th>
-                <th style="text-align:left;"><span class="label">Тип недели</span></th>
-                <th style="text-align:left;"><span class="label">Время</span></th>
-              </tr>
-            <tr>
-                <td>
-   
-        <select style="width:100%"  data-placeholder="Выберите день недели" class="span5" id="dayofweek" data-bind="options: $root.currentScheduleSelectForm().currentScheduleAddForm().days, optionsText: 'Name', value: $root.currentScheduleSelectForm().currentScheduleAddForm().currentDay">
-            <option></option>
-        </select>
-        </td>
-
-        <td>
-        <select style="width:100%"  data-placeholder="Выберите тип недели" class="span5" id="weektype" data-bind="options: $root.currentScheduleSelectForm().currentScheduleAddForm().weekTypes, optionsText: 'Name', value: $root.currentScheduleSelectForm().currentScheduleAddForm().currentWeekType">
-            <option></option>
-        </select>
-         </td>
-               
-        <td> 
-        <select style="width:100%" data-placeholder="Выберите время" class="span5" id="times" data-bind="options: $root.currentScheduleSelectForm().currentScheduleAddForm().times, optionsText: 'StartEnd', value: $root.currentScheduleSelectForm().currentScheduleAddForm().currentTime">
-            <option></option>
-        </select>
-        </td>
-        </tr>
-        </table>
-
-
-        <table>
-             <tr>
-                <th style="text-align:left;"><span class="label">Тип аудитории</span></th>
-                <th style="text-align:left;"><span class="label">Аудитория</span></th>
-             </tr>
-             <tr>
-         <td>
-     
-        <select style="width:100%"  data-placeholder="Выберите тип аудитории" class="span5" id="auditoriumType" data-bind="options: $root.currentScheduleSelectForm().currentScheduleAddForm().auditoriumTypes, optionsText: 'Name', value: $root.currentScheduleSelectForm().currentScheduleAddForm().currentAuditoriumType">
-            <option></option>
-        </select>
-        </td>
-        <td>
-    
-        <select style="width:100%"  data-placeholder="Выберите аудиторию" class="span5" id="auditorium" data-bind="options: $root.currentScheduleSelectForm().currentScheduleAddForm().auditoriums, optionsText: 'Number', value: $root.currentScheduleSelectForm().currentScheduleAddForm().currentAuditorium">
-            <option></option>
-        </select>
-        </td>
-        </tr>
-        </table>
-
-        <span class="label">Подгруппа</span> <br />
-        <select style="width:85px;"  data-placeholder="Выберите подгруппу" class="span5" id="subgroup" data-bind="options: $root.currentScheduleSelectForm().currentScheduleAddForm().subGroups, value: $root.currentScheduleSelectForm().currentScheduleAddForm().currentSubGroup">
-            <option></option>
-        </select> <br />
-
         <input type="checkbox" id="delAfter" data-bind="checked: $root.currentScheduleSelectForm().currentScheduleAddForm().autoDelete" /> 
         <span>удалить после истечения срока ?</span>
         <br />
+              
+        <span class="label">День недели</span>
+        <select style="width:100%"  data-placeholder="Выберите день недели" class="span5" id="dayofweek" data-bind="options: $root.currentScheduleSelectForm().currentScheduleAddForm().days, optionsText: 'Name', value: $root.currentScheduleSelectForm().currentScheduleAddForm().currentDay">
+            <option></option>
+        </select>
+
+        <span class="label">Тип недели</span>
+        <select style="width:100%"  data-placeholder="Выберите тип недели" class="span5" id="weektype" data-bind="options: $root.currentScheduleSelectForm().currentScheduleAddForm().weekTypes, optionsText: 'Name', value: $root.currentScheduleSelectForm().currentScheduleAddForm().currentWeekType">
+            <option></option>
+        </select>
+          
+        <span class="label">Время</span>
+        <select style="width:100%" data-placeholder="Выберите время" class="span5" id="times" data-bind="options: $root.currentScheduleSelectForm().currentScheduleAddForm().times, optionsText: 'StartEnd', value: $root.currentScheduleSelectForm().currentScheduleAddForm().currentTime">
+            <option></option>
+        </select>
+    
+        <span class="label">Тип аудитории</span>
+        <select style="width:100%"  data-placeholder="Выберите тип аудитории" class="span5" id="auditoriumType" data-bind="options: $root.currentScheduleSelectForm().currentScheduleAddForm().auditoriumTypes, optionsText: 'Name', value: $root.currentScheduleSelectForm().currentScheduleAddForm().currentAuditoriumType">
+            <option></option>
+        </select>
+        
+    
+        <span class="label">Аудитория</span>
+        <select style="width:100%"  data-placeholder="Выберите аудиторию" class="span5" id="auditorium" data-bind="options: $root.currentScheduleSelectForm().currentScheduleAddForm().auditoriums, optionsText: 'Number', value: $root.currentScheduleSelectForm().currentScheduleAddForm().currentAuditorium">
+            <option></option>
+        </select>
+     
+        <span class="label">Подгруппа</span> <br />
+        <select style="width:100%"  data-placeholder="Выберите подгруппу" class="span5" id="subgroup" data-bind="options: $root.currentScheduleSelectForm().currentScheduleAddForm().subGroups, value: $root.currentScheduleSelectForm().currentScheduleAddForm().currentSubGroup">
+            <option></option>
+        </select> <br />
+
+        
         
         <!-- /ko -->  
         <!-- ko if: $root.currentScheduleSelectForm().currentScheduleAddForm().scheduleInfo() == undefined -->

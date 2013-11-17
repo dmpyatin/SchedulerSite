@@ -78,6 +78,7 @@ namespace Timetable.Site.Controllers.Api
             string endTime)
         {
 
+           
 
             var StartDate = new DateTime();
             var EndDate = new DateTime();

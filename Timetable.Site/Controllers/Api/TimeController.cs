@@ -27,6 +27,7 @@ namespace Timetable.Site.Controllers.Api
                 i++;
             }
 
+           
             return result;
         }
 

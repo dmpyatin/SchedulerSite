@@ -146,6 +146,8 @@ namespace Timetable.Site.Controllers
                         printScheduleModel.Groups = groupController.GetByCourseIds(s.facultyId, s.courseIds);
                     
 
+
+            
             printScheduleModel.Times = timeController.privateGetAll(t.buildingId); //TODO: change all
          
             var targetGroupsIds = "";

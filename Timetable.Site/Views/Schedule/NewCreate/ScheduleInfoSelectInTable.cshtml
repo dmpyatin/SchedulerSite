@@ -1,6 +1,7 @@
 ﻿<!-- ScheduleInfo Select Form -->
 <!-- ko if: $root.currentScheduleInfoSelectForm() !== undefined -->
 <div id ="sidialogintable" style="width:250px; overflow-x:hidden; overflow-y:hidden;">
+
     <div>
          <span class="label">Выберите тип занятия</span>
          <div>
@@ -9,6 +10,7 @@
             </select>
         </div>
     </div>
+
     <span class="label">Выберите сведение к расписанию</span>
     <div style="height:450px; padding-left:20px; overflow-y:hidden;">
 
@@ -51,3 +53,10 @@
     </div>
 </div>
 <!-- /ko -->  
+
+
+<!-- ko ifnot: $root.currentScheduleInfoSelectForm() !== undefined -->
+<div style="width:250px; overflow-x:hidden; overflow-y:hidden;">
+     <div style="padding:5px; margin:10px;" class="alert alert-error">Для просмотра сведений к расписанию выберите группы потока</div>
+</div>
+<!-- /ko -->
