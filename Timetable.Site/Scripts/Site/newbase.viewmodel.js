@@ -22,7 +22,7 @@ function CreateDateRangePicker(selector, parentForm) {
 
 };
 
-
+//Форма выбора аудиторий
 var AuditoriumSelectForm = function (parentForm) {
     var self = this;
 
@@ -103,6 +103,7 @@ var AuditoriumSelectForm = function (parentForm) {
     self.init(true);
 }
 
+//Форма выбора преподавателей
 var LecturerSelectForm = function (parentForm) {
 
     var self = this;
@@ -260,6 +261,21 @@ var PrintSettingForm = function (startDate, endDate, parentForm) {
         }
     };
 
+    self.dowloadReportXls = function (status) {
+        if (status == true) {
+
+            console.log(self.titleForAuditorium());
+
+            if (self.currentAuditoriumSelectForPrintForm().currentAuditorium() !== undefined &&
+               self.currentAuditoriumSelectForPrintForm().currentBuilding() !== undefined) {
+                document.location.href = '/PrintSchedule/GetReportForAuditorium?auditoriumId=' + self.currentAuditoriumSelectForPrintForm().currentAuditorium().Id +
+                                         '&buildingId=' + self.currentAuditoriumSelectForPrintForm().currentBuilding().Id +
+                                         '&startDate=' + self.startDate() +
+                                         '&endDate=' + self.endDate() + 
+                                         '&title=' + self.titleForAuditorium();
+            }
+        }
+    }
 
     self.createPrintForAuditoriumForm = function (status) {
         if (status == true) {

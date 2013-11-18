@@ -117,4 +117,5 @@ C:\Users\Dmitry\Documents\GitHub\SchedulerSite\Timetable.Site\bin\System.Web.Web
 C:\Users\Dmitry\Documents\GitHub\SchedulerSite\Timetable.Site\bin\System.Web.WebPages.Razor.xml
 C:\Users\Dmitry\Documents\GitHub\SchedulerSite\Timetable.Site\obj\Debug\Timetable.Site.dll
 C:\Users\Dmitry\Documents\GitHub\SchedulerSite\Timetable.Site\obj\Debug\Timetable.Site.pdb
-C:\Users\Dmitry\Documents\GitHub\SchedulerSite\Timetable.Site\obj\Debug\Timetable.Site.csprojResolveAssemblyReference.cache
+C:\Users\Dmitry\Documents\GitHub\SchedulerSite\Timetable.Site\bin\EPPlus.dll
+C:\Users\Dmitry\Documents\GitHub\SchedulerSite\Timetable.Site\bin\EPPlus.xml

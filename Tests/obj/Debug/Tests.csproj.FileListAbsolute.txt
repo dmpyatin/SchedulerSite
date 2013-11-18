@@ -27,3 +27,5 @@ C:\Users\Dmitry\Documents\GitHub\SchedulerSite\Tests\obj\Debug\Tests.dll
 C:\Users\Dmitry\Documents\GitHub\SchedulerSite\Tests\obj\Debug\Tests.pdb
 C:\Users\Dmitry\Documents\GitHub\SchedulerSite\Tests\bin\Debug\WebGrease.dll
 C:\Users\Dmitry\Documents\GitHub\SchedulerSite\Tests\bin\Debug\Antlr3.Runtime.dll
+C:\Users\Dmitry\Documents\GitHub\SchedulerSite\Tests\bin\Debug\EPPlus.dll
+C:\Users\Dmitry\Documents\GitHub\SchedulerSite\Tests\bin\Debug\EPPlus.xml

@@ -54,6 +54,7 @@
      </div>
      <br />
      <input type="button" class="btn btn-primary" value="Создать отчет по аудитории" data-bind="click: $root.currentPrintSettingForm().makeReportForAuditorium.bind($data,true)" />   
+     <input type="button" class="btn " value="Скачать Excel документ" data-bind="click: $root.currentPrintSettingForm().dowloadReportXls.bind($data,true)" />   
      <br />
      
 
@@ -62,7 +63,7 @@
 
   </div>
   <div class="modal-footer" style="cursor:default; overflow-x:hidden;">
-     
+      
        <a style="cursor:pointer;" data-bind="click: $root.currentPrintSettingForm().closeDialog.bind($data,true)" >Закрыть</a>
   </div>
 </div>

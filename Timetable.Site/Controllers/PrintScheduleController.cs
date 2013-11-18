@@ -15,6 +15,10 @@ using Timetable.Site.Controllers.Api;
 using AudSendModel = Timetable.Site.Models.Auditoriums.SendModel;
 using SendGroup = Timetable.Site.Models.Groups.SendModel;
 using Timetable.Site.Controllers.Extends;
+using System.Data;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using System.Drawing;
 
 namespace Timetable.Site.Controllers
 {
@@ -25,6 +29,243 @@ namespace Timetable.Site.Controllers
         {
             return View();
         }
+
+        private static DataTable CreateDataTable(int rowCount, int colCount)
+        {
+            DataTable dt = new DataTable();
+            for (int i = 0; i < colCount; i++)
+                dt.Columns.Add(i.ToString());
+
+
+            for (int i = 0; i < rowCount; i++)
+            {
+                DataRow dr = dt.NewRow();
+                foreach (DataColumn dc in dt.Columns)
+                    dr[dc.ToString()] = i;
+
+                dt.Rows.Add(dr);
+            }
+            return dt;
+        }
+
+
+        public Byte[] CreateTable()
+        {
+            var p = new ExcelPackage();
+
+            //Here setting some document properties
+            p.Workbook.Properties.Author = "Zeeshan Umar";
+            p.Workbook.Properties.Title = "Office Open XML Sample";
+
+            //Create a sheet
+            p.Workbook.Worksheets.Add("Sample WorkSheet");
+            ExcelWorksheet ws = p.Workbook.Worksheets[1];
+            ws.Name = "Sample Worksheet"; //Setting Sheet's name
+            ws.Cells.Style.Font.Size = 11; //Default font size for whole sheet
+            ws.Cells.Style.Font.Name = "Calibri"; //Default Font name for whole sheet
+
+
+            DataTable dt = CreateDataTable(10,10); //My Function which generates DataTable
+
+            //Merging cells and create a center heading for out table
+            ws.Cells[1, 1].Value = "Sample DataTable Export";
+            ws.Cells[1, 1, 1, dt.Columns.Count].Merge = true;
+            ws.Cells[1, 1, 1, dt.Columns.Count].Style.Font.Bold = true;
+            ws.Cells[1, 1, 1, dt.Columns.Count].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+            int colIndex = 1;
+            int rowIndex = 2;
+
+            foreach (DataColumn dc in dt.Columns) //Creating Headings
+            {
+                var cell = ws.Cells[rowIndex, colIndex];
+
+                //Setting the background color of header cells to Gray
+                var fill = cell.Style.Fill;
+                fill.PatternType = ExcelFillStyle.Solid;
+                fill.BackgroundColor.SetColor(Color.Gray);
+
+
+                //Setting Top/left,right/bottom borders.
+                var border = cell.Style.Border;
+                border.Bottom.Style =
+                    border.Top.Style =
+                    border.Left.Style =
+                    border.Right.Style = ExcelBorderStyle.Thin;
+
+                //Setting Value in cell
+                cell.Value = "Heading " + dc.ColumnName;
+
+                colIndex++;
+            }
+
+            foreach (DataRow dr in dt.Rows) // Adding Data into rows
+            {
+                colIndex = 1;
+                rowIndex++;
+                foreach (DataColumn dc in dt.Columns)
+                {
+                    var cell = ws.Cells[rowIndex, colIndex];
+                    //Setting Value in cell
+                    cell.Value = Convert.ToInt32(dr[dc.ColumnName]);
+
+                    //Setting borders of cell
+                    var border = cell.Style.Border;
+                    border.Left.Style =
+                        border.Right.Style = ExcelBorderStyle.Thin;
+                    colIndex++;
+                }
+            }
+
+            colIndex = 0;
+            foreach (DataColumn dc in dt.Columns) //Creating Headings
+            {
+                colIndex++;
+                var cell = ws.Cells[rowIndex, colIndex];
+
+                //Setting Sum Formula
+                cell.Formula = "Sum(" +
+                                ws.Cells[3, colIndex].Address +
+                                ":" +
+                                ws.Cells[rowIndex - 1, colIndex].Address +
+                                ")";
+
+                //Setting Background fill color to Gray
+                cell.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                cell.Style.Fill.BackgroundColor.SetColor(Color.Gray);
+            }
+
+            //Generate A File with Random name
+            var memoryStream = p.GetAsByteArray();
+
+            return memoryStream;
+        }
+
+
+        public Byte[] CreateTableForAuditorium(int? auditoriumId, int buildingId, string startDate, string endDate, string title)
+        {
+
+           
+            var scheduleController = new Timetable.Site.Controllers.Api.ScheduleController();
+            var timeController = new Timetable.Site.Controllers.Api.TimeController();
+
+            var schedules = scheduleController.privateGetScheduleByAll(null, auditoriumId, "", 1, "", startDate, endDate);
+
+            var times = timeController.privateGetAll(buildingId).ToList();
+            var days = new List<string>() { "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота" };
+
+            var p = new ExcelPackage();
+            p.Workbook.Properties.Author = "Система составления расписания";
+            p.Workbook.Properties.Title = "Расписание для аудитории " + title;
+            p.Workbook.Worksheets.Add("Расписание");
+            ExcelWorksheet ws = p.Workbook.Worksheets[1];
+
+            ws.Name = "Расписание";
+            ws.Cells.Style.Font.Size = 11;
+            ws.Cells.Style.Font.Name = "Calibri";
+
+            DataTable dt = CreateDataTable(2+times.Count(), 1+days.Count());
+
+            ws.Cells[1, 1].Value = "Расписание для аудитории " + title;
+            ws.Cells[1, 1, 1, dt.Columns.Count].Merge = true;
+            ws.Cells[1, 1, 1, dt.Columns.Count].Style.Font.Bold = true;
+            ws.Cells[1, 1, 1, dt.Columns.Count].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            //ws.Cells[1, 1, 1, dt.Columns.Count].AutoFitColumns();
+            ws.Cells[2, 1].Value = "Время";
+
+            
+            ws.Column(1).Width = 10;
+
+
+
+            var border1 = ws.Cells[2, 1].Style.Border;
+            border1.Left.Style = border1.Right.Style = ExcelBorderStyle.Thin;
+            border1.Bottom.Style = border1.Top.Style = ExcelBorderStyle.Thin;
+
+            border1 = ws.Cells[1, 1, 1, dt.Columns.Count].Style.Border;
+            border1.Left.Style = border1.Right.Style = ExcelBorderStyle.Thin;
+            border1.Bottom.Style = border1.Top.Style = ExcelBorderStyle.Thin;
+
+
+            for (int i = 0; i < times.Count(); ++i)
+            {
+                for (int j = 0; j < days.Count(); ++j)
+                {
+                    var cell = ws.Cells[3 + i, 2+j];
+                    var border = cell.Style.Border;
+                    border.Left.Style = border.Right.Style = ExcelBorderStyle.Thin;
+                    border.Bottom.Style = border.Top.Style = ExcelBorderStyle.Thin;
+                }
+            }
+
+
+            for (int i = 0; i < times.Count(); ++i)
+            {
+                ws.Row(3+i).Height = 50;
+                var cell = ws.Cells[3+i, 1];
+                cell.Value = times[i].StartEnd; 
+                var border = cell.Style.Border;
+                cell.Style.WrapText = true;
+                border.Left.Style = border.Right.Style = ExcelBorderStyle.Thin;
+                border.Bottom.Style = border.Top.Style = ExcelBorderStyle.Thin;
+            }
+
+            for (int i = 0; i < days.Count(); ++i)
+            {
+                ws.Column(2+i).Width = 20;
+                var cell = ws.Cells[2, 2+i];
+                cell.Value = days[i];
+                cell.Style.WrapText = true;
+                var border = cell.Style.Border;
+                border.Left.Style = border.Right.Style = ExcelBorderStyle.Thin;
+                border.Bottom.Style = border.Top.Style = ExcelBorderStyle.Thin;
+            }
+
+            foreach (var schedule in schedules)
+            {
+                var timeViewId = 0;
+                var i = 1;
+                foreach (var t in times)
+                {
+                    if (schedule.PeriodId == t.Id)
+                    {
+                        timeViewId = i;
+                        break;
+                    }
+                    i++;
+                }
+                if (timeViewId > 0)
+                {
+                    var cell = ws.Cells[2+timeViewId,1+schedule.DayOfWeek];
+                    var value = schedule.WeekTypeName + " " + schedule.LecturerName + " " +
+                                schedule.TutorialName + " (" + schedule.TutorialTypeName + ") " + schedule.GroupNames;
+                    cell.Value = value;
+                    cell.Style.WrapText = true;
+                }
+            }
+
+
+            return p.GetAsByteArray();
+        }
+
+        public FileResult GetReportForGroups()
+        {
+            var memoryStream = CreateTable();
+            var fileName = string.Format("Расписание по потоку-{0:yyyy-MM-dd-HH-mm-ss}.xlsx", DateTime.UtcNow);
+    
+            return base.File(memoryStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        }
+
+        public FileResult GetReportForAuditorium(int? auditoriumId, int buildingId, string startDate, string endDate, string title)
+        {
+            
+            var memoryStream = CreateTableForAuditorium(auditoriumId, buildingId, startDate, endDate, title);
+            var fileName = string.Format("Расписание для аудитории-{0:yyyy-MM-dd-HH-mm-ss}.xlsx", DateTime.UtcNow);
+
+            return base.File(memoryStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        }
+
+
 
         [HttpPost]
         public ActionResult IndexForAuditorium(ScheduleForPrintByAuditorium s, TimeForAllModel t, string h, int fs, string mode)
